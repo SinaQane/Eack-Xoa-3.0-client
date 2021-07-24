@@ -2,15 +2,19 @@ import config.Config;
 import constants.Constants;
 import db.Database;
 
+import javafx.application.Application;
+import javafx.stage.Stage;
+import view.MainStage;
+
 import java.sql.SQLException;
 
-public class Main
+public class Main extends Application
 {
     public static void main(String[] args)
     {
-        String url = new Config(Constants.CONFIG_ADDRESS).getProperty(String.class, "db_url");
-        String username = new Config(Constants.CONFIG_ADDRESS).getProperty(String.class, "db_username");
-        String password = new Config(Constants.CONFIG_ADDRESS).getProperty(String.class, "db_password");
+        String url = new Config(Constants.CONFIG).getProperty(String.class, "db_url");
+        String username = new Config(Constants.CONFIG).getProperty(String.class, "db_username");
+        String password = new Config(Constants.CONFIG).getProperty(String.class, "db_password");
         try
         {
             Database.getDB().connectToDatabase(url, username, password);
@@ -19,5 +23,13 @@ public class Main
         {
             throwable.printStackTrace();
         }
+
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage stage)
+    {
+        new MainStage(stage);
     }
 }
