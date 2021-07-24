@@ -1,5 +1,7 @@
 package view.scenes.login;
 
+import model.User;
+
 import java.util.EventObject;
 import java.util.Locale;
 
@@ -21,13 +23,8 @@ public class LoginFormEvent extends EventObject
         password = pass;
     }
 
-    public String getUsername()
+    public User getUser()
     {
-        return username;
-    }
-
-    public String getPassword()
-    {
-        return password;
+        return new User(username, password);
     }
 }

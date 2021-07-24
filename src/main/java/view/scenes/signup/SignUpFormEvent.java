@@ -1,19 +1,21 @@
 package view.scenes.signup;
 
+import model.User;
+
 import java.util.Date;
 import java.util.EventObject;
 import java.util.Locale;
 
 public class SignUpFormEvent extends EventObject
 {
+    private final String phoneNumber;
     private final String username;
     private final String password;
-    private final String name;
-    private final String email;
-    private final String phoneNumber;
-    private final String bio;
     private final Date birthDate;
     private final String picture;
+    private final String email;
+    private final String name;
+    private final String bio;
 
     public SignUpFormEvent(Object source)
     {
@@ -27,48 +29,24 @@ public class SignUpFormEvent extends EventObject
     {
         super(source);
         this.username = username.toLowerCase(Locale.ROOT);
-        this.password = password;
-        this.name = name;
         this.email = email.toLowerCase(Locale.ROOT);
         this.phoneNumber = phoneNumber;
         this.birthDate = birthDate;
-        this.bio = bio;
+        this.password = password;
         this.picture = picture;
+        this.name = name;
+        this.bio = bio;
     }
 
-    public String getUsername()
+    public User getUser()
     {
-        return username;
-    }
-
-    public String getPassword()
-    {
-        return password;
-    }
-
-    public String getName()
-    {
-        return name;
-    }
-
-    public String getEmail()
-    {
-        return email;
-    }
-
-    public String getPhoneNumber()
-    {
-        return phoneNumber;
-    }
-
-    public Date getBirthDate()
-    {
-        return birthDate;
-    }
-
-    public String getBio()
-    {
-        return bio;
+        User user = new User(username, password);
+        user.setPhoneNumber(phoneNumber);
+        user.setBirthDate(birthDate);
+        user.setEmail(email);
+        user.setName(name);
+        user.setBio(bio);
+        return user;
     }
 
     public String getPicture()

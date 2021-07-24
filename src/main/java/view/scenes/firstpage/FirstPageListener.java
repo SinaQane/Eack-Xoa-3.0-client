@@ -24,7 +24,7 @@ public class FirstPageListener
                 stage.setScene(SignUpPage.getSignUpPage().getScene());
                 break;
             case "server":
-                // TODO
+                // TODO new frame (connect to server)
                 break;
         }
     }
