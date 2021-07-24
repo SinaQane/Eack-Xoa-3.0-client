@@ -43,33 +43,6 @@ CREATE TABLE `eack_xoa_client`.`profiles`
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
-CREATE TABLE `eack_xoa_client`.`tweets`
-(
-    `id`          BIGINT       NOT NULL AUTO_INCREMENT,
-    `owner`       BIGINT       NOT NULL,
-    `upper_tweet` BIGINT       NOT NULL,
-    `picture`     LONGTEXT     NOT NULL,
-    `visible`     BOOL         NOT NULL,
-    `text`        VARCHAR(256) NOT NULL,
-    `tweet_date`  DATE         NOT NULL,
-    `comments`    JSON         NOT NULL,
-    `upvotes`     JSON         NOT NULL,
-    `downvotes`   JSON         NOT NULL,
-    `retweets`    JSON         NOT NULL,
-    `reports`     INT          NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`owner`) REFERENCES users (`id`),
-    FOREIGN KEY (`upper_tweet`) REFERENCES tweets (`id`)
-) ENGINE = InnoDB;
-
-CREATE TABLE `eack_xoa_client`.`groups`
-(
-    `id`      BIGINT      NOT NULL AUTO_INCREMENT,
-    `title`   VARCHAR(64) NOT NULL,
-    `members` JSON        NOT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB;
-
 CREATE TABLE `eack_xoa_client`.`chats`
 (
     `id`        BIGINT      NOT NULL AUTO_INCREMENT,
@@ -96,17 +69,5 @@ CREATE TABLE `eack_xoa_client`.`messages`
     `seen`              BOOL         NOT NULL,
     PRIMARY KEY (`id`),
     FOREIGN KEY (`chat_id`) REFERENCES chats (`id`),
-    FOREIGN KEY (`owner_id`) REFERENCES users (`id`),
-    FOREIGN KEY (`tweet_id`) REFERENCES tweets (`id`)
+    FOREIGN KEY (`owner_id`) REFERENCES users (`id`)
 ) ENGINE = InnoDB;
-
-CREATE TABLE `eack_xoa_client`.`notifications`
-(
-    `id`           BIGINT       NOT NULL AUTO_INCREMENT,
-    `owner`        BIGINT       NOT NULL,
-    `request_from` BIGINT       NOT NULL,
-    `text`         VARCHAR(256) NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`owner`) REFERENCES users (`id`),
-    FOREIGN KEY (`request_from`) REFERENCES users (`id`)
-) ENGINE InnoDB;

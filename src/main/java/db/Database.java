@@ -47,20 +47,11 @@ public class Database
             case "profiles":
                 query = "SELECT 1 FROM `profiles` WHERE `id` = ?";
                 break;
-            case "tweets":
-                query = "SELECT 1 FROM `tweets` WHERE `id` = ?";
-                break;
-            case "groups":
-                query = "SELECT 1 FROM `groups` WHERE `id` = ?";
-                break;
             case "chats":
                 query = "SELECT 1 FROM `chats` WHERE `id` = ?";
                 break;
             case "messages":
                 query = "SELECT 1 FROM `messages` WHERE `id` = ?";
-                break;
-            case "notifications":
-                query = "SELECT 1 FROM `notifications` WHERE `id` = ?";
                 break;
         }
         PreparedStatement statement = connection.prepareStatement(query);
@@ -80,20 +71,11 @@ public class Database
             case "profiles":
                 query = "SELECT MAX(`id`) AS `max_id` FROM `profiles`";
                 break;
-            case "tweets":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `tweets`";
-                break;
-            case "groups":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `groups`";
-                break;
             case "chats":
                 query = "SELECT MAX(`id`) AS `max_id` FROM `chats`";
                 break;
             case "messages":
                 query = "SELECT MAX(`id`) AS `max_id` FROM `messages`";
-                break;
-            case "notifications":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `notifications`";
                 break;
         }
         PreparedStatement statement = connection.prepareStatement(query);
@@ -244,114 +226,6 @@ public class Database
         return loadProfile(profile.getId());
     }
 
-    public Tweet loadTweet(long id) throws SQLException
-    {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `tweets` WHERE `id` = ?");
-        statement.setLong(1, id);
-        ResultSet res = statement.executeQuery();
-        Tweet tweet = new Tweet();
-        while (res.next())
-        {
-            tweet.setId(id);
-            tweet.setOwner(res.getLong("owner"));
-            tweet.setUpperTweet(res.getLong("upper_tweet"));
-            tweet.setPicture(res.getString("picture"));
-            tweet.setVisible(res.getBoolean("visible"));
-            tweet.setText(res.getString("text"));
-            tweet.setTweetDate(res.getDate("tweet_date"));
-            tweet.setComments(Arrays.asList(gson.fromJson(res.getString("comments"), Long[].class)));
-            tweet.setUpvotes(Arrays.asList(gson.fromJson(res.getString("upvotes"), Long[].class)));
-            tweet.setDownvotes(Arrays.asList(gson.fromJson(res.getString("downvotes"), Long[].class)));
-            tweet.setRetweets(Arrays.asList(gson.fromJson(res.getString("retweets"), Long[].class)));
-            tweet.setReports(res.getInt("reports"));
-        }
-        res.close();
-        statement.close();
-        return tweet;
-    }
-
-    public Tweet saveTweet(Tweet tweet) throws SQLException
-    {
-        PreparedStatement statement;
-        boolean exists = rowExists("tweets", tweet.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `tweets` SET `owner` = ?, `upper_tweet` = ?, `picture` = ?, `visible` = ?, `text` = ?, `tweet_date` = ?, `comments` = ?, `upvotes` = ?, `downvotes` = ?, `retweets` = ?, `reports` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `tweets` (`owner`, `upper_tweet`, `picture`, `visible`, `text`, `tweet_date`, `comments`, `upvotes`, `downvotes`, `retweets`, `reports`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        }
-        statement.setLong(1, tweet.getOwner());
-        statement.setLong(2, tweet.getUpperTweet());
-        statement.setString(3, tweet.getPicture());
-        statement.setBoolean(4, tweet.isVisible());
-        statement.setString(5, tweet.getText());
-        statement.setDate(6, (Date) tweet.getTweetDate());
-        statement.setString(7, new Gson().toJson(tweet.getComments()));
-        statement.setString(8, new Gson().toJson(tweet.getUpvotes()));
-        statement.setString(9, new Gson().toJson(tweet.getDownvotes()));
-        statement.setString(10, new Gson().toJson(tweet.getRetweets()));
-        statement.setInt(11, tweet.getReports());
-        if (exists)
-        {
-            statement.setLong(12, tweet.getId());
-        }
-        statement.executeQuery();
-        if (!exists)
-        {
-            tweet.setId(maxTableId("tweets"));
-        }
-        return loadTweet(tweet.getId());
-    }
-
-    public Group loadGroup(long id) throws SQLException
-    {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `groups` WHERE `id` = ?");
-        statement.setLong(1, id);
-        ResultSet res = statement.executeQuery();
-        Group group = new Group();
-        while (res.next())
-        {
-            group.setId(id);
-            group.setTitle(res.getString("title"));
-            group.setMembers(Arrays.asList(gson.fromJson(res.getString("members"), Long[].class)));
-        }
-        res.close();
-        statement.close();
-        return group;
-    }
-
-    public Group saveGroup(Group group) throws SQLException
-    {
-        PreparedStatement statement;
-        boolean exists = rowExists("groups", group.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `groups` SET `title` = ?, `members` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `groups` (`title`, `members`) VALUES (?, ?)");
-        }
-        statement.setString(1, group.getTitle());
-        statement.setString(2, new Gson().toJson(group.getMembers()));
-        if (exists)
-        {
-            statement.setLong(3, group.getId());
-        }
-        statement.executeQuery();
-        if (!exists)
-        {
-            group.setId(maxTableId("groups"));
-        }
-        return loadGroup(group.getId());
-    }
-
     public Chat loadChat(long id) throws SQLException
     {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `chats` WHERE `id` = ?");
@@ -462,52 +336,5 @@ public class Database
             message.setId(maxTableId("messages"));
         }
         return loadMessage(message.getId());
-    }
-
-    public Notification loadNotification(long id) throws SQLException
-    {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `notifications` WHERE `id` = ?");
-        statement.setLong(1, id);
-        ResultSet res = statement.executeQuery();
-        Notification notification = new Notification();
-        while (res.next())
-        {
-            notification.setId(id);
-            notification.setOwner(res.getLong("owner"));
-            notification.setRequestFrom(res.getLong("request_from"));
-            notification.setText(res.getString("text"));
-        }
-        res.close();
-        statement.close();
-        return notification;
-    }
-
-    public Notification saveNotification(Notification notification) throws SQLException
-    {
-        PreparedStatement statement;
-        boolean exists = rowExists("notifications", notification.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `notifications` SET `owner` = ?, `request_from` = ?, `text` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `notifications` (`owner`, `request_from`, `text`) VALUES (?, ?, ?)");
-        }
-        statement.setLong(1, notification.getOwner());
-        statement.setLong(2, notification.getRequestFrom());
-        statement.setString(3, notification.getText());
-        if (exists)
-        {
-            statement.setLong(4, notification.getId());
-        }
-        statement.executeQuery();
-        if (!exists)
-        {
-            notification.setId(maxTableId("notifications"));
-        }
-        return loadNotification(notification.getId());
     }
 }
