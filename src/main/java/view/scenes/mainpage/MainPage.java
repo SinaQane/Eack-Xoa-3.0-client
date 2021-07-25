@@ -11,10 +11,10 @@ import java.util.Objects;
 
 public class MainPage
 {
-    private static final String MAIN_PAGE =
-            new Config(Constants.CONFIG).getProperty(String.class, "mainPage");
-
     static MainPage mainPage;
+
+    private static final String MAIN_PAGE
+            = new Config(Constants.CONFIG).getProperty(String.class, "mainPage");
 
     private final Scene scene;
     private final FXMLLoader loader;

@@ -13,14 +13,21 @@ import view.scenes.signup.SignUpPage;
 
 public class GraphicalAgent
 {
+    static GraphicalAgent graphicalAgent;
+
     private Stage stage;
     private EventSender eventSender;
     private EventListener eventListener;
 
-    public GraphicalAgent(EventListener eventListener, Stage stage)
+    private GraphicalAgent() {}
+
+    public static GraphicalAgent getGraphicalAgent()
     {
-        this.eventListener = eventListener;
-        this.stage = stage;
+        if (graphicalAgent == null)
+        {
+            graphicalAgent = new GraphicalAgent();
+        }
+        return graphicalAgent;
     }
 
     public void setStage(Stage stage)
@@ -64,32 +71,36 @@ public class GraphicalAgent
 
     public void showLoginPage()
     {
-        LoginPage.getLoginPage().getFXML().clear();
-        stage.setScene(LoginPage.getLoginPage().getScene());
+        LoginPage loginPage = new LoginPage();
+        loginPage.getFXML().clear();
+        stage.setScene(loginPage.getScene());
     }
 
     public void setLoginPageError(String err)
     {
-        LoginPage.getLoginPage().getFXML().setMessageText(err);
+        LoginPage loginPage = new LoginPage();
+        loginPage.getFXML().setMessageText(err);
+        stage.setScene(loginPage.getScene());
     }
 
     public void showSignUpPage()
     {
-        SignUpPage.getSignUpPage().getFXML().clear();
-        stage.setScene(SignUpPage.getSignUpPage().getScene());
+        SignUpPage signUpPage = new SignUpPage();
+        signUpPage.getFXML().clear();
+        stage.setScene(signUpPage.getScene());
     }
 
     public void setSignUpPageError(String err)
     {
-        SignUpPage.getSignUpPage().getFXML().setMessageText(err);
+        SignUpPage signUpPage = new SignUpPage();
+        signUpPage.getFXML().setMessageText(err);
+        stage.setScene(signUpPage.getScene());
     }
 
     public void showMainPage()
     {
         // TODO User signedUpUser = logic.signUp();
         // TODO StatusHandler.getStatus().setUser(loggedInUser);
-        LoginPage.getLoginPage().getFXML().clear();
-        SignUpPage.getSignUpPage().getFXML().clear();
         MainPage mainPage = MainPage.getMainPage();
         mainPage.getFXML().profile(); // if online
         stage.setScene(mainPage.getScene());

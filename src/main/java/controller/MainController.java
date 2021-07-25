@@ -30,8 +30,11 @@ public class MainController implements ResponseVisitor
 
     public MainController(Stage stage)
     {
-        loop = new Loop(Integer.parseInt(new Config(Constants.CONFIG).getProperty(String.class, "fps")), this::sendEvents);
-        graphicalAgent = new GraphicalAgent(this::addEvent, stage);
+        String loopUpdateRate = new Config(Constants.CONFIG).getProperty(String.class, "fps");
+        loop = new Loop(Integer.parseInt(loopUpdateRate), this::sendEvents);
+        GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
+        GraphicalAgent.getGraphicalAgent().setStage(stage);
+        graphicalAgent = GraphicalAgent.getGraphicalAgent();
         graphicalAgent.initialize();
     }
 

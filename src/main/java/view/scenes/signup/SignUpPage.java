@@ -11,15 +11,13 @@ import java.util.Objects;
 
 public class SignUpPage
 {
-    static SignUpPage signUpPage;
-
     private static final String SIGNUP_PAGE =
             new Config(Constants.CONFIG).getProperty(String.class, "signUp");
 
     private final Scene scene;
     private final FXMLLoader loader;
 
-    private SignUpPage()
+    public SignUpPage()
     {
         this.loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(SIGNUP_PAGE)));
         Parent root = null;
@@ -33,15 +31,6 @@ public class SignUpPage
         }
         assert root != null;
         this.scene = new Scene(root);
-    }
-
-    public static SignUpPage getSignUpPage()
-    {
-        if (signUpPage == null)
-        {
-            signUpPage = new SignUpPage();
-        }
-        return signUpPage;
     }
 
     public SignUpPageFXML getFXML()
