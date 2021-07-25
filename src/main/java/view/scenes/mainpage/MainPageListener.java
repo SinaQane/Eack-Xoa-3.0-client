@@ -1,17 +1,9 @@
 package view.scenes.mainpage;
 
 import javafx.scene.control.Button;
-import javafx.stage.Stage;
 
 public class MainPageListener
 {
-    private final Stage stage;
-
-    public MainPageListener(Stage stage)
-    {
-        this.stage = stage;
-    }
-
     public void eventOccurred(Object source)
     {
         switch (((Button) source).getId())

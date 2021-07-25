@@ -14,6 +14,4 @@ public class PanesController
         }
         return panesController;
     }
-
-
 }

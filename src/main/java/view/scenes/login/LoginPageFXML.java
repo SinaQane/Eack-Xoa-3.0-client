@@ -6,18 +6,13 @@ import javafx.scene.text.Text;
 
 public class LoginPageFXML
 {
-    private LoginPageListener listener;
+    private final LoginPageListener listener = new LoginPageListener();
 
     public Text messageText;
     public TextField usernameTextField;
     public TextField passwordTextField;
     public Button enterButton;
     public Button signUpButton;
-
-    public void setListener(LoginPageListener listener)
-    {
-        this.listener = listener;
-    }
 
     public void setMessageText(String message)
     {

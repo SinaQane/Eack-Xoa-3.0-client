@@ -14,6 +14,8 @@ public class Database
     private final GsonBuilder gsonBuilder = new GsonBuilder();
     private final Gson gson = gsonBuilder.setPrettyPrinting().create();
 
+    // Singleton class stuff
+
     static Database db;
 
     private Database() {}
@@ -27,6 +29,7 @@ public class Database
         return db;
     }
 
+    // Establish connection to the database
     public void connectToDatabase(String url, String username, String password) throws SQLException
     {
 
@@ -36,7 +39,8 @@ public class Database
         statement.close();
     }
 
-    public boolean rowExists(String table, long id) throws SQLException
+    // Find out if there exists a row with given id in a table
+    public boolean rowIsMissing(String table, long id) throws SQLException
     {
         String query = "";
         switch (table)
@@ -47,44 +51,26 @@ public class Database
             case "profiles":
                 query = "SELECT 1 FROM `profiles` WHERE `id` = ?";
                 break;
+            case "tweets":
+                query = "SELECT 1 FROM `tweets` WHERE `id` = ?";
+                break;
+            case "groups":
+                query = "SELECT 1 FROM `groups` WHERE `id` = ?";
+                break;
             case "chats":
                 query = "SELECT 1 FROM `chats` WHERE `id` = ?";
                 break;
             case "messages":
                 query = "SELECT 1 FROM `messages` WHERE `id` = ?";
                 break;
+            case "notifications":
+                query = "SELECT 1 FROM `notifications` WHERE `id` = ?";
+                break;
         }
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
-        return res.next();
-    }
-
-    public Long maxTableId(String table) throws SQLException
-    {
-        String query = "";
-        switch (table)
-        {
-            case "users":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `users`";
-                break;
-            case "profiles":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `profiles`";
-                break;
-            case "chats":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `chats`";
-                break;
-            case "messages":
-                query = "SELECT MAX(`id`) AS `max_id` FROM `messages`";
-                break;
-        }
-        PreparedStatement statement = connection.prepareStatement(query);
-        ResultSet res = statement.executeQuery();
-        long maxId = -1L;
-        if (res.next()) {
-            maxId = res.getLong("max_id");
-        }
-        return maxId;
+        return !res.next();
     }
 
     public User loadUser(long id) throws SQLException
@@ -111,39 +97,21 @@ public class Database
         return user;
     }
 
-    public User saveUser(User user) throws SQLException
+    public void saveUser(User user) throws SQLException
     {
-        PreparedStatement statement;
-        boolean exists = rowExists("users", user.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `users` SET `username` = ?, `password` = ?, `name` = ?, `email` = ?, `phone_number` = ?, `bio` = ?, `birth_date` = ?, `is_active` = ?, `is_deleted` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `users` (`username`, `password`, `name`, `email`, `phone_number`, `bio`, `birth_date`, `is_active`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        }
-        statement.setString(1, user.getUsername());
-        statement.setString(2, user.getPassword());
-        statement.setString(3, user.getName());
-        statement.setString(4, user.getEmail());
-        statement.setString(5, user.getPhoneNumber());
-        statement.setString(6, user.getBio());
-        statement.setDate(7, (Date) user.getBirthDate());
-        statement.setBoolean(8, user.isActive());
-        statement.setBoolean(9, user.isDeleted());
-        if (exists)
-        {
-            statement.setLong(10, user.getId());
-        }
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `users` (`id`, `username`, `password`, `name`, `email`, `phone_number`, `bio`, `birth_date`, `is_active`, `is_deleted`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        statement.setLong(1, user.getId());
+        statement.setString(2, user.getUsername());
+        statement.setString(3, user.getPassword());
+        statement.setString(4, user.getName());
+        statement.setString(5, user.getEmail());
+        statement.setString(6, user.getPhoneNumber());
+        statement.setString(7, user.getBio());
+        statement.setDate(8, (Date) user.getBirthDate());
+        statement.setBoolean(9, user.isActive());
+        statement.setBoolean(10, user.isDeleted());
         statement.executeQuery();
-        if (!exists)
-        {
-            user.setId(maxTableId("users"));
-        }
-        return loadUser(user.getId());
     }
 
     public Profile loadProfile(long id) throws SQLException
@@ -181,49 +149,104 @@ public class Database
         return profile;
     }
 
-    public Profile saveProfile(Profile profile) throws SQLException {
-        PreparedStatement statement;
-        boolean exists = rowExists("profiles", profile.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `profiles` SET `picture` = ?, `last_seen` = ?, `followers` = ?, `followings` = ?, `blocked` = ?, `muted` = ?, `requests` = ?, `pending` = ?, `user_tweets` = ?, `retweeted_tweets` = ?, `upvoted_tweets` = ?, `downvoted_tweets` = ?, `reported_tweets` = ?, `saved_tweets` = ?, `notifications` = ?, `groups` = ?, `chats` = ?, `private_state` = ?, `info_state` = ?, `last_seen_state` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `profiles` (`picture`, `last_seen`, `followers`, `followings`, `blocked`, `muted`, `requests`, `pending`, `user_tweets`, `retweeted_tweets`, `upvoted_tweets`, `downvoted_tweets`, `reported_tweets`, `saved_tweets`, `notifications`, `groups`, `chats`, `private_state`, `info_state`, `last_seen_state`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        }
-        statement.setString(1, profile.getPicture());
-        statement.setDate(2, (Date) profile.getLastSeen());
-        statement.setString(3, new Gson().toJson(profile.getFollowers()));
-        statement.setString(4, new Gson().toJson(profile.getFollowings()));
-        statement.setString(5, new Gson().toJson(profile.getBlocked()));
-        statement.setString(6, new Gson().toJson(profile.getMuted()));
-        statement.setString(7, new Gson().toJson(profile.getRequests()));
-        statement.setString(8, new Gson().toJson(profile.getPending()));
-        statement.setString(9, new Gson().toJson(profile.getUserTweets()));
-        statement.setString(10, new Gson().toJson(profile.getRetweetedTweets()));
-        statement.setString(11, new Gson().toJson(profile.getUpvotedTweets()));
-        statement.setString(12, new Gson().toJson(profile.getDownvotedTweets()));
-        statement.setString(13, new Gson().toJson(profile.getReportedTweets()));
-        statement.setString(14, new Gson().toJson(profile.getSavedTweets()));
-        statement.setString(15, new Gson().toJson(profile.getNotifications()));
-        statement.setString(16, new Gson().toJson(profile.getGroups()));
-        statement.setString(17, new Gson().toJson(profile.getChats()));
-        statement.setBoolean(18, profile.isPrivate());
-        statement.setBoolean(19, profile.getInfoState());
-        statement.setInt(20, profile.getLastSeenState());
-        if (exists)
-        {
-            statement.setLong(21, profile.getId());
-        }
+    public void saveProfile(Profile profile) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `profiles` (`id`, `picture`, `last_seen`, `followers`, `followings`, `blocked`, `muted`, `requests`, `pending`, `user_tweets`, `retweeted_tweets`, `upvoted_tweets`, `downvoted_tweets`, `reported_tweets`, `saved_tweets`, `notifications`, `groups`, `chats`, `private_state`, `info_state`, `last_seen_state`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        statement.setLong(1, profile.getId());
+        statement.setString(2, profile.getPicture());
+        statement.setDate(3, (Date) profile.getLastSeen());
+        statement.setString(4, new Gson().toJson(profile.getFollowers()));
+        statement.setString(5, new Gson().toJson(profile.getFollowings()));
+        statement.setString(6, new Gson().toJson(profile.getBlocked()));
+        statement.setString(7, new Gson().toJson(profile.getMuted()));
+        statement.setString(8, new Gson().toJson(profile.getRequests()));
+        statement.setString(9, new Gson().toJson(profile.getPending()));
+        statement.setString(10, new Gson().toJson(profile.getUserTweets()));
+        statement.setString(11, new Gson().toJson(profile.getRetweetedTweets()));
+        statement.setString(12, new Gson().toJson(profile.getUpvotedTweets()));
+        statement.setString(13, new Gson().toJson(profile.getDownvotedTweets()));
+        statement.setString(14, new Gson().toJson(profile.getReportedTweets()));
+        statement.setString(15, new Gson().toJson(profile.getSavedTweets()));
+        statement.setString(16, new Gson().toJson(profile.getNotifications()));
+        statement.setString(17, new Gson().toJson(profile.getGroups()));
+        statement.setString(18, new Gson().toJson(profile.getChats()));
+        statement.setBoolean(19, profile.isPrivate());
+        statement.setBoolean(20, profile.getInfoState());
+        statement.setInt(21, profile.getLastSeenState());
         statement.executeQuery();
-        if (!exists)
+    }
+
+    public Tweet loadTweet(long id) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `tweets` WHERE `id` = ?");
+        statement.setLong(1, id);
+        ResultSet res = statement.executeQuery();
+        Tweet tweet = new Tweet();
+        while (res.next())
         {
-            profile.setId(maxTableId("profiles"));
+            tweet.setId(id);
+            tweet.setOwner(res.getLong("owner"));
+            tweet.setUpperTweet(res.getLong("upper_tweet"));
+            tweet.setPicture(res.getString("picture"));
+            tweet.setVisible(res.getBoolean("visible"));
+            tweet.setText(res.getString("text"));
+            tweet.setTweetDate(res.getDate("tweet_date"));
+            tweet.setComments(Arrays.asList(gson.fromJson(res.getString("comments"), Long[].class)));
+            tweet.setUpvotes(Arrays.asList(gson.fromJson(res.getString("upvotes"), Long[].class)));
+            tweet.setDownvotes(Arrays.asList(gson.fromJson(res.getString("downvotes"), Long[].class)));
+            tweet.setRetweets(Arrays.asList(gson.fromJson(res.getString("retweets"), Long[].class)));
+            tweet.setReports(res.getInt("reports"));
         }
-        return loadProfile(profile.getId());
+        res.close();
+        statement.close();
+        return tweet;
+    }
+
+    public void saveTweet(Tweet tweet) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `tweets` (`id`, `owner`, `upper_tweet`, `picture`, `visible`, `text`, `tweet_date`, `comments`, `upvotes`, `downvotes`, `retweets`, `reports`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        statement.setLong(1, tweet.getId());
+        statement.setLong(2, tweet.getOwner());
+        statement.setLong(3, tweet.getUpperTweet());
+        statement.setString(4, tweet.getPicture());
+        statement.setBoolean(5, tweet.isVisible());
+        statement.setString(6, tweet.getText());
+        statement.setDate(7, (Date) tweet.getTweetDate());
+        statement.setString(8, new Gson().toJson(tweet.getComments()));
+        statement.setString(9, new Gson().toJson(tweet.getUpvotes()));
+        statement.setString(10, new Gson().toJson(tweet.getDownvotes()));
+        statement.setString(11, new Gson().toJson(tweet.getRetweets()));
+        statement.setInt(12, tweet.getReports());
+        statement.executeQuery();
+    }
+
+    public Group loadGroup(long id) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `groups` WHERE `id` = ?");
+        statement.setLong(1, id);
+        ResultSet res = statement.executeQuery();
+        Group group = new Group();
+        while (res.next())
+        {
+            group.setId(id);
+            group.setTitle(res.getString("title"));
+            group.setMembers(Arrays.asList(gson.fromJson(res.getString("members"), Long[].class)));
+        }
+        res.close();
+        statement.close();
+        return group;
+    }
+
+    public void saveGroup(Group group) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `groups` (`id`, `title`, `members`) VALUES (?, ?, ?)");
+        statement.setLong(1, group.getId());
+        statement.setString(2, group.getTitle());
+        statement.setString(3, new Gson().toJson(group.getMembers()));
+        statement.executeQuery();
     }
 
     public Chat loadChat(long id) throws SQLException
@@ -245,34 +268,16 @@ public class Database
         return chat;
     }
 
-    public Chat saveChat(Chat chat) throws SQLException
+    public void saveChat(Chat chat) throws SQLException
     {
-        PreparedStatement statement;
-        boolean exists = rowExists("chats", chat.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `chats` SET `chat_name` = ?, `group` = ?, `users` = ?, `messages` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `chats` (`chat_name`, `group`, `users`, `messages`) VALUES (?, ?, ?, ?)");
-        }
-        statement.setString(1, chat.getChatName());
-        statement.setBoolean(2, chat.isGroup());
-        statement.setString(3, new Gson().toJson(chat.getUsers()));
-        statement.setString(4, new Gson().toJson(chat.getMessages()));
-        if (exists)
-        {
-            statement.setLong(5, chat.getId());
-        }
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `chats` (`id`, `chat_name`, `group`, `users`, `messages`) VALUES (?, ?, ?, ?, ?)");
+        statement.setLong(1, chat.getId());
+        statement.setString(2, chat.getChatName());
+        statement.setBoolean(3, chat.isGroup());
+        statement.setString(4, new Gson().toJson(chat.getUsers()));
+        statement.setString(5, new Gson().toJson(chat.getMessages()));
         statement.executeQuery();
-        if (!exists)
-        {
-            chat.setId(maxTableId("chats"));
-        }
-        return loadChat(chat.getId());
     }
 
     public Message loadMessage(long id) throws SQLException
@@ -301,40 +306,51 @@ public class Database
         return message;
     }
 
-    public Message saveMessage(Message message) throws SQLException
+    public void saveMessage(Message message) throws SQLException
     {
-        PreparedStatement statement;
-        boolean exists = rowExists("messages", message.getId());
-        if (exists)
-        {
-            statement = connection.prepareStatement(
-                    "UPDATE `messages` SET `chat_id` = ?, `owner_id` = ?, `tweet_id` = ?, `index` = ?, `text` = ?, `picture` = ?, `message_date_unix` = ?, `seen_list` = ?, `sent` = ?, `received` = ?, `seen` = ? WHERE `id` = ?");
-        }
-        else
-        {
-            statement = connection.prepareStatement(
-                    "INSERT INTO `messages` (`chat_id`, `owner_id`, `tweet_id`, `index`, `text`, `picture`, `message_date_unix`, `seen_list`, `sent`, `received`, `seen`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        }
-        statement.setLong(1, message.getChatId());
-        statement.setLong(2, message.getOwnerId());
-        statement.setLong(3, message.getTweetId());
-        statement.setInt(4, message.getIndex());
-        statement.setString(5, message.getText());
-        statement.setString(6, message.getPicture());
-        statement.setLong(7, message.getMessageDate());
-        statement.setString(8, new Gson().toJson(message.getSeenList()));
-        statement.setBoolean(9, message.isSent());
-        statement.setBoolean(10, message.isReceived());
-        statement.setBoolean(11, message.isSeen());
-        if (exists)
-        {
-            statement.setLong(12, message.getId());
-        }
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `messages` (`id`, `chat_id`, `owner_id`, `tweet_id`, `index`, `text`, `picture`, `message_date_unix`, `seen_list`, `sent`, `received`, `seen`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+        statement.setLong(1, message.getId());
+        statement.setLong(2, message.getChatId());
+        statement.setLong(3, message.getOwnerId());
+        statement.setLong(4, message.getTweetId());
+        statement.setInt(5, message.getIndex());
+        statement.setString(6, message.getText());
+        statement.setString(7, message.getPicture());
+        statement.setLong(8, message.getMessageDate());
+        statement.setString(9, new Gson().toJson(message.getSeenList()));
+        statement.setBoolean(10, message.isSent());
+        statement.setBoolean(11, message.isReceived());
+        statement.setBoolean(12, message.isSeen());
         statement.executeQuery();
-        if (!exists)
+    }
+
+    public Notification loadNotification(long id) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `notifications` WHERE `id` = ?");
+        statement.setLong(1, id);
+        ResultSet res = statement.executeQuery();
+        Notification notification = new Notification();
+        while (res.next())
         {
-            message.setId(maxTableId("messages"));
+            notification.setId(id);
+            notification.setOwner(res.getLong("owner"));
+            notification.setRequestFrom(res.getLong("request_from"));
+            notification.setText(res.getString("text"));
         }
-        return loadMessage(message.getId());
+        res.close();
+        statement.close();
+        return notification;
+    }
+
+    public void saveNotification(Notification notification) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement(
+                "REPLACE INTO `notifications` (`id`, `owner`, `request_from`, `text`) VALUES (?, ?, ?, ?)");
+        statement.setLong(1, notification.getId());
+        statement.setLong(2, notification.getOwner());
+        statement.setLong(3, notification.getRequestFrom());
+        statement.setString(4, notification.getText());
+        statement.executeQuery();
     }
 }

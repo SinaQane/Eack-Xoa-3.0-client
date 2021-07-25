@@ -1,13 +1,12 @@
 package view.scenes.mainpage;
 
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 
 public class MainPageFXML
 {
-    private MainPageListener listener;
+    private final MainPageListener listener = new MainPageListener();
 
     public Text mainPageLabel;
     public Pane mainPane;
@@ -23,16 +22,6 @@ public class MainPageFXML
     public Button settingsButton;
     public Button logoutButton;
     public Button onlineStatusButton;
-
-    public void setListener(MainPageListener listener)
-    {
-        this.listener = listener;
-    }
-
-    public MainPageListener getListener()
-    {
-        return listener;
-    }
 
     public void setMainPane(Pane mainPane)
     {

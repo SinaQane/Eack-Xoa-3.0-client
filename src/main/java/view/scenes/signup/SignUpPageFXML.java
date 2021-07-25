@@ -20,7 +20,7 @@ public class SignUpPageFXML
     private static final String DEFAULT_DATE =
             new Config(Constants.CONFIG).getProperty(String.class, "defaultDate");
 
-    private SignUpPageListener listener;
+    private final SignUpPageListener listener = new SignUpPageListener();
 
     public Text messageText;
     public TextField usernameTextField;
@@ -34,11 +34,6 @@ public class SignUpPageFXML
     public Button signUpButton;
     public Button loginButton;
     public CheckBox checkBox;
-
-    public void setListener(SignUpPageListener listener)
-    {
-        this.listener = listener;
-    }
 
     public void setMessageText(String message)
     {

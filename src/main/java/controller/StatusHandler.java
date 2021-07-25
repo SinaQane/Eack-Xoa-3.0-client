@@ -2,25 +2,25 @@ package controller;
 
 import model.User;
 
-public class UserStatus
+public class StatusHandler
 {
-    static UserStatus userStatus;
+    static StatusHandler statusHandler;
 
     private boolean online;
-    private User user;
+    private User loggedInUser;
 
-    private UserStatus()
+    private StatusHandler()
     {
         online = false;
     }
 
-    public static UserStatus getStatus()
+    public static StatusHandler getHandler()
     {
-        if (userStatus == null)
+        if (statusHandler == null)
         {
-            userStatus = new UserStatus();
+            statusHandler = new StatusHandler();
         }
-        return userStatus;
+        return statusHandler;
     }
 
     public void setOnline(boolean online)
@@ -35,11 +35,11 @@ public class UserStatus
 
     public void setUser(User user)
     {
-        this.user = user;
+        loggedInUser = user;
     }
 
     public User getUser()
     {
-        return user;
+        return loggedInUser;
     }
 }

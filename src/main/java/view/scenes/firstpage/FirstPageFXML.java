@@ -8,15 +8,10 @@ import java.util.ResourceBundle;
 
 public class FirstPageFXML implements Initializable
 {
-    private FirstPageListener listener;
+    private final FirstPageListener listener = new FirstPageListener();
 
     @Override
     public void initialize(URL url, ResourceBundle rb){}
-
-    public void setListener(FirstPageListener listener)
-    {
-        this.listener = listener;
-    }
 
     public void login()
     {
