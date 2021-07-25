@@ -61,5 +61,5 @@
     <Line endX="-100.0" endY="511.0" layoutX="257.0" layoutY="92.0" startX="-100.0" startY="-18.5" stroke="#2b3132" />
    <Line endX="697.0" endY="-11.0" layoutX="257.0" layoutY="84.0" startX="-212.0" startY="-11.0" stroke="#2b3132" />
    <Button fx:id="backButton" layoutX="54.0" layoutY="27.0" mnemonicParsing="false" onAction="#back" text="Back" />
-   <Button fx:id="onlineStatusButton" layoutX="894.0" layoutY="27.0" mnemonicParsing="false" onAction="#checkOnlineStatus" text="Offline" />
+   <Button fx:id="serverButton" layoutX="894.0" layoutY="27.0" mnemonicParsing="false" onAction="#server" text="Offline" />
 </Pane>

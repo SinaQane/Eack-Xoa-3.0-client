@@ -100,7 +100,7 @@ public class GraphicalAgent
     public void showMainPage()
     {
         // TODO User signedUpUser = logic.signUp();
-        // TODO StatusHandler.getStatus().setUser(loggedInUser);
+        // TODO ConnectionStatus.getStatus().setUser(loggedInUser);
         MainPage mainPage = MainPage.getMainPage();
         mainPage.getFXML().profile(); // if online
         stage.setScene(mainPage.getScene());

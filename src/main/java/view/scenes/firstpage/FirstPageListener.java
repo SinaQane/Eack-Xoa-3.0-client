@@ -1,18 +1,25 @@
 package view.scenes.firstpage;
 
+import javafx.scene.control.Button;
+import view.GraphicalAgent;
+
+import java.util.EventObject;
+
 public class FirstPageListener
 {
-    public void listen(String command)
+
+
+    public void eventOccurred(Object source)
     {
-        switch (command)
+        switch (((Button) source).getId())
         {
-            case "login":
-                // TODO call GraphicalAgent
+            case "loginButton":
+                GraphicalAgent.getGraphicalAgent().showLoginPage();
                 break;
-            case "sign-up":
-                // TODO call GraphicalAgent
+            case "signUpButton":
+                GraphicalAgent.getGraphicalAgent().showSignUpPage();
                 break;
-            case "server":
+            case "serverButton":
                 // TODO new frame (connect to server) and call GraphicalAgent
                 break;
         }

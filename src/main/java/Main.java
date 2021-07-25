@@ -1,6 +1,6 @@
 import config.Config;
 import constants.Constants;
-import controller.MainController;
+import controller.OnlineController;
 import db.Database;
 
 import javafx.application.Application;
@@ -42,6 +42,6 @@ public class Main extends Application
             throwable.printStackTrace();
         }
 
-        new MainController(stage);
+        new OnlineController(stage);
     }
 }

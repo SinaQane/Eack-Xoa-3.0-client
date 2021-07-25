@@ -21,7 +21,7 @@ public class MainPageFXML
     public Button profileButton;
     public Button settingsButton;
     public Button logoutButton;
-    public Button onlineStatusButton;
+    public Button serverButton;
 
     public void setMainPane(Pane mainPane)
     {
@@ -79,8 +79,8 @@ public class MainPageFXML
         listener.eventOccurred(logoutButton);
     }
 
-    public void checkOnlineStatus()
+    public void server()
     {
-        listener.eventOccurred(onlineStatusButton);
+        listener.eventOccurred(serverButton);
     }
 }

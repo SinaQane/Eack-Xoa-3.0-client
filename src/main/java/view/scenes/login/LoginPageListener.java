@@ -1,6 +1,8 @@
 package view.scenes.login;
 
+import controller.ConnectionStatus;
 import javafx.scene.control.Button;
+import view.GraphicalAgent;
 
 public class LoginPageListener
 {
@@ -9,10 +11,17 @@ public class LoginPageListener
         switch (((Button) eventObject.getSource()).getId())
         {
             case "signUpButton":
-                // TODO call GraphicalAgent
+                GraphicalAgent.getGraphicalAgent().showSignUpPage();
                 break;
             case "enterButton":
-                // TODO send request
+                if (ConnectionStatus.getStatus().isOnline())
+                {
+                    // TODO send request
+                }
+                else
+                {
+                    // TODO offline client
+                }
                 break;
         }
     }

@@ -2,25 +2,25 @@ package controller;
 
 import model.User;
 
-public class StatusHandler
+public class ConnectionStatus
 {
-    static StatusHandler statusHandler;
+    static ConnectionStatus connectionStatus;
 
     private boolean online;
     private User loggedInUser;
 
-    private StatusHandler()
+    private ConnectionStatus()
     {
         online = false;
     }
 
-    public static StatusHandler getHandler()
+    public static ConnectionStatus getStatus()
     {
-        if (statusHandler == null)
+        if (connectionStatus == null)
         {
-            statusHandler = new StatusHandler();
+            connectionStatus = new ConnectionStatus();
         }
-        return statusHandler;
+        return connectionStatus;
     }
 
     public void setOnline(boolean online)

@@ -1,6 +1,6 @@
 package db;
 
-import controller.StatusHandler;
+import controller.ConnectionStatus;
 import event.EventSender;
 import event.events.db.*;
 import model.*;
@@ -31,7 +31,7 @@ public class ModelLoader
 
     public User getUser(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetUserEvent(id));
             synchronized (Database.getDB())
@@ -47,7 +47,7 @@ public class ModelLoader
 
     public Profile getProfile(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetUserEvent(id));
             synchronized (Database.getDB())
@@ -63,7 +63,7 @@ public class ModelLoader
 
     public Tweet getTweet(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetTweetEvent(id));
             synchronized (Database.getDB())
@@ -79,7 +79,7 @@ public class ModelLoader
 
     public Group getGroup(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetGroupEvent(id));
             synchronized (Database.getDB())
@@ -95,7 +95,7 @@ public class ModelLoader
 
     public Chat getChat(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetChatEvent(id));
             synchronized (Database.getDB())
@@ -111,7 +111,7 @@ public class ModelLoader
 
     public Message getMessage(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetMessageEvent(id));
             synchronized (Database.getDB())
@@ -127,7 +127,7 @@ public class ModelLoader
 
     public Notification getNotification(long id) throws InterruptedException, SQLException
     {
-        if (StatusHandler.getHandler().isOnline())
+        if (ConnectionStatus.getStatus().isOnline())
         {
             eventSender.sendEvent(new GetNotificationEvent(id));
             synchronized (Database.getDB())

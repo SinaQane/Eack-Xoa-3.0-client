@@ -7,6 +7,9 @@ import db.ModelLoader;
 import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
+import exceptions.DatabaseError;
+import exceptions.authentication.LoginFailed;
+import exceptions.authentication.SignUpFailed;
 import javafx.stage.Stage;
 import model.*;
 import response.Response;
@@ -20,7 +23,7 @@ import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.List;
 
-public class MainController implements ResponseVisitor
+public class OnlineController implements ResponseVisitor
 {
     private final List<Event> events = new LinkedList<>();
     private final GraphicalAgent graphicalAgent;
@@ -28,7 +31,7 @@ public class MainController implements ResponseVisitor
 
     private EventSender eventSender;
 
-    public MainController(Stage stage)
+    public OnlineController(Stage stage)
     {
         String loopUpdateRate = new Config(Constants.CONFIG).getProperty(String.class, "fps");
         loop = new Loop(Integer.parseInt(loopUpdateRate), this::sendEvents);
@@ -43,7 +46,7 @@ public class MainController implements ResponseVisitor
         Socket socket = new Socket(host, port);
         eventSender = new SocketEventSender(socket);
         graphicalAgent.setEventSender(eventSender);
-        StatusHandler.getHandler().setOnline(true);
+        ConnectionStatus.getStatus().setOnline(true);
         ModelLoader.getModelLoader().setEventSender(eventSender);
         loop.start();
     }
@@ -74,21 +77,35 @@ public class MainController implements ResponseVisitor
         }
     }
 
+    // Authentication event responses
+
     @Override
-    public void login(User user, Exception e)
+    public void login(User user, LoginFailed err)
     {
-        // TODO
+        if (err != null)
+        {
+            graphicalAgent.setLoginPageError(err.getMessage());
+        }
     }
 
     @Override
-    public void signUp(User user, Exception e)
+    public void signUp(User user, SignUpFailed err)
     {
-        // TODO
+        if (err != null)
+        {
+            graphicalAgent.setSignUpPageError(err.getMessage());
+        }
     }
 
+    // Database event responses TODO log DatabaseErrors or sth
+
     @Override
-    public void getChat(Chat chat, Exception e)
+    public void getChat(Chat chat, DatabaseError err)
     {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveChat(chat);
@@ -104,8 +121,12 @@ public class MainController implements ResponseVisitor
     }
 
     @Override
-    public void getGroup(Group group, Exception e)
+    public void getGroup(Group group, DatabaseError err)
     {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveGroup(group);
@@ -121,8 +142,12 @@ public class MainController implements ResponseVisitor
     }
 
     @Override
-    public void getMessage(Message message, Exception e)
+    public void getMessage(Message message, DatabaseError err)
     {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveMessage(message);
@@ -138,8 +163,12 @@ public class MainController implements ResponseVisitor
     }
 
     @Override
-    public void getNotification(Notification notification, Exception e)
+    public void getNotification(Notification notification, DatabaseError err)
     {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveNotification(notification);
@@ -155,8 +184,12 @@ public class MainController implements ResponseVisitor
     }
 
     @Override
-    public void getTweet(Tweet tweet, Exception e)
+    public void getTweet(Tweet tweet, DatabaseError err)
     {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveTweet(tweet);
@@ -172,7 +205,12 @@ public class MainController implements ResponseVisitor
     }
 
     @Override
-    public void getUser(User user, Profile profile, Exception e) {
+    public void getUser(User user, Profile profile, DatabaseError err)
+    {
+        if (err != null)
+        {
+            return;
+        }
         try
         {
             Database.getDB().saveUser(user);

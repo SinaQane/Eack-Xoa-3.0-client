@@ -1,6 +1,7 @@
 package view.scenes.signup;
 
 import javafx.scene.control.Button;
+import view.GraphicalAgent;
 
 public class SignUpPageListener
 {
@@ -9,7 +10,7 @@ public class SignUpPageListener
         switch (((Button) eventObject.getSource()).getId())
         {
             case "loginButton":
-                // TODO call GraphicalAgent
+                GraphicalAgent.getGraphicalAgent().showLoginPage();
                 break;
             case "signUpButton":
                 // TODO send request
