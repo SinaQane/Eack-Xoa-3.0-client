@@ -8,6 +8,7 @@ public class ConnectionStatus
 
     private boolean online;
     private User loggedInUser;
+    private String authToken;
 
     private ConnectionStatus()
     {
@@ -41,5 +42,15 @@ public class ConnectionStatus
     public User getUser()
     {
         return loggedInUser;
+    }
+
+    public void setAuthToken(String authToken)
+    {
+        this.authToken = authToken;
+    }
+
+    public String getAuthToken()
+    {
+        return authToken;
     }
 }

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.settings.SettingsPageFXML">
+    <Text fill="WHITE" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please fill out every item you want to change and check its checkbox:" textAlignment="CENTER" wrappingWidth="800.0">
+        <font>
+            <Font size="18.0" />
+        </font>
+    </Text>
+    <Text fx:id="messageText" fill="RED" layoutY="84.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Message" textAlignment="CENTER" visible="false" wrappingWidth="800.0">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Text>
+    <TextField fx:id="usernameTextField" disable="true" layoutX="158.0" layoutY="107.0" prefHeight="28.0" prefWidth="222.0" promptText="Username">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <PasswordField fx:id="passwordTextField" disable="true" layoutX="158.0" layoutY="161.0" prefHeight="28.0" prefWidth="222.0" promptText="Password">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </PasswordField>
+    <TextField fx:id="nameTextField" disable="true" layoutX="158.0" layoutY="215.0" prefHeight="28.0" prefWidth="222.0" promptText="Name">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <TextField fx:id="emailTextField" disable="true" layoutX="158.0" layoutY="269.0" prefHeight="28.0" prefWidth="222.0" promptText="Email">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <TextField fx:id="phoneNumberTextField" disable="true" layoutX="158.0" layoutY="321.0" prefHeight="28.0" prefWidth="222.0" promptText="Phone Number (optional)">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <DatePicker fx:id="birthDatePicker" disable="true" layoutX="422.0" layoutY="107.0" prefHeight="28.0" prefWidth="222.0" promptText="Birth date (optional)" />
+    <TextField fx:id="bioTextField" disable="true" layoutX="422.0" layoutY="161.0" prefHeight="28.0" prefWidth="222.0" promptText="Bio (optional)">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <ChoiceBox fx:id="privacyChoiceBox" disable="true" layoutX="422.0" layoutY="215.0" prefHeight="28.0" prefWidth="222.0" value="Privacy (default: public)">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="public" />
+                <String fx:value="private" />
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+    <ChoiceBox fx:id="infoStateChoiceBox" disable="true" layoutX="422.0" layoutY="269.0" prefHeight="28.0" prefWidth="222.0" value="Info State (default: private)">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="public" />
+                <String fx:value="private" />
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+    <ChoiceBox fx:id="lastSeenChoiceBox" disable="true" layoutX="422.0" layoutY="321.0" prefHeight="28.0" prefWidth="222.0" value="Last Seen (default: no one)">
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="no one" />
+                <String fx:value="followings" />
+                <String fx:value="everyone" />
+            </FXCollections>
+        </items>
+    </ChoiceBox>
+    <TextField fx:id="pictureTextField" disable="true" layoutX="158.0" layoutY="371.0" prefHeight="28.0" prefWidth="222.0" promptText="Profile picture path (optional)">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </TextField>
+    <Button fx:id="deleteAccountButton" layoutX="564.0" layoutY="371.0" mnemonicParsing="false" onAction="#deleteAccount" prefHeight="28.0" prefWidth="109.0" text="Delete Account" textAlignment="CENTER">
+        <font>
+            <Font size="12.0" />
+        </font>
+    </Button>
+    <Button fx:id="deactivationButton" layoutX="422.0" layoutY="371.0" mnemonicParsing="false" onAction="#deactivate" prefHeight="28.0" prefWidth="109.0" text="Deactivate" textAlignment="CENTER">
+        <font>
+            <Font size="12.0" />
+        </font>
+    </Button>
+    <CheckBox fx:id="usernameCheckBox" layoutX="129.0" layoutY="112.0" mnemonicParsing="false" onAction="#usernameCheckBox" />
+    <CheckBox fx:id="passwordCheckBox" layoutX="129.0" layoutY="166.0" mnemonicParsing="false" onAction="#passwordCheckBox" />
+    <CheckBox fx:id="nameCheckBox" layoutX="129.0" layoutY="220.0" mnemonicParsing="false" onAction="#nameCheckBox" />
+    <CheckBox fx:id="emailCheckBox" layoutX="129.0" layoutY="274.0" mnemonicParsing="false" onAction="#emailCheckBox" />
+    <CheckBox fx:id="birthdateCheckBox" layoutX="655.0" layoutY="112.0" mnemonicParsing="false" onAction="#birthdateCheckBox" />
+    <CheckBox fx:id="bioCheckBox" layoutX="655.0" layoutY="166.0" mnemonicParsing="false" onAction="#bioCheckBox" />
+    <CheckBox fx:id="privacyCheckBox" layoutX="655.0" layoutY="220.0" mnemonicParsing="false" onAction="#privacyCheckBox" />
+    <CheckBox fx:id="infoStateCheckBox" layoutX="655.0" layoutY="274.0" mnemonicParsing="false" onAction="#infoStateCheckBox" />
+    <CheckBox fx:id="phoneNumberCheckBox" layoutX="129.0" layoutY="326.0" mnemonicParsing="false" onAction="#phoneNumberCheckBox" />
+    <CheckBox fx:id="lastSeenCheckBox" layoutX="655.0" layoutY="326.0" mnemonicParsing="false" onAction="#lastSeenCheckBox" />
+    <CheckBox fx:id="pictureCheckBox" layoutX="129.0" layoutY="376.0" mnemonicParsing="false" onAction="#pictureCheckBox" />
+    <Button fx:id="editButton" layoutX="364.0" layoutY="441.0" mnemonicParsing="false" onAction="#edit" prefHeight="28.0" prefWidth="73.0" text="Edit" textAlignment="CENTER">
+        <font>
+            <Font size="14.0" />
+        </font>
+    </Button>
+
+</Pane>

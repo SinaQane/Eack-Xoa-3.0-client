@@ -12,7 +12,7 @@ import java.util.Objects;
 public class LoginPage
 {
     private static final String LOGIN_PAGE =
-            new Config(Constants.CONFIG).getProperty(String.class, "login");
+            new Config(Constants.CONFIG).getProperty(String.class, "loginPage");
 
     private final Scene scene;
     private final FXMLLoader loader;

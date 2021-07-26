@@ -1,12 +1,13 @@
 package view.scenes.login;
 
 import controller.ConnectionStatus;
+import event.events.authentication.LoginForm;
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
 
 public class LoginPageListener
 {
-    public void eventOccurred(LoginFormEvent eventObject)
+    public void eventOccurred(LoginForm eventObject)
     {
         switch (((Button) eventObject.getSource()).getId())
         {

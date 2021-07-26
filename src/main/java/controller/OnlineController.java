@@ -8,8 +8,10 @@ import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
 import exceptions.DatabaseError;
+import exceptions.Unauthenticated;
 import exceptions.authentication.LoginFailed;
 import exceptions.authentication.SignUpFailed;
+import exceptions.settings.SettingsFailed;
 import javafx.stage.Stage;
 import model.*;
 import response.Response;
@@ -95,6 +97,26 @@ public class OnlineController implements ResponseVisitor
         {
             graphicalAgent.setSignUpPageError(err.getMessage());
         }
+    }
+
+    // Settings page event responses
+
+    @Override
+    public void settings(boolean b, SettingsFailed settingsFailed, Unauthenticated unauthenticated)
+    {
+
+    }
+
+    @Override
+    public void deleteAccount(boolean b, Unauthenticated unauthenticated)
+    {
+
+    }
+
+    @Override
+    public void deactivate(boolean b, Unauthenticated unauthenticated)
+    {
+
     }
 
     // Database event responses TODO log DatabaseErrors or sth

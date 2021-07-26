@@ -3,6 +3,7 @@ package view.scenes.signup;
 import config.Config;
 import constants.Constants;
 
+import event.events.authentication.SignUpForm;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
@@ -48,7 +49,7 @@ public class SignUpPageFXML
 
     public void login()
     {
-        listener.eventOccurred(new SignUpFormEvent(loginButton));
+        listener.eventOccurred(new SignUpForm(loginButton));
     }
 
     public void signUp()
@@ -59,7 +60,7 @@ public class SignUpPageFXML
         String email = emailTextField.getText();
         String phoneNumber = phoneNumberTextField.getText();
         String bio = bioTextField.getText();
-        String picture = pictureField.getText();
+        String picture = pictureField.getText(); // TODO get file and stuff
 
         Date birthDate = null;
         try
@@ -76,7 +77,7 @@ public class SignUpPageFXML
             birthDate = java.sql.Date.valueOf(birthDatePicker.getValue());
         }
 
-        listener.eventOccurred(new SignUpFormEvent(signUpButton, username, password, name, email, phoneNumber, bio, birthDate, picture));
+        listener.eventOccurred(new SignUpForm(signUpButton, username, password, name, email, phoneNumber, bio, birthDate, picture));
     }
 
     public void checkbox()

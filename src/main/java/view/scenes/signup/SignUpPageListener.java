@@ -1,11 +1,12 @@
 package view.scenes.signup;
 
+import event.events.authentication.SignUpForm;
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
 
 public class SignUpPageListener
 {
-    public void eventOccurred(SignUpFormEvent eventObject)
+    public void eventOccurred(SignUpForm eventObject)
     {
         switch (((Button) eventObject.getSource()).getId())
         {

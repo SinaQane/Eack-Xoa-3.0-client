@@ -12,7 +12,7 @@ import java.util.Objects;
 public class SignUpPage
 {
     private static final String SIGNUP_PAGE =
-            new Config(Constants.CONFIG).getProperty(String.class, "signUp");
+            new Config(Constants.CONFIG).getProperty(String.class, "signUpPage");
 
     private final Scene scene;
     private final FXMLLoader loader;

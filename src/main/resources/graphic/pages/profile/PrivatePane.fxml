@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="355.0" prefWidth="777.0" style="-fx-background-color: #1E2425;"
+      xmlns="http://javafx.com/javafx/16">
+    <Text fill="RED" layoutY="181.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="This page is private. Follow it to view its contents..." textAlignment="CENTER" wrappingWidth="777.0"/>
+</Pane>

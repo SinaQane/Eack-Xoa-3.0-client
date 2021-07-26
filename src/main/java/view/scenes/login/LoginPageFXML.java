@@ -1,5 +1,6 @@
 package view.scenes.login;
 
+import event.events.authentication.LoginForm;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
@@ -29,11 +30,11 @@ public class LoginPageFXML
     {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
-        listener.eventOccurred(new LoginFormEvent(enterButton, username, password));
+        listener.eventOccurred(new LoginForm(enterButton, username, password));
     }
 
     public void signUp()
     {
-        listener.eventOccurred(new LoginFormEvent(signUpButton));
+        listener.eventOccurred(new LoginForm(signUpButton));
     }
 }

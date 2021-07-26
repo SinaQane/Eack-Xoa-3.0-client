@@ -17,7 +17,7 @@ public class MainPageListener
                 stage.setScene(loginPage.getScene());*/
                 break;
             case "profileButton":
-                /*ProfilePane profilePane = PanesController.getPanesController().getProfilePane(0);
+                /*ProfilePage profilePane = PanesController.getPanesController().getProfilePane(0);
                 fxmlController.setMainPane(profilePane.getPane());
                 BackButtonHandler.getBackButtonHandler().clear();
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));*/
@@ -54,7 +54,7 @@ public class MainPageListener
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));*/
                 break;
             case "onlineStatusButton":
-                // TODO
+                // TODO server frame
                 break;
         }
     }
