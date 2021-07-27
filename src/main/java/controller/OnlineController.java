@@ -79,52 +79,6 @@ public class OnlineController implements ResponseVisitor
         }
     }
 
-    // Authentication event responses
-
-    @Override
-    public void login(User user, String authToken, LoginFailed err)
-    {
-        if (err != null)
-        {
-            graphicalAgent.setLoginPageError(err.getMessage());
-        }
-    }
-
-    @Override
-    public void offlineLogin(User user, String authToken)
-    {
-
-    }
-
-    @Override
-    public void signUp(User user, String authToken, SignUpFailed err)
-    {
-        if (err != null)
-        {
-            graphicalAgent.setSignUpPageError(err.getMessage());
-        }
-    }
-
-    // Settings page event responses
-
-    @Override
-    public void settings(boolean b, SettingsFailed settingsFailed, Unauthenticated unauthenticated)
-    {
-
-    }
-
-    @Override
-    public void deleteAccount(boolean b, Unauthenticated unauthenticated)
-    {
-
-    }
-
-    @Override
-    public void deactivate(boolean b, Unauthenticated unauthenticated)
-    {
-
-    }
-
     // Database event responses TODO log DatabaseErrors or sth
 
     @Override
@@ -252,5 +206,72 @@ public class OnlineController implements ResponseVisitor
         {
             Database.getDB().notifyAll();
         }
+    }
+
+    // Authentication event responses
+
+    @Override
+    public void login(User user, String authToken, LoginFailed err)
+    {
+        if (err != null)
+        {
+            graphicalAgent.setLoginPageError(err.getMessage());
+        }
+    }
+
+    @Override
+    public void offlineLogin(User user, String authToken)
+    {
+
+    }
+
+    @Override
+    public void signUp(User user, String authToken, SignUpFailed err)
+    {
+        if (err != null)
+        {
+            graphicalAgent.setSignUpPageError(err.getMessage());
+        }
+    }
+
+    // General event responses
+
+    @Override
+    public void sendTweet(Unauthenticated unauthenticated) {
+
+    }
+
+    // Settings page event responses
+
+    @Override
+    public void settings(boolean b, SettingsFailed settingsFailed, Unauthenticated unauthenticated)
+    {
+
+    }
+
+    @Override
+    public void deleteAccount(boolean b, Unauthenticated unauthenticated)
+    {
+
+    }
+
+    @Override
+    public void deactivate(boolean b, Unauthenticated unauthenticated)
+    {
+
+    }
+
+    // Profile page event responses
+
+    @Override
+    public void userInteraction(Unauthenticated unauthenticated) {
+
+    }
+
+    // Tweet event responses
+
+    @Override
+    public void tweetInteraction(Unauthenticated unauthenticated) {
+
     }
 }

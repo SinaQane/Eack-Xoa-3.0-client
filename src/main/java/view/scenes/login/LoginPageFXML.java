@@ -21,7 +21,7 @@ public class LoginPageFXML
         messageText.setVisible(true);
     }
 
-    public void clear()
+    public void refresh()
     {
         messageText.setVisible(false);
     }

@@ -1,6 +1,7 @@
 package view.scenes.mainpage;
 
 import javafx.scene.control.Button;
+import view.GraphicalAgent;
 
 public class MainPageListener
 {
@@ -26,8 +27,7 @@ public class MainPageListener
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));*/
                 break;
             case "settingsButton":
-                // TODO write these
-                // fxmlController.setMainPane(PanesController.getPanesController().getSettingsPane().getPane());
+                GraphicalAgent.getGraphicalAgent().showSettingsPage();
                 break;
             case "homeButton":
                 /* TODO write these

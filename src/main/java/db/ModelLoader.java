@@ -2,7 +2,7 @@ package db;
 
 import controller.ConnectionStatus;
 import event.EventSender;
-import event.events.db.*;
+import event.events.database.*;
 import model.*;
 
 import java.sql.SQLException;

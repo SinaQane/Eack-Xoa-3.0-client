@@ -17,8 +17,8 @@ import java.util.Date;
 
 public class SignUpPageFXML
 {
-    String DATE_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "tinyDate");
-    String DEFAULT_DATE = new Config(Constants.CONFIG).getProperty(String.class, "defaultDate");
+    private final String DATE_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "tinyDate");
+    private final String DEFAULT_DATE = new Config(Constants.CONFIG).getProperty(String.class, "defaultDate");
 
     private final SignUpPageListener listener = new SignUpPageListener();
 
@@ -41,7 +41,7 @@ public class SignUpPageFXML
         messageText.setVisible(true);
     }
 
-    public void clear()
+    public void refresh()
     {
         messageText.setVisible(false);
     }

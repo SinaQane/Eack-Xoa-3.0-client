@@ -74,6 +74,17 @@ public class TweetPaneFXML
         } catch (InterruptedException | SQLException ignored) {}
     }
 
+    public void refresh()
+    {
+        try
+        {
+            Tweet tweet = ModelLoader.getModelLoader().getTweet(tweetId);
+            this.upvoteButton.setText("Upvote (" + tweet.getUpvotes().size() + ")");
+            this.downvoteButton.setText("Downvote (" + tweet.getDownvotes().size() + ")");
+            this.retweetButton.setText("Retweet (" + tweet.getRetweets().size() + ")");
+        } catch (InterruptedException | SQLException ignored) {}
+    }
+
     public void viewImage()
     {
         // TODO listener.eventOccurred(new EventObject(viewImageButton));

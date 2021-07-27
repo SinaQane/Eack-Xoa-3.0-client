@@ -73,15 +73,12 @@ public class Database
         return !res.next();
     }
 
-    public User loadUser(long id) throws SQLException
+    public User extractUser(ResultSet res) throws SQLException
     {
-        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE `id` = ?");
-        statement.setLong(1, id);
-        ResultSet res = statement.executeQuery();
         User user = new User();
         while (res.next())
         {
-            user.setId(id);
+            user.setId(res.getLong("id"));
             user.setUsername(res.getString("username"));
             user.setPassword(res.getString("password"));
             user.setBio(res.getString("bio"));
@@ -92,6 +89,26 @@ public class Database
             user.setActive(res.getBoolean("is_active"));
             user.setDeleted(res.getBoolean("is_deleted"));
         }
+        return user;
+    }
+
+    public User loadUser(long id) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE `id` = ?");
+        statement.setLong(1, id);
+        ResultSet res = statement.executeQuery();
+        User user = extractUser(res);
+        res.close();
+        statement.close();
+        return user;
+    }
+
+    public User loadUser(String username) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE `username` = ?");
+        statement.setString(1, username);
+        ResultSet res = statement.executeQuery();
+        User user = extractUser(res);
         res.close();
         statement.close();
         return user;

@@ -1,8 +1,11 @@
 package view.scenes.login;
 
 import controller.ConnectionStatus;
+import controller.OfflineController;
+import event.events.authentication.LoginEvent;
 import event.events.authentication.LoginForm;
 import javafx.scene.control.Button;
+import model.User;
 import view.GraphicalAgent;
 
 public class LoginPageListener
@@ -17,11 +20,21 @@ public class LoginPageListener
             case "enterButton":
                 if (ConnectionStatus.getStatus().isOnline())
                 {
-                    // TODO send request
+                    GraphicalAgent.getGraphicalAgent().getEventListener().listen(new LoginEvent(eventObject));
                 }
                 else
                 {
-                    // TODO offline client and send request
+                    String username = eventObject.getUsername();
+                    String password = eventObject.getPassword();
+                    User user = OfflineController.getOfflineController().login(username, password);
+                    if (user == null)
+                    {
+                        GraphicalAgent.getGraphicalAgent().setLoginPageError("Error while offline logging in");
+                    }
+                    else
+                    {
+                        GraphicalAgent.getGraphicalAgent().showMainPage(user);
+                    }
                 }
                 break;
         }

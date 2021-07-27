@@ -2,10 +2,12 @@ package view;
 
 import config.Config;
 import constants.Constants;
+import controller.ConnectionStatus;
 import event.EventListener;
 import event.EventSender;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import model.User;
 import view.scenes.firstpage.FirstPage;
 import view.scenes.login.LoginPage;
 import view.scenes.mainpage.MainPage;
@@ -45,6 +47,11 @@ public class GraphicalAgent
         this.eventListener = eventListener;
     }
 
+    public EventListener getEventListener()
+    {
+        return eventListener;
+    }
+
     public void initialize()
     {
         Platform.runLater(
@@ -72,7 +79,7 @@ public class GraphicalAgent
     public void showLoginPage()
     {
         LoginPage loginPage = new LoginPage();
-        loginPage.getFXML().clear();
+        loginPage.getFXML().refresh();
         stage.setScene(loginPage.getScene());
     }
 
@@ -86,7 +93,7 @@ public class GraphicalAgent
     public void showSignUpPage()
     {
         SignUpPage signUpPage = new SignUpPage();
-        signUpPage.getFXML().clear();
+        signUpPage.getFXML().refresh();
         stage.setScene(signUpPage.getScene());
     }
 
@@ -97,14 +104,18 @@ public class GraphicalAgent
         stage.setScene(signUpPage.getScene());
     }
 
-    public void showMainPage()
+    public void showMainPage(User user)
     {
-        // TODO User signedUpUser = logic.signUp();
-        // TODO ConnectionStatus.getStatus().setUser(loggedInUser);
+        ConnectionStatus.getStatus().setUser(user);
         MainPage mainPage = MainPage.getMainPage();
-        mainPage.getFXML().profile(); // TODO if online, offline
+        mainPage.getFXML().profile();
+        mainPage.getFXML().refresh();
         stage.setScene(mainPage.getScene());
-        // TODO BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));
-        // TODO in server MainPageController.getMainPageController().startTimer();
+        // TODO set MainPage's pane according to online status
+    }
+
+    public void showSettingsPage()
+    {
+        // TODO
     }
 }

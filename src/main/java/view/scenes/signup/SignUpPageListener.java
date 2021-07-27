@@ -1,5 +1,6 @@
 package view.scenes.signup;
 
+import event.events.authentication.SignUpEvent;
 import event.events.authentication.SignUpForm;
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
@@ -14,7 +15,7 @@ public class SignUpPageListener
                 GraphicalAgent.getGraphicalAgent().showLoginPage();
                 break;
             case "signUpButton":
-                // TODO send request
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new SignUpEvent(eventObject));
                 break;
         }
     }

@@ -9,22 +9,21 @@ public class NewTweetFrameFXML
 {
     private final NewTweetFrameListener listener = new NewTweetFrameListener();
 
-    private Long id = -1L;
+    private Long userId = -1L;
+    private Long upperTweet = -1L;
 
     public TextField tweetTextField;
     public TextField picsPathTextField;
     public Button sendTweetButton;
 
-    private String upperTweet;
-
-    public void setId(Long id)
+    public void setUserId(Long id)
     {
-        this.id = id;
+        userId = id;
     }
 
-    public void setUpperTweet(String upperTweet)
+    public void setUpperTweet(Long id)
     {
-        this.upperTweet = upperTweet;
+        upperTweet = id;
     }
 
     public void tweet(ActionEvent actionEvent)
