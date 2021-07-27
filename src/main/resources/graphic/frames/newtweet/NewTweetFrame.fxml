@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+
+<Pane prefHeight="380.0" prefWidth="600.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.frames.newtweet.NewTweetFrameFXML">
+    <TextField fx:id="tweetTextField" alignment="TOP_LEFT" layoutX="136.0" layoutY="69.0" prefHeight="148.0" prefWidth="328.0" promptText="Enter Your tweet here..." />
+    <TextField fx:id="picsPathTextField" alignment="CENTER" layoutX="162.0" layoutY="227.0" prefHeight="24.0" prefWidth="277.0" promptText="Add your picture file's path (optional)" />
+    <Button fx:id="sendTweetButton" layoutX="253.0" layoutY="301.0" mnemonicParsing="false" onAction="#tweet" prefHeight="24.0" prefWidth="96.0" text="Tweet" />
+</Pane>

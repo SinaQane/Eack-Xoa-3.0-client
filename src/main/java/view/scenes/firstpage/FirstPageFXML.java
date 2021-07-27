@@ -5,7 +5,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 
 import java.net.URL;
-import java.util.EventObject;
 import java.util.ResourceBundle;
 
 public class FirstPageFXML implements Initializable
@@ -24,8 +23,9 @@ public class FirstPageFXML implements Initializable
 
     public void refresh() // TODO call this after closing server frame
     {
-        signUpButton.setDisable(!ConnectionStatus.getStatus().isOnline());
-        serverButton.setDisable(ConnectionStatus.getStatus().isOnline());
+        boolean online = ConnectionStatus.getStatus().isOnline();
+        signUpButton.setDisable(!online);
+        serverButton.setDisable(online);
     }
 
     public void login()

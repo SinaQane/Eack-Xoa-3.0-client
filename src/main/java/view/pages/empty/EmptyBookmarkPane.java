@@ -10,14 +10,12 @@ import java.util.Objects;
 
 public class EmptyBookmarkPane
 {
-    private static final String EMPTY_BOOKMARK
-            = new Config(Constants.CONFIG).getProperty(String.class, "emptyBookmark");
-
     private Pane pane;
 
     public EmptyBookmarkPane()
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(EMPTY_BOOKMARK)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyBookmark");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();

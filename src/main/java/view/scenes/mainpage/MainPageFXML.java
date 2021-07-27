@@ -1,5 +1,6 @@
 package view.scenes.mainpage;
 
+import controller.ConnectionStatus;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
@@ -27,6 +28,29 @@ public class MainPageFXML
     {
         this.mainPane.getChildren().clear();
         this.mainPane.getChildren().add(mainPane);
+    }
+
+    public void refresh() // TODO call this
+    {
+        boolean online = ConnectionStatus.getStatus().isOnline();
+        serverButton.setText(online ? "Online" : "Offline");
+        serverButton.setDisable(online);
+        homeButton.setDisable(!online);
+        exploreButton.setDisable(!online);
+        notificationsButton.setDisable(!online);
+        bookmarksButton.setDisable(!online);
+        groupsButton.setDisable(!online);
+        profileButton.setDisable(!online);
+    }
+
+    public void setOnline(boolean online)
+    {
+        homeButton.setDisable(!online);
+        exploreButton.setDisable(!online);
+        notificationsButton.setDisable(!online);
+        bookmarksButton.setDisable(!online);
+        groupsButton.setDisable(!online);
+        profileButton.setDisable(!online);
     }
 
     public void back()

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425 ;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.tweet.TweetPaneFXML">
+   <Text fx:id="retweetText" fill="WHITE" layoutX="8.0" layoutY="14.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Retweeted by X" wrappingWidth="261.21923828125" />
+   <Text fx:id="usernameText" fill="WHITE" layoutX="9.0" layoutY="33.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\@USERNAME" wrappingWidth="244.5419921875">
+      <font>
+         <Font size="17.0" />
+      </font>
+   </Text>
+   <Text fx:id="tweetText" fill="WHITE" layoutX="32.0" layoutY="76.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tweet Text" wrappingWidth="662.5283203125" />
+   <Button fx:id="viewImageButton" layoutX="25.0" layoutY="106.0" mnemonicParsing="false" onAction="#viewImage" style="-fx-background-color: #1E2425 ;" text="View Image" textFill="#352bff" />
+   <Button fx:id="upvoteButton" layoutX="119.0" layoutY="106.0" mnemonicParsing="false" onAction="#upvote" style="-fx-background-color: #1E2425 ;" text="Upvote (0)" textFill="#352bff" />
+   <Button fx:id="downvoteButton" layoutX="206.0" layoutY="106.0" mnemonicParsing="false" onAction="#downvote" style="-fx-background-color: #1E2425 ;" text="Downvote (0)" textFill="#352bff" />
+   <Button fx:id="retweetButton" layoutX="312.0" layoutY="106.0" mnemonicParsing="false" onAction="#retweet" style="-fx-background-color: #1E2425 ;" text="Retweet (0)" textFill="#352bff" />
+   <Button fx:id="saveButton" layoutX="488.0" layoutY="106.0" mnemonicParsing="false" onAction="#save" style="-fx-background-color: #1E2425 ;" text="Save" textFill="#352bff" />
+   <Button fx:id="sendButton" layoutX="538.0" layoutY="106.0" mnemonicParsing="false" onAction="#send" style="-fx-background-color: #1E2425 ;" text="Send" textFill="#352bff" />
+   <Button fx:id="reportButton" layoutX="589.0" layoutY="106.0" mnemonicParsing="false" onAction="#report" style="-fx-background-color: #1E2425 ;" text="Report" textFill="#352bff" />
+   <Button fx:id="viewTweetButton" layoutX="651.0" layoutY="106.0" mnemonicParsing="false" onAction="#viewTweet" style="-fx-background-color: #1E2425 ;" text="View" textFill="#352bff" />
+   <Button fx:id="commentButton" layoutX="406.0" layoutY="106.0" mnemonicParsing="false" onAction="#comment" style="-fx-background-color: #1E2425 ;" text="Comment" textFill="#352bff" />
+   <Button fx:id="viewUserButton" layoutX="634.0" layoutY="15.0" mnemonicParsing="false" onAction="#viewUser" style="-fx-background-color: #1E2425 ;" text="View User" textFill="#352bff" />
+   <Button fx:id="viewUpperTweetButton" layoutX="469.0" layoutY="15.0" mnemonicParsing="false" onAction="#viewUpperTweet" style="-fx-background-color: #1E2425 ;" text="View Upper Tweet" textFill="#352bff" visible="false" />
+</Pane>

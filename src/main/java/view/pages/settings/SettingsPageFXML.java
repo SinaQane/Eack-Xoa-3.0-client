@@ -4,7 +4,11 @@ import event.events.settings.SettingsForm;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import util.ImageUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Date;
 
 public class SettingsPageFXML
@@ -134,7 +138,7 @@ public class SettingsPageFXML
         }
         if (pictureCheckBox.isSelected())
         {
-            // TODO get file and stuff
+            form.setPicture(ImageUtil.imageToBytes(pictureTextField.getText()));
         }
         if (birthdateCheckBox.isSelected() && birthDatePicker.getValue() != null)
         {

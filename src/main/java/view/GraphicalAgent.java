@@ -102,7 +102,7 @@ public class GraphicalAgent
         // TODO User signedUpUser = logic.signUp();
         // TODO ConnectionStatus.getStatus().setUser(loggedInUser);
         MainPage mainPage = MainPage.getMainPage();
-        mainPage.getFXML().profile(); // if online
+        mainPage.getFXML().profile(); // TODO if online, offline
         stage.setScene(mainPage.getScene());
         // TODO BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));
         // TODO in server MainPageController.getMainPageController().startTimer();

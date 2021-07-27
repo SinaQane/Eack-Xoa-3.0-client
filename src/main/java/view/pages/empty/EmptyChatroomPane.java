@@ -10,14 +10,12 @@ import java.util.Objects;
 
 public class EmptyChatroomPane
 {
-    private static final String CHATROOM
-            = new Config(Constants.CONFIG).getProperty(String.class, "emptyChatroom");
-
     private Pane pane;
 
     public EmptyChatroomPane()
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(CHATROOM)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyChatroom");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();

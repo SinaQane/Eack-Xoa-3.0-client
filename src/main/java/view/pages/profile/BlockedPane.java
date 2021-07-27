@@ -10,14 +10,12 @@ import java.util.Objects;
 
 public class BlockedPane
 {
-    private static final String BLOCKED_PANE
-            = new Config(Constants.CONFIG).getProperty(String.class, "blockedPane");
-
     private Pane pane;
 
     public BlockedPane()
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(BLOCKED_PANE)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "blockedPane");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();

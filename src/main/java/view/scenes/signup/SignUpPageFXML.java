@@ -9,6 +9,7 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
+import util.ImageUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,10 +17,8 @@ import java.util.Date;
 
 public class SignUpPageFXML
 {
-    private static final String DATE_PATTERN =
-            new Config(Constants.CONFIG).getProperty(String.class, "tinyDate");
-    private static final String DEFAULT_DATE =
-            new Config(Constants.CONFIG).getProperty(String.class, "defaultDate");
+    String DATE_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "tinyDate");
+    String DEFAULT_DATE = new Config(Constants.CONFIG).getProperty(String.class, "defaultDate");
 
     private final SignUpPageListener listener = new SignUpPageListener();
 
@@ -60,7 +59,7 @@ public class SignUpPageFXML
         String email = emailTextField.getText();
         String phoneNumber = phoneNumberTextField.getText();
         String bio = bioTextField.getText();
-        String picture = pictureField.getText(); // TODO get file and stuff
+        String picture = ImageUtil.imageToBytes(pictureField.getText());
 
         Date birthDate = null;
         try

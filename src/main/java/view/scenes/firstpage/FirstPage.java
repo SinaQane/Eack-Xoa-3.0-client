@@ -11,15 +11,13 @@ import java.util.Objects;
 
 public class FirstPage
 {
-    private static final String FIRST_PAGE =
-            new Config(Constants.CONFIG).getProperty(String.class, "firstPage");
-
     private final Scene scene;
     private final FXMLLoader loader;
 
     public FirstPage()
     {
-        this.loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(FIRST_PAGE)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "firstPage");
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         Parent root = null;
         try
         {
@@ -30,7 +28,7 @@ public class FirstPage
             e.printStackTrace();
         }
         assert root != null;
-        this.scene = new Scene(root);
+        scene = new Scene(root);
     }
 
     public FirstPageFXML getFXML()
@@ -40,6 +38,6 @@ public class FirstPage
 
     public Scene getScene()
     {
-        return this.scene;
+        return scene;
     }
 }

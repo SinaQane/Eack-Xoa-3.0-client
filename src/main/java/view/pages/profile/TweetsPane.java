@@ -8,14 +8,15 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Objects;
 
-public class PrivatePane
+public class TweetsPane
 {
     private Pane pane;
+    private final FXMLLoader loader;
 
-    public PrivatePane()
+    public TweetsPane()
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "privatePane");
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "tweetsPane");
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();
@@ -28,6 +29,11 @@ public class PrivatePane
 
     public Pane getPane()
     {
-        return this.pane;
+        return pane;
+    }
+
+    public TweetsPaneFXML getFXML()
+    {
+        return loader.getController();
     }
 }

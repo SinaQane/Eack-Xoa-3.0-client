@@ -1,4 +1,4 @@
-package view.pages.profile;
+package view.components.empty;
 
 import config.Config;
 import constants.Constants;
@@ -8,17 +8,17 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Objects;
 
-public class PrivatePane
+public class EmptyTweetPane
 {
-    private Pane pane;
+    private Pane tweetPane;
 
-    public PrivatePane()
+    public EmptyTweetPane()
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "privatePane");
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyTweetPane");
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
-            pane = loader.load();
+            tweetPane = loader.load();
         }
         catch (IOException e)
         {
@@ -28,6 +28,6 @@ public class PrivatePane
 
     public Pane getPane()
     {
-        return this.pane;
+        return tweetPane;
     }
 }

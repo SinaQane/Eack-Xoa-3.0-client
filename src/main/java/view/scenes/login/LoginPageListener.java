@@ -21,7 +21,7 @@ public class LoginPageListener
                 }
                 else
                 {
-                    // TODO offline client
+                    // TODO offline client and send request
                 }
                 break;
         }

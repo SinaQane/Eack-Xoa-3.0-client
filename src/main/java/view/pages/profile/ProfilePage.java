@@ -1,21 +1,21 @@
-package view.pages.settings;
+package view.pages.profile;
 
 import config.Config;
 import constants.Constants;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
-
+import model.User;
 import java.io.IOException;
 import java.util.Objects;
 
-public class SettingsPage
+public class ProfilePage
 {
     private Pane pane;
     private final FXMLLoader loader;
 
-    public SettingsPage()
+    public ProfilePage(User user)
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "settingsPage");
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "profilePage");
         loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
@@ -25,6 +25,7 @@ public class SettingsPage
         {
             e.printStackTrace();
         }
+        ((ProfilePageFXML) loader.getController()).setUser(user);
     }
 
     public Pane getPane()
@@ -32,7 +33,7 @@ public class SettingsPage
         return pane;
     }
 
-    public SettingsPageFXML getFXML()
+    public ProfilePageFXML getFXML()
     {
         return loader.getController();
     }

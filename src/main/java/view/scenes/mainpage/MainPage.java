@@ -13,15 +13,13 @@ public class MainPage
 {
     static MainPage mainPage;
 
-    private static final String MAIN_PAGE
-            = new Config(Constants.CONFIG).getProperty(String.class, "mainPage");
-
     private final Scene scene;
     private final FXMLLoader loader;
 
     private MainPage()
     {
-        this.loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(MAIN_PAGE)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "mainPage");
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         Parent root = null;
         try
         {
@@ -32,7 +30,7 @@ public class MainPage
             e.printStackTrace();
         }
         assert root != null;
-        this.scene = new Scene(root);
+        scene = new Scene(root);
     }
 
     public static MainPage getMainPage()
@@ -50,6 +48,6 @@ public class MainPage
     }
     public Scene getScene()
     {
-        return this.scene;
+        return scene;
     }
 }

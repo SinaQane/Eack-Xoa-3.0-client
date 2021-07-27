@@ -11,15 +11,13 @@ import java.util.Objects;
 
 public class LoginPage
 {
-    private static final String LOGIN_PAGE =
-            new Config(Constants.CONFIG).getProperty(String.class, "loginPage");
-
     private final Scene scene;
     private final FXMLLoader loader;
 
     public LoginPage()
     {
-        this.loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(LOGIN_PAGE)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "loginPage");
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         Parent root = null;
         try
         {
@@ -30,7 +28,7 @@ public class LoginPage
             e.printStackTrace();
         }
         assert root != null;
-        this.scene = new Scene(root);
+        scene = new Scene(root);
     }
 
     public LoginPageFXML getFXML()
@@ -40,6 +38,6 @@ public class LoginPage
 
     public Scene getScene()
     {
-        return this.scene;
+        return scene;
     }
 }

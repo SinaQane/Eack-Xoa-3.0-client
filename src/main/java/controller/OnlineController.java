@@ -35,8 +35,8 @@ public class OnlineController implements ResponseVisitor
 
     public OnlineController(Stage stage)
     {
-        String loopUpdateRate = new Config(Constants.CONFIG).getProperty(String.class, "fps");
-        loop = new Loop(Integer.parseInt(loopUpdateRate), this::sendEvents);
+        String requestLoop = new Config(Constants.CONFIG).getProperty(String.class, "reqLoop");
+        loop = new Loop(Integer.parseInt(requestLoop), this::sendEvents);
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
         GraphicalAgent.getGraphicalAgent().setStage(stage);
         graphicalAgent = GraphicalAgent.getGraphicalAgent();
@@ -82,7 +82,7 @@ public class OnlineController implements ResponseVisitor
     // Authentication event responses
 
     @Override
-    public void login(User user, LoginFailed err)
+    public void login(User user, String authToken, LoginFailed err)
     {
         if (err != null)
         {
@@ -91,7 +91,13 @@ public class OnlineController implements ResponseVisitor
     }
 
     @Override
-    public void signUp(User user, SignUpFailed err)
+    public void offlineLogin(User user, String authToken)
+    {
+
+    }
+
+    @Override
+    public void signUp(User user, String authToken, SignUpFailed err)
     {
         if (err != null)
         {

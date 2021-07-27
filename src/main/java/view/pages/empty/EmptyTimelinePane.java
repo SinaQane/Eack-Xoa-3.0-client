@@ -10,14 +10,12 @@ import java.util.Objects;
 
 public class EmptyTimelinePane
 {
-    private static final String EMPTY_TIMELINE
-            = new Config(Constants.CONFIG).getProperty(String.class, "emptyTimeline");
-
     private Pane pane;
 
     public EmptyTimelinePane()
     {
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(EMPTY_TIMELINE)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyTimeline");
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();
