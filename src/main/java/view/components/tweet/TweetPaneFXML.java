@@ -53,7 +53,7 @@ public class TweetPaneFXML
             retweetButton.setText("Retweet (" + tweet.getRetweets().size() + ")");
         }
 
-        if (tweetDetails[1].equals(0L))
+        if (tweetDetails[1].equals(-1L))
         {
             this.retweetText.setVisible(false);
         }

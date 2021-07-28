@@ -1,25 +1,23 @@
 package view.frames.newtweet;
 
+import controller.ConnectionStatus;
+import event.events.general.SendTweetForm;
 import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import util.ImageUtil;
 
 public class NewTweetFrameFXML
 {
     private final NewTweetFrameListener listener = new NewTweetFrameListener();
 
-    private Long userId = -1L;
+    private final Long userId = ConnectionStatus.getStatus().getUser().getId();
     private Long upperTweet = -1L;
 
     public TextField tweetTextField;
-    public TextField picsPathTextField;
+    public TextField picPathTextField;
     public Button sendTweetButton;
-
-    public void setUserId(Long id)
-    {
-        userId = id;
-    }
 
     public void setUpperTweet(Long id)
     {
@@ -28,10 +26,11 @@ public class NewTweetFrameFXML
 
     public void tweet(ActionEvent actionEvent)
     {
-        /* TODO write these
-        NewTweetForm tweetEvent = new NewTweetForm(upperTweet, tweetTextField.getText(), picsPathTextField.getText());
-        listener.setId(id);
-        listener.eventOccurred(new NewTweetEvent(sendTweetButton, tweetEvent));*/
+        String tweet = tweetTextField.getText();
+        String picture = ImageUtil.imageToBytes(picPathTextField.getText());
+        String authToken = ConnectionStatus.getStatus().getAuthToken();
+
+        listener.eventOccurred(new SendTweetForm(sendTweetButton, userId, upperTweet, tweet, picture, authToken));
         ((Stage) (((Button) actionEvent.getSource()).getScene().getWindow())).close();
     }
 }

@@ -6,9 +6,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import util.ImageUtil;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.Date;
 
 public class SettingsPageFXML

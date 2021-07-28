@@ -121,6 +121,7 @@ public class ProfilePageFXML
         TweetsPane tweetsPane = new TweetsPane();
         TweetsPaneFXML tweetsPaneFXML = tweetsPane.getFXML();
 
+        tweetsPaneFXML.setTweets(tweets);
         tweetsPaneFXML.setUser(user);
         tweetsPaneFXML.setPage(page);
 

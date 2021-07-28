@@ -1,20 +1,26 @@
-package view.pages.profile;
+package view.pages.explore;
 
 import config.Config;
 import constants.Constants;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
+
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 
-public class ProfilePage
+public class SearchResultsPane
 {
     private Pane pane;
     private final FXMLLoader loader;
 
-    public ProfilePage()
+    private final String searched;
+
+    public SearchResultsPane(String searched)
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "profilePage");
+        this.searched = searched;
+
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "searchResults");
         loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
@@ -31,7 +37,7 @@ public class ProfilePage
         return pane;
     }
 
-    public ProfilePageFXML getFXML()
+    public SearchResultsPaneFXML getFXML()
     {
         return loader.getController();
     }

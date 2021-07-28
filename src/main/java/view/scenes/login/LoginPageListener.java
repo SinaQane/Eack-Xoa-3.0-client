@@ -24,12 +24,10 @@ public class LoginPageListener
                 }
                 else
                 {
-                    String username = eventObject.getUsername();
-                    String password = eventObject.getPassword();
-                    User user = OfflineController.getOfflineController().login(username, password);
+                    User user = OfflineController.getOfflineController().loginEvent(eventObject);
                     if (user == null)
                     {
-                        GraphicalAgent.getGraphicalAgent().setLoginPageError("Error while offline logging in");
+                        GraphicalAgent.getGraphicalAgent().setLoginPageError("error while offline logging in");
                     }
                     else
                     {

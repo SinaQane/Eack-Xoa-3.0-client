@@ -17,7 +17,7 @@ public class NewTweetFrame
     public NewTweetFrame(Long upperTweet)
     {
         String path = new Config(Constants.CONFIG).getProperty(String.class, "newTweetFrame");
-        this.loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource(path)));
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource(path)));
         try
         {
             Parent root = loader.load();
@@ -29,6 +29,7 @@ public class NewTweetFrame
             else
             {
                 stage.setTitle("Add Comment");
+                getFXML().setUpperTweet(upperTweet);
             }
             stage.setScene(new Scene(root));
             stage.show();

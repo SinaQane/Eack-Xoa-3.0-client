@@ -28,6 +28,6 @@ public class PrivatePane
 
     public Pane getPane()
     {
-        return this.pane;
+        return pane;
     }
 }

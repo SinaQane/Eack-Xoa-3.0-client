@@ -1,4 +1,4 @@
-package view.pages.profile;
+package view.components.user;
 
 import config.Config;
 import constants.Constants;
@@ -8,14 +8,15 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Objects;
 
-public class BlockedPane
+public class UserPane
 {
     private Pane pane;
+    private final FXMLLoader loader;
 
-    public BlockedPane()
+    public UserPane()
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "blockedPane");
-        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "userPane");
+        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {
             pane = loader.load();
@@ -29,5 +30,10 @@ public class BlockedPane
     public Pane getPane()
     {
         return pane;
+    }
+
+    public UserPaneFXML getFXML()
+    {
+        return loader.getController();
     }
 }

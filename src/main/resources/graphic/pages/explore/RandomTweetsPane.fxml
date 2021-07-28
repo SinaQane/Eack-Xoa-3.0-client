@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+
+<Pane prefHeight="422.0" prefWidth="777.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.explore.RandomTweetsPaneFXML">
+   <Pane fx:id="tweetPane1" layoutX="26.0" layoutY="42.0" prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425 ;" />
+    <Pane fx:id="tweetPane2" layoutX="26.0" layoutY="241.0" prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425 ;" />
+    <Line endX="-188.6666717529297" endY="511.0" layoutX="216.0" layoutY="-299.0" startX="533.0" startY="511.0" stroke="#2b3132" />
+    <Line endX="-188.6666717529297" endY="511.0" layoutX="216.0" layoutY="-498.0" startX="533.0" startY="511.0" stroke="#2b3132" />
+   <Line endX="-188.6666717529297" endY="511.0" layoutX="216.0" layoutY="-102.0" startX="533.0" startY="511.0" stroke="#2b3132" />
+</Pane>

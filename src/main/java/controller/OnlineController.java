@@ -7,6 +7,7 @@ import db.ModelLoader;
 import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
+import event.events.Ping;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
 import exceptions.authentication.LoginFailed;
@@ -35,22 +36,13 @@ public class OnlineController implements ResponseVisitor
 
     public OnlineController(Stage stage)
     {
-        String requestLoop = new Config(Constants.CONFIG).getProperty(String.class, "reqLoop");
-        loop = new Loop(Integer.parseInt(requestLoop), this::sendEvents);
+        String loopFps = new Config(Constants.CONFIG).getProperty(String.class, "reqLoop");
+        loop = new Loop(Integer.parseInt(loopFps), this::sendEvents);
+
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
         GraphicalAgent.getGraphicalAgent().setStage(stage);
         graphicalAgent = GraphicalAgent.getGraphicalAgent();
         graphicalAgent.initialize();
-    }
-
-    public void connectToServer(String host, int port) throws IOException
-    {
-        Socket socket = new Socket(host, port);
-        eventSender = new SocketEventSender(socket);
-        graphicalAgent.setEventSender(eventSender);
-        ConnectionStatus.getStatus().setOnline(true);
-        ModelLoader.getModelLoader().setEventSender(eventSender);
-        loop.start();
     }
 
     private void addEvent(Event event)
@@ -76,6 +68,28 @@ public class OnlineController implements ResponseVisitor
             {
                 response.visit(this);
             }
+        }
+    }
+
+    public void connectToServer(String host, int port) throws IOException
+    {
+        Socket socket = new Socket(host, port);
+        eventSender = new SocketEventSender(socket);
+        graphicalAgent.setEventSender(eventSender);
+        ModelLoader.getModelLoader().setEventSender(eventSender);
+        addEvent(new Ping());
+        sendEvents();
+    }
+
+    // Ping request's response to make sure we're connected to the right server
+
+    @Override
+    public void pong(String pong)
+    {
+        if (pong.equals("pong"))
+        {
+            ConnectionStatus.getStatus().setOnline(true);
+            loop.start();
         }
     }
 

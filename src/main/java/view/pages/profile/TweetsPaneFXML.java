@@ -5,11 +5,14 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 import model.User;
+import view.GraphicalAgent;
+import view.frames.newtweet.NewTweetFrame;
+
+import java.util.List;
 
 public class TweetsPaneFXML
 {
-    private final TweetsPaneListener listener = new TweetsPaneListener();
-
+    private List<List<Long[]>> tweets;
     private User user;
     private int page;
 
@@ -22,6 +25,11 @@ public class TweetsPaneFXML
 
     public Text noTweetsText;
     public Line midLine;
+
+    public void setTweets(List<List<Long[]>> tweets)
+    {
+        this.tweets = tweets;
+    }
 
     public void setUser(User user)
     {
@@ -67,22 +75,16 @@ public class TweetsPaneFXML
 
     public void previous()
     {
-        /* TODO write code
-        ProfileForm profileForm = new ProfileForm(this.user, this.page);
-        listener.eventOccurred(new ProfileEvent(previousButton, profileForm));*/
+        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, page - 1);
     }
 
     public void next()
     {
-        /* TODO write code
-        ProfileForm profileForm = new ProfileForm(this.user, this.page);
-        listener.eventOccurred(new ProfileEvent(nextButton, profileForm));*/
+        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, page + 1);
     }
 
     public void tweet()
     {
-        /* TODO write code
-        ProfileForm profileForm = new ProfileForm(this.user, this.page);
-        listener.eventOccurred(new ProfileEvent(tweetButton, profileForm));*/
+        new NewTweetFrame(-1L);
     }
 }

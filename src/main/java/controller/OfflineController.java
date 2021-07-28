@@ -2,7 +2,12 @@ package controller;
 
 import db.Database;
 import event.Event;
+import event.events.authentication.LoginForm;
+import event.events.authentication.OfflineLoginEvent;
+import event.events.settings.SettingsEvent;
+import event.events.settings.SettingsForm;
 import model.User;
+import view.GraphicalAgent;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -35,19 +40,39 @@ public class OfflineController
 
     public void getOnline()
     {
+        synchronized (events)
+        {
+            for (Event event : events)
+            {
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(event);
+            }
+            events.clear();
+        }
 
+        // TODO reload db
     }
 
-    public User login(String username, String password)
+    public User loginEvent(LoginForm form)
     {
+        String username = form.getUsername();
+        String password = form.getPassword();
         try
         {
             User user = Database.getDB().loadUser(username);
             if (user.getPassword().equals(password))
             {
+                ConnectionStatus.getStatus().setOnline(false);
+                ConnectionStatus.getStatus().setUser(user);
+                ConnectionStatus.getStatus().setAuthToken("");
+                addEvent(new OfflineLoginEvent(user.getId()));
                 return user;
             }
         } catch (SQLException ignored) {}
         return null;
+    }
+
+    public void settingsEvent(SettingsForm form)
+    {
+        addEvent(new SettingsEvent(form, ConnectionStatus.getStatus().getUser().getId()));
     }
 }

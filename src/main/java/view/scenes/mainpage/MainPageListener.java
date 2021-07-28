@@ -20,9 +20,8 @@ public class MainPageListener
                 stage.setScene(loginPage.getScene());*/
                 break;
             case "profileButton":
+                // TODO send request
                 /* TODO write these
-                ProfilePage profilePane = PanesController.getPanesController().getProfilePane(0);
-                fxmlController.setMainPane(profilePane.getPane());
                 BackButtonHandler.getBackButtonHandler().clear();
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));*/
                 break;
