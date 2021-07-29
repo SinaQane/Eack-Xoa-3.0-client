@@ -36,6 +36,7 @@ public class ProfilePageFXML
 
     private int page;
     private User user;
+    private User viewer;
     private List<List<Long[]>> tweets;
 
     public ImageView profilePicture;
@@ -105,18 +106,18 @@ public class ProfilePageFXML
         tweetsPane.getChildren().add(pane);
     }
 
-    public void refresh()
+    public synchronized void refresh()
     {
-        User loggedInUser = ConnectionStatus.getStatus().getUser();
+        viewer = ConnectionStatus.getStatus().getUser();
         Profile loggedInProfile = null;
         Profile userProfile = null;
         try
         {
-            loggedInProfile = ModelLoader.getModelLoader().getProfile(loggedInUser.getId());
+            loggedInProfile = ModelLoader.getModelLoader().getProfile(viewer.getId());
             userProfile = ModelLoader.getModelLoader().getProfile(user.getId());
         } catch (InterruptedException | SQLException ignored) {}
 
-        boolean isProfile = user.getId().equals(loggedInUser.getId());
+        boolean isProfile = user.getId().equals(viewer.getId());
 
         TweetsPane tweetsPane = new TweetsPane();
         TweetsPaneFXML tweetsPaneFXML = tweetsPane.getFXML();
@@ -128,35 +129,48 @@ public class ProfilePageFXML
         tweetsPaneFXML.getPreviousButton().setDisable(!hasPreviousPage(page));
         tweetsPaneFXML.getNextButton().setDisable(!hasNextPage(page));
 
-        // TODO use BlockedPane and PrivatePane
-
-        if (getNumberOfPages() == 0)
+        if (userProfile != null)
         {
-            tweetsPaneFXML.getMidLine().setVisible(false);
-            tweetsPaneFXML.getNoTweetsText().setVisible(true);
-            tweetsPaneFXML.setFirstTweetPane(new EmptyTweetPane().getPane());
-            tweetsPaneFXML.setSecondTweetPane(new EmptyTweetPane().getPane());
-        }
-        else
-        {
-            tweetsPaneFXML.getMidLine().setVisible(true);
-            tweetsPaneFXML.getNoTweetsText().setVisible(false);
-
-            TweetPane firstTweetPane = new TweetPane();
-            TweetPaneFXML firstTweetFXML = firstTweetPane.getFXML();
-            firstTweetFXML.setTweetPane(tweets.get(page).get(0));
-            tweetsPaneFXML.setFirstTweetPane(firstTweetPane.getPane());
-
-            if (!tweets.get(page).get(1)[0].equals(-1L))
+            if (userProfile.getBlocked().contains(viewer.getId()))
             {
-                TweetPane secondTweetPane = new TweetPane();
-                TweetPaneFXML secondTweetFXML = secondTweetPane.getFXML();
-                secondTweetFXML.setTweetPane(tweets.get(page).get(1));
-                tweetsPaneFXML.setSecondTweetPane(secondTweetPane.getPane());
+                setTweetsPane(new BlockedPane().getPane());
+            }
+            else if (userProfile.isPrivate() && !userProfile.getFollowers().contains(viewer.getId()))
+            {
+                setTweetsPane(new PrivatePane().getPane());
             }
             else
             {
-                tweetsPaneFXML.setSecondTweetPane(new EmptyTweetPane().getPane());
+                if (getNumberOfPages() == 0)
+                {
+                    tweetsPaneFXML.getMidLine().setVisible(false);
+                    tweetsPaneFXML.getNoTweetsText().setVisible(true);
+                    tweetsPaneFXML.setFirstTweetPane(new EmptyTweetPane().getPane());
+                    tweetsPaneFXML.setSecondTweetPane(new EmptyTweetPane().getPane());
+                }
+                else
+                {
+                    tweetsPaneFXML.getMidLine().setVisible(true);
+                    tweetsPaneFXML.getNoTweetsText().setVisible(false);
+
+                    TweetPane firstTweetPane = new TweetPane();
+                    TweetPaneFXML firstTweetFXML = firstTweetPane.getFXML();
+                    firstTweetFXML.setTweetPane(tweets.get(page).get(0));
+                    tweetsPaneFXML.setFirstTweetPane(firstTweetPane.getPane());
+
+                    if (!tweets.get(page).get(1)[0].equals(-1L))
+                    {
+                        TweetPane secondTweetPane = new TweetPane();
+                        TweetPaneFXML secondTweetFXML = secondTweetPane.getFXML();
+                        secondTweetFXML.setTweetPane(tweets.get(page).get(1));
+                        tweetsPaneFXML.setSecondTweetPane(secondTweetPane.getPane());
+                    }
+                    else
+                    {
+                        tweetsPaneFXML.setSecondTweetPane(new EmptyTweetPane().getPane());
+                    }
+                }
+                setTweetsPane(tweetsPane.getPane());
             }
         }
 
@@ -175,7 +189,7 @@ public class ProfilePageFXML
             birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()));
         }
 
-        if (this.user.getPhoneNumber().equals(""))
+        if (user.getPhoneNumber().equals(""))
         {
             phoneNumberText.setText("Phone Number: N/A");
         }
@@ -201,8 +215,6 @@ public class ProfilePageFXML
             statButton.setVisible(false);
             blockButton.setVisible(false);
             muteButton.setVisible(false);
-
-            setTweetsPane(tweetsPane.getPane());
         }
         else if (loggedInProfile != null)
         {
@@ -236,38 +248,43 @@ public class ProfilePageFXML
         }
     }
 
+    public void autoRefresh()
+    {
+        refresh();
+    }
+
     public void changeStatus()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(statButton, ourUser, otherUser));
+        listener.eventOccurred(statButton, viewer, user);
     }
 
     public void profilePic()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(profilePicButton, ourUser, otherUser));
+        listener.eventOccurred(profilePicButton, viewer, user);
     }
 
     public void block()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(blockButton, ourUser, otherUser));
+        listener.eventOccurred(blockButton, viewer, user);
     }
 
     public void followers()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(viewFollowersButton, ourUser, otherUser));
+        listener.eventOccurred(viewFollowersButton, viewer, user);
     }
 
     public void followings()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(viewFollowingsButton, ourUser, otherUser));
+        listener.eventOccurred(viewFollowingsButton, viewer, user);
     }
 
     public void blacklist()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(viewBlacklistButton, ourUser, otherUser));
+        listener.eventOccurred(viewBlacklistButton, viewer, user);
     }
 
     public void mute()
     {
-        // TODO listener.eventOccurred(new ViewUserEvent(muteButton, ourUser, otherUser));
+        listener.eventOccurred(muteButton, viewer, user);
     }
 }

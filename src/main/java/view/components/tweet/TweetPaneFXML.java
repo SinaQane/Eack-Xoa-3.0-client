@@ -55,7 +55,7 @@ public class TweetPaneFXML
 
         if (tweetDetails[1].equals(-1L))
         {
-            this.retweetText.setVisible(false);
+            retweetText.setVisible(false);
         }
         else
         {

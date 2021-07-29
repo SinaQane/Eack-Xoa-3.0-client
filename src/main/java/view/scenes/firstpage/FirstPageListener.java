@@ -2,10 +2,11 @@ package view.scenes.firstpage;
 
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
+import view.frames.server.ServerFrame;
 
 public class FirstPageListener
 {
-    public void eventOccurred(Object source)
+    public void eventOccurred(Object source, FirstPageFXML fxml)
     {
         switch (((Button) source).getId())
         {
@@ -16,7 +17,7 @@ public class FirstPageListener
                 GraphicalAgent.getGraphicalAgent().showSignUpPage();
                 break;
             case "serverButton":
-                // TODO new frame (connect to server) and call GraphicalAgent
+                new ServerFrame(fxml, null);
                 break;
         }
     }

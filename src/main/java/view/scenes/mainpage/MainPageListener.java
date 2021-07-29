@@ -2,6 +2,7 @@ package view.scenes.mainpage;
 
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
+import view.frames.server.ServerFrame;
 
 public class MainPageListener
 {
@@ -63,7 +64,7 @@ public class MainPageListener
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));*/
                 break;
             case "onlineStatusButton":
-                // TODO server frame
+                new ServerFrame(null, MainPage.getMainPage().getFXML());
                 break;
         }
     }

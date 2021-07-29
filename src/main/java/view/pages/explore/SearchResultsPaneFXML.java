@@ -2,11 +2,10 @@ package view.pages.explore;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
-import view.components.empty.EmptyUserPane;
+import view.components.empty.EmptyItemPane;
 import view.components.user.UserPane;
 import view.components.user.UserPaneFXML;
 
-import java.util.EventObject;
 import java.util.List;
 
 public class SearchResultsPaneFXML
@@ -88,7 +87,7 @@ public class SearchResultsPaneFXML
         {
             if (users.get(page).get(i).equals(-1L))
             {
-                setUserPane(i, new EmptyUserPane().getPane());
+                setUserPane(i, new EmptyItemPane().getPane());
             }
             else
             {

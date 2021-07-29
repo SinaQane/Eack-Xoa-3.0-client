@@ -3,6 +3,7 @@ package view.pages.timeline;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
+import view.GraphicalAgent;
 import view.components.empty.EmptyTweetPane;
 import view.components.tweet.TweetPane;
 import view.components.tweet.TweetPaneFXML;
@@ -13,8 +14,6 @@ import java.util.List;
 
 public class TimelinePageFXML
 {
-    private final TimelinePageListener listener = new TimelinePageListener();
-
     private int page;
     private String pageKind;
     private List<List<Long[]>> tweets;
@@ -107,8 +106,10 @@ public class TimelinePageFXML
         return page != 0;
     }
 
-    public void refresh()
+    public synchronized void refresh()
     {
+        refreshButton.setVisible(false);
+        refreshButton.setDisable(true);
         previousButton.setDisable(!hasPreviousPage(page));
         nextButton.setDisable(!hasNextPage(page));
         refreshButton.setDisable(getNumberOfPages() == 0);
@@ -167,18 +168,18 @@ public class TimelinePageFXML
         }
     }
 
+    public void autoRefresh()
+    {
+        refresh();
+    }
+
     public void previous()
     {
-        // TODO listener.eventOccurred(new TimelineEvent(previousButton, pageKind, page));
+        GraphicalAgent.getGraphicalAgent().showTimelinePage(pageKind, tweets, page - 1);
     }
 
     public void next()
     {
-        // TODO listener.eventOccurred(new TimelineEvent(nextButton, pageKind, page));
-    }
-
-    public void reload() // since refresh was already taken
-    {
-        // TODO listener.eventOccurred(new TimelineEvent(refreshButton, pageKind, page));
+        GraphicalAgent.getGraphicalAgent().showTimelinePage(pageKind, tweets, page + 1);
     }
 }

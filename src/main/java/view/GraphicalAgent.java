@@ -9,9 +9,13 @@ import event.EventSender;
 import event.events.authentication.LogoutEvent;
 import javafx.application.Platform;
 import javafx.stage.Stage;
+import model.Tweet;
 import model.User;
 import view.pages.profile.ProfilePage;
 import view.pages.settings.SettingsPage;
+import view.pages.timeline.TimelinePage;
+import view.pages.viewlist.ViewListPage;
+import view.pages.viewtweet.ViewTweetPage;
 import view.scenes.firstpage.FirstPage;
 import view.scenes.login.LoginPage;
 import view.scenes.mainpage.MainPage;
@@ -30,6 +34,9 @@ public class GraphicalAgent
 
     private ProfilePage profilePage;
     private SettingsPage settingsPage;
+    private TimelinePage timelinePage;
+    private ViewListPage viewListPage;
+    private ViewTweetPage viewTweetPage;
 
     private GraphicalAgent() {}
 
@@ -69,11 +76,15 @@ public class GraphicalAgent
         );
     }
 
+    // First page
+
     public void showFirstPage()
     {
         FirstPage firstPage = new FirstPage();
         stage.setScene(firstPage.getScene());
     }
+
+    // Login page
 
     public void showLoginPage()
     {
@@ -89,6 +100,8 @@ public class GraphicalAgent
         stage.setScene(loginPage.getScene());
     }
 
+    // SignUp page
+
     public void showSignUpPage()
     {
         SignUpPage signUpPage = new SignUpPage();
@@ -102,6 +115,8 @@ public class GraphicalAgent
         signUpPage.getFXML().setMessageText(err);
         stage.setScene(signUpPage.getScene());
     }
+
+    // Main page
 
     public void showMainPage(User user)
     {
@@ -119,11 +134,12 @@ public class GraphicalAgent
         stage.setScene(mainPage.getScene());
     }
 
+    // Settings page
+
     public void showSettingsPage()
     {
         MainPage mainPage = MainPage.getMainPage();
         settingsPage = new SettingsPage();
-        mainPage.getFXML().refresh();
         mainPage.getFXML().setMainPane(settingsPage.getPane());
     }
 
@@ -132,6 +148,8 @@ public class GraphicalAgent
         settingsPage.getFXML().setMessageText(err, ok);
     }
 
+    // Profile page
+
     public void showProfilePage(User user, List<List<Long[]>> tweets, int page)
     {
         MainPage mainPage = MainPage.getMainPage();
@@ -139,7 +157,73 @@ public class GraphicalAgent
         profilePage.getFXML().setUser(user);
         profilePage.getFXML().setTweets(tweets);
         profilePage.getFXML().setPage(page);
+        profilePage.getFXML().refresh();
         mainPage.getFXML().setMainPane(profilePage.getPane());
+    }
+
+    public void refreshProfilePage(User user, List<List<Long[]>> tweets)
+    {
+        profilePage.getFXML().setUser(user);
+        profilePage.getFXML().setTweets(tweets);
+        profilePage.getFXML().autoRefresh();
+    }
+
+    // Timeline/Bookmarks page
+
+    public void showTimelinePage(String pageKind, List<List<Long[]>> tweets, int page)
+    {
+        MainPage mainPage = MainPage.getMainPage();
+        timelinePage = new TimelinePage(pageKind);
+        timelinePage.getFXML().setTweets(tweets);
+        timelinePage.getFXML().setPage(page);
+        timelinePage.getFXML().refresh();
+        mainPage.getFXML().setMainPane(timelinePage.getPane());
+    }
+
+    public void refreshTimelinePage(List<List<Long[]>> tweets)
+    {
+        timelinePage.getFXML().setTweets(tweets);
+        timelinePage.getFXML().autoRefresh();
+    }
+
+    // ViewList page
+
+    public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
+    {
+        MainPage mainPage = MainPage.getMainPage();
+        viewListPage = new ViewListPage();
+        viewListPage.getFXML().setPageKind(pageKind);
+        viewListPage.getFXML().setItems(items);
+        viewListPage.getFXML().setUser(user);
+        viewListPage.getFXML().setPage(page);
+        viewListPage.getFXML().refresh();
+        mainPage.getFXML().setMainPane(viewListPage.getPane());
+    }
+
+    public void refreshViewListPage(List<List<Long>> items)
+    {
+        viewListPage.getFXML().setItems(items);
+        viewListPage.getFXML().autoRefresh();
+    }
+
+    // ViewTweet page
+
+    public void showViewTweetPage(List<List<Long>> comments, Tweet tweet, int page)
+    {
+        MainPage mainPage = MainPage.getMainPage();
+        viewTweetPage = new ViewTweetPage();
+        viewTweetPage.getFXML().setComments(comments);
+        viewTweetPage.getFXML().setTweet(tweet);
+        viewTweetPage.getFXML().setPage(page);
+        viewTweetPage.getFXML().refresh();
+        mainPage.getFXML().setMainPane(viewTweetPage.getPane());
+    }
+
+    public void refreshViewTweetPage(List<List<Long>> comments, Tweet tweet)
+    {
+        viewTweetPage.getFXML().setComments(comments);
+        viewTweetPage.getFXML().setTweet(tweet);
+        viewTweetPage.getFXML().autoRefresh();
     }
 
     // Getter and Setters

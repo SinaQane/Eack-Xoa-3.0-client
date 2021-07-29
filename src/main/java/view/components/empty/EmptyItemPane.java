@@ -8,13 +8,13 @@ import javafx.scene.layout.Pane;
 import java.io.IOException;
 import java.util.Objects;
 
-public class EmptyUserPane
+public class EmptyItemPane
 {
     private Pane emptyPane;
 
-    public EmptyUserPane()
+    public EmptyItemPane()
     {
-        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyUserPane");
+        String path = new Config(Constants.CONFIG).getProperty(String.class, "emptyItemPane");
         FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try
         {

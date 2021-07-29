@@ -21,7 +21,7 @@ public class FirstPageFXML implements Initializable
         refresh();
     }
 
-    public void refresh() // TODO call this after closing server frame
+    public void refresh()
     {
         boolean online = ConnectionStatus.getStatus().isOnline();
         signUpButton.setDisable(!online);
@@ -30,16 +30,16 @@ public class FirstPageFXML implements Initializable
 
     public void login()
     {
-        listener.eventOccurred(loginButton);
+        listener.eventOccurred(loginButton, this);
     }
 
     public void signUp()
     {
-        listener.eventOccurred(signUpButton);
+        listener.eventOccurred(signUpButton, this);
     }
 
     public void server()
     {
-        listener.eventOccurred(serverButton);
+        listener.eventOccurred(serverButton, this);
     }
 }

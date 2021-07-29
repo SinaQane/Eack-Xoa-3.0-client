@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+
+<Pane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.viewtweet.ViewTweetPageFXML">
+   <Pane fx:id="tweetPane" layoutX="37.0" layoutY="7.0" prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425;" />
+   <Pane fx:id="commentPane1" layoutX="37.0" layoutY="161.0" prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425;" />
+   <Pane fx:id="commentPane2" layoutX="37.0" layoutY="311.0" prefHeight="140.0" prefWidth="726.0" style="-fx-background-color: #1E2425;" />
+   <Button fx:id="previousButton" disable="true" layoutX="37.0" layoutY="462.0" mnemonicParsing="false" onAction="#previous" text="Previous" />
+   <Button fx:id="nextButton" disable="true" layoutX="690.0" layoutY="462.0" mnemonicParsing="false" onAction="#next" prefHeight="24.0" prefWidth="73.0" text="Next" />
+   <Line endX="-188.6666717529297" endY="511.0" layoutX="225.0" layoutY="-55.0" startX="536.5" startY="511.0" stroke="#2b3132" strokeWidth="2.0" />
+   <Line endX="-188.6666717529297" endY="511.0" layoutX="225.0" layoutY="-205.0" startX="536.5" startY="511.0" stroke="#2b3132" strokeWidth="2.0" />
+   <Line endX="-188.6666717529297" endY="511.0" layoutX="226.0" layoutY="-357.0" startX="536.5" startY="511.0" stroke="#2b3132" strokeWidth="3.0" />
+</Pane>

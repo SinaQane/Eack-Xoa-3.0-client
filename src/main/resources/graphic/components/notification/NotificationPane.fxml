@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="85.0" prefWidth="726.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.components.notification.NotificationPaneFXML">
+    <Text fx:id="notificationText" fill="WHITE" layoutX="11.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Notification's text" wrappingWidth="436.359375">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Text>
+    <Button fx:id="acceptButton" layoutX="653.0" layoutY="30.0" mnemonicParsing="false" onAction="#accept" style="-fx-background-color: #1E2425;" text="Accept" textFill="#00aa00" />
+    <Button fx:id="goodRejectButton" layoutX="560.0" layoutY="30.0" mnemonicParsing="false" onAction="#goodReject" prefHeight="0.0" prefWidth="92.0" style="-fx-background-color: #1E2425;" text="Kind Reject" textFill="#c60404" />
+    <Button fx:id="badRejectButton" layoutX="448.0" layoutY="30.0" mnemonicParsing="false" onAction="#badReject" style="-fx-background-color: #1E2425;" text="Savage Reject" textFill="#c60404" />
+</Pane>
