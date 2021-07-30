@@ -11,8 +11,10 @@ import event.events.Ping;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
 import exceptions.authentication.LoginFailed;
+import exceptions.authentication.LogoutFailed;
 import exceptions.authentication.SignUpFailed;
 import exceptions.settings.SettingsFailed;
+import exceptions.tweet.ForwardFailed;
 import javafx.stage.Stage;
 import model.*;
 import response.Response;
@@ -95,7 +97,8 @@ public class OnlineController implements ResponseVisitor
         }
     }
 
-    // Database event responses TODO log DatabaseErrors (log event?)
+    /* TODO log db event errors (probably with a log event)
+    Database event responses */
 
     @Override
     public void getChat(Chat chat, DatabaseError err)
@@ -250,10 +253,50 @@ public class OnlineController implements ResponseVisitor
         }
     }
 
+    @Override
+    public void logout(LogoutFailed logoutFailed, Unauthenticated unauthenticated) {
+
+    }
+
     // General event responses
 
     @Override
     public void sendTweet(Unauthenticated unauthenticated) {
+
+    }
+
+    @Override
+    public void viewList(String s, User user, List<List<Long>> list) {
+
+    }
+
+    @Override
+    public void refreshList(String s, User user, List<List<Long>> list) {
+
+    }
+
+    @Override
+    public void viewTweet(Tweet tweet, List<List<Long>> list) {
+
+    }
+
+    @Override
+    public void refreshTweet(Tweet tweet, List<List<Long>> list) {
+
+    }
+
+    @Override
+    public void viewUser(User user, List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void refreshUser(User user, List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void requestReaction(Unauthenticated unauthenticated) {
 
     }
 
@@ -277,6 +320,16 @@ public class OnlineController implements ResponseVisitor
 
     }
 
+    @Override
+    public void viewProfile(User user, List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void refreshProfile(User user, List<List<Long[]>> list) {
+
+    }
+
     // Profile page event responses
 
     @Override
@@ -284,10 +337,45 @@ public class OnlineController implements ResponseVisitor
 
     }
 
+    @Override
+    public void explore(List<Long> list) {
+
+    }
+
+    @Override
+    public void searchUser(List<List<Long>> list) {
+
+    }
+
+    @Override
+    public void viewTimeline(List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void refreshTimeline(List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void viewBookmarks(List<List<Long[]>> list) {
+
+    }
+
+    @Override
+    public void refreshBookmarks(List<List<Long[]>> list) {
+
+    }
+
     // Tweet event responses
 
     @Override
     public void tweetInteraction(Unauthenticated unauthenticated) {
+
+    }
+
+    @Override
+    public void forwardTweet(ForwardFailed forwardFailed, Unauthenticated unauthenticated) {
 
     }
 }
