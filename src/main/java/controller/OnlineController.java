@@ -89,12 +89,13 @@ public class OnlineController implements ResponseVisitor
     {
         if (pong.equals("pong"))
         {
-            ConnectionStatus.getStatus().setOnline(true);
             loop.start();
+            ConnectionStatus.getStatus().setOnline(true);
+            OfflineController.getOfflineController().getOnline();
         }
     }
 
-    // Database event responses TODO log DatabaseErrors or sth
+    // Database event responses TODO log DatabaseErrors (log event?)
 
     @Override
     public void getChat(Chat chat, DatabaseError err)
