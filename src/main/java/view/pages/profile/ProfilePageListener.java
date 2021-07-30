@@ -45,12 +45,15 @@ public class ProfilePageListener
                 break;
             case "viewFollowersButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("followers", otherUser.getId()));
+                // TODO back button
                 break;
             case "viewFollowingsButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("followings", otherUser.getId()));
+                // TODO back button
                 break;
             case "viewBlacklistButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("blacklist", otherUser.getId()));
+                // TODO back button
                 break;
         }
     }

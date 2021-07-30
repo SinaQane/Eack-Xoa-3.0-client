@@ -4,13 +4,11 @@ import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import model.Notification;
 
-import java.util.EventObject;
-
 public class NotificationPaneFXML
 {
     private final NotificationPaneListener listener = new NotificationPaneListener();
 
-    private long requestedUser = -1L;
+    private Long notificationId = -1L;
 
     public Text notificationText;
     public Button acceptButton;
@@ -27,7 +25,7 @@ public class NotificationPaneFXML
         }
         else
         {
-            requestedUser = notification.getRequestFrom();
+            notificationId = notification.getId();
         }
 
         notificationText.setText(notification.getText());
@@ -35,16 +33,16 @@ public class NotificationPaneFXML
 
     public void accept()
     {
-        // TODO listener.eventOccurred(new EventObject(acceptButton), requestedUser);
+        listener.eventOccurred(acceptButton, notificationId);
     }
 
     public void goodReject()
     {
-        // TODO listener.eventOccurred(new EventObject(goodRejectButton), requestedUser);
+        listener.eventOccurred(goodRejectButton, notificationId);
     }
 
     public void badReject()
     {
-        // TODO listener.eventOccurred(new EventObject(badRejectButton), requestedUser);
+        listener.eventOccurred(badRejectButton, notificationId);
     }
 }

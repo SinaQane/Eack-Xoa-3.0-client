@@ -4,11 +4,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
-import java.util.EventObject;
-
 public class ExplorePageFXML
 {
-    // private final ExploreListener listener = new ExploreListener();
+    private final ExplorePageListener listener = new ExplorePageListener();
 
     public Button randomTweetsButton;
     public Button searchButton;
@@ -17,24 +15,17 @@ public class ExplorePageFXML
 
     public void setExplorePane(Pane pane)
     {
-        this.explorePane.getChildren().clear();
-        this.explorePane.getChildren().add(pane);
-    }
-
-    public void refresh()
-    {
-        RandomTweetsPane randomTweetsPane = new RandomTweetsPane();
-        randomTweetsPane.getFXML().refresh();
-        setExplorePane(randomTweetsPane.getPane());
+        explorePane.getChildren().clear();
+        explorePane.getChildren().add(pane);
     }
 
     public void randomTweets()
     {
-        // TODO listener.eventOccurred(new EventObject(this.randomTweetsButton), "");
+        listener.eventOccurred(randomTweetsButton, "");
     }
 
     public void search()
     {
-        // TODO listener.eventOccurred(new EventObject(this.searchButton), this.searchTextField.getText());
+        listener.eventOccurred(searchButton, searchTextField.getText());
     }
 }

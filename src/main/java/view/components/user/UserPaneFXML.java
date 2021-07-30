@@ -11,7 +11,6 @@ import model.Profile;
 import model.User;
 
 import java.sql.SQLException;
-import java.util.EventObject;
 
 public class UserPaneFXML
 {
@@ -20,7 +19,7 @@ public class UserPaneFXML
     private final String YELLOW = new Config(Constants.CONFIG).getProperty(String.class, "yellow");
     private final String GREEN = new Config(Constants.CONFIG).getProperty(String.class, "green");
 
-    // private final UserPaneListener listener = new UserPaneListener();
+    private final UserPaneListener listener = new UserPaneListener();
 
     private long id;
 
@@ -68,6 +67,6 @@ public class UserPaneFXML
 
     public void viewUser()
     {
-        // TODO listener.eventOccurred(new EventObject(viewUserButton), id);
+        listener.eventOccurred(viewUserButton, id);
     }
 }

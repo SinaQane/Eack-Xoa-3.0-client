@@ -48,4 +48,9 @@ public class RandomTweetsPaneFXML
             }
         }
     }
+
+    public void autoRefresh()
+    {
+        refresh();
+    }
 }

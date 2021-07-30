@@ -1,5 +1,12 @@
 package view.scenes.mainpage;
 
+import controller.ConnectionStatus;
+import event.events.authentication.LogoutEvent;
+import event.events.explore.ExplorePageEvent;
+import event.events.general.ViewListEvent;
+import event.events.profile.ViewProfileEvent;
+import event.events.timeline.ViewBookmarksEvent;
+import event.events.timeline.ViewTimelineEvent;
 import javafx.scene.control.Button;
 import view.GraphicalAgent;
 import view.frames.server.ServerFrame;
@@ -8,57 +15,46 @@ public class MainPageListener
 {
     public void eventOccurred(Object source)
     {
+        String authToken = ConnectionStatus.getStatus().getAuthToken();
+        Long userId = ConnectionStatus.getStatus().getUser().getId();
+
         switch (((Button) source).getId())
         {
             case "backButton":
-                // TODO write these
-                // BackButtonHandler.getBackButtonHandler().back();
+                // TODO back button
                 break;
             case "logoutButton":
-                /* TODO write these
-                MainPageController.getMainPageController().StopTimer();
-                UserDB.getUserDB().save(MainPageController.getMainPageController().getUser());
-                stage.setScene(loginPage.getScene());*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new LogoutEvent(userId, authToken));
                 break;
             case "profileButton":
-                // TODO send request
-                /* TODO write these
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewProfileEvent(userId));
+                // TODO back button
                 break;
             case "settingsButton":
                 GraphicalAgent.getGraphicalAgent().showSettingsPage();
                 break;
             case "homeButton":
-                /* TODO write these
-                fxmlController.setMainPane(PanesController.getPanesController().getTimelinePane("timeline", 0).getPane());
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("timeline"));*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTimelineEvent(userId));
+                // TODO back button
                 break;
             case "bookmarksButton":
-                /* TODO write these
-                fxmlController.setMainPane(PanesController.getPanesController().getTimelinePane("bookmarks", 0).getPane());
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("bookmarks"));*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewBookmarksEvent(userId));
+                // TODO back button
                 break;
             case "notificationsButton":
-                /* TODO write these
-                fxmlController.setMainPane(PanesController.getPanesController().getUserslistPane("notifications", MainPageController.getMainPageController().getUser().getId(), 0).getPane());
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("notifications", MainPageController.getMainPageController().getUser().getId()));*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("notifications", userId));
+                // TODO back button
                 break;
             case "exploreButton":
-                /* TODO write these
-                fxmlController.setMainPane(PanesController.getPanesController().getExplorePane().getPane());
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("explore"));*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ExplorePageEvent(userId));
+                // TODO back button
                 break;
             case "groupsButton":
-                //  TODO write these
-                //  fxmlController.setMainPane(PanesController.getPanesController().getGroupsPane(0).getPane());
+                /*  TODO write code
+                fxmlController.setMainPane(PanesController.getPanesController().getGroupsPane(0).getPane());*/
                 break;
             case "messagesButton":
-                /* TODO write these
+                /* TODO write code
                 fxmlController.setMainPane(PanesController.getPanesController().getMessagesPane().getPane());
                 BackButtonHandler.getBackButtonHandler().clear();
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));*/

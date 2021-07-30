@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.Pane;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 
 public class SearchResultsPane
@@ -14,12 +13,8 @@ public class SearchResultsPane
     private Pane pane;
     private final FXMLLoader loader;
 
-    private final String searched;
-
-    public SearchResultsPane(String searched)
+    public SearchResultsPane()
     {
-        this.searched = searched;
-
         String path = new Config(Constants.CONFIG).getProperty(String.class, "searchResults");
         loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         try

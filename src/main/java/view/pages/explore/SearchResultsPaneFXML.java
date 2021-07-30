@@ -2,6 +2,7 @@ package view.pages.explore;
 
 import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
+import view.GraphicalAgent;
 import view.components.empty.EmptyItemPane;
 import view.components.user.UserPane;
 import view.components.user.UserPaneFXML;
@@ -10,9 +11,6 @@ import java.util.List;
 
 public class SearchResultsPaneFXML
 {
-    // private final SearchResultsListener listener = new SearchResultsListener();
-
-    private String searched;
     List<List<Long>> users;
     private int page;
 
@@ -23,6 +21,16 @@ public class SearchResultsPaneFXML
 
     public Button previousButton;
     public Button nextButton;
+
+    public void setUsers(List<List<Long>> users)
+    {
+        this.users = users;
+    }
+
+    public void setPage(int page)
+    {
+        this.page = page;
+    }
 
     public void setUserPane(int pane, Pane userPane)
     {
@@ -46,21 +54,6 @@ public class SearchResultsPaneFXML
             userPane4.getChildren().clear();
             userPane4.getChildren().add(userPane);
         }
-    }
-
-    public void setSearched(String searched)
-    {
-        this.searched = searched;
-    }
-
-    public void setUsers(List<List<Long>> users)
-    {
-        this.users = users;
-    }
-
-    public void setPage(int page)
-    {
-        this.page = page;
     }
 
     public boolean hasNextPage(int page)
@@ -102,13 +95,18 @@ public class SearchResultsPaneFXML
         nextButton.setDisable(!hasNextPage(page));
     }
 
+    public void autoRefresh()
+    {
+        refresh();
+    }
+
     public void previous()
     {
-        // TODO listener.eventOccurred(new EventObject(previousButton), this.searched, this.page);
+        GraphicalAgent.getGraphicalAgent().showSearchResults(users, page - 1);
     }
 
     public void next()
     {
-        // TODO listener.eventOccurred(new EventObject(nextButton), this.searched, this.page);
+        GraphicalAgent.getGraphicalAgent().showSearchResults(users, page + 1);
     }
 }

@@ -40,6 +40,7 @@ public class OnlineController implements ResponseVisitor
         loop = new Loop(Integer.parseInt(loopFps), this::sendEvents);
 
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
+        GraphicalAgent.getGraphicalAgent().setOnlineController(this);
         GraphicalAgent.getGraphicalAgent().setStage(stage);
         graphicalAgent = GraphicalAgent.getGraphicalAgent();
         graphicalAgent.initialize();

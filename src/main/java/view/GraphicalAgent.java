@@ -11,6 +11,9 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.Tweet;
 import model.User;
+import view.pages.explore.ExplorePage;
+import view.pages.explore.RandomTweetsPane;
+import view.pages.explore.SearchResultsPane;
 import view.pages.profile.ProfilePage;
 import view.pages.settings.SettingsPage;
 import view.pages.timeline.TimelinePage;
@@ -37,6 +40,9 @@ public class GraphicalAgent
     private TimelinePage timelinePage;
     private ViewListPage viewListPage;
     private ViewTweetPage viewTweetPage;
+    private ExplorePage explorePage;
+    private RandomTweetsPane randomTweetsPane;
+    private SearchResultsPane searchResultsPane;
 
     private GraphicalAgent() {}
 
@@ -161,6 +167,7 @@ public class GraphicalAgent
         mainPage.getFXML().setMainPane(profilePage.getPane());
     }
 
+    // should be called by refresh response method
     public void refreshProfilePage(User user, List<List<Long[]>> tweets)
     {
         profilePage.getFXML().setUser(user);
@@ -180,6 +187,7 @@ public class GraphicalAgent
         mainPage.getFXML().setMainPane(timelinePage.getPane());
     }
 
+    // should be called by refresh response method
     public void refreshTimelinePage(List<List<Long[]>> tweets)
     {
         timelinePage.getFXML().setTweets(tweets);
@@ -200,6 +208,7 @@ public class GraphicalAgent
         mainPage.getFXML().setMainPane(viewListPage.getPane());
     }
 
+    // should be called by refresh response method
     public void refreshViewListPage(List<List<Long>> items)
     {
         viewListPage.getFXML().setItems(items);
@@ -219,11 +228,44 @@ public class GraphicalAgent
         mainPage.getFXML().setMainPane(viewTweetPage.getPane());
     }
 
+    // should be called by refresh response method
     public void refreshViewTweetPage(List<List<Long>> comments, Tweet tweet)
     {
         viewTweetPage.getFXML().setComments(comments);
         viewTweetPage.getFXML().setTweet(tweet);
         viewTweetPage.getFXML().autoRefresh();
+    }
+
+    // Explore page
+
+    public void showExplorePage(List<Long> tweets)
+    {
+        explorePage = new ExplorePage();
+        randomTweetsPane = new RandomTweetsPane();
+        randomTweetsPane.getFXML().setTweets(tweets);
+        randomTweetsPane.getFXML().refresh();
+        explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
+    }
+
+    // should be called by loop
+    public void refreshRandomTweets()
+    {
+        randomTweetsPane.getFXML().autoRefresh();
+    }
+
+    public void showSearchResults(List<List<Long>> users, int page)
+    {
+        explorePage = new ExplorePage();
+        searchResultsPane = new SearchResultsPane();
+        searchResultsPane.getFXML().setUsers(users);
+        searchResultsPane.getFXML().setPage(page);
+        explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
+    }
+
+    // should be called by loop
+    public void refreshSearchResults()
+    {
+        searchResultsPane.getFXML().autoRefresh();
     }
 
     // Getter and Setters

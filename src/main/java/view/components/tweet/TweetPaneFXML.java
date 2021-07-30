@@ -15,6 +15,8 @@ public class TweetPaneFXML
     private Long tweetId;
     private Long ownerId;
 
+    private Tweet tweet;
+
     public Text retweetText;
     public Text usernameText;
     public Text tweetText;
@@ -32,7 +34,6 @@ public class TweetPaneFXML
 
     public void setTweetPane(Long[] tweetDetails)
     {
-        Tweet tweet = null;
         try
         {
             tweet = ModelLoader.getModelLoader().getTweet(tweetDetails[0]);
@@ -79,64 +80,64 @@ public class TweetPaneFXML
         try
         {
             Tweet tweet = ModelLoader.getModelLoader().getTweet(tweetId);
-            this.upvoteButton.setText("Upvote (" + tweet.getUpvotes().size() + ")");
-            this.downvoteButton.setText("Downvote (" + tweet.getDownvotes().size() + ")");
-            this.retweetButton.setText("Retweet (" + tweet.getRetweets().size() + ")");
+            upvoteButton.setText("Upvote (" + tweet.getUpvotes().size() + ")");
+            downvoteButton.setText("Downvote (" + tweet.getDownvotes().size() + ")");
+            retweetButton.setText("Retweet (" + tweet.getRetweets().size() + ")");
         } catch (InterruptedException | SQLException ignored) {}
     }
 
     public void viewImage()
     {
-        // TODO listener.eventOccurred(new EventObject(viewImageButton));
+        listener.eventOccurred(viewImageButton, tweet);
     }
 
     public void upvote()
     {
-        // TODO listener.eventOccurred(new EventObject(upvoteButton));
+        listener.eventOccurred(upvoteButton, tweet);
     }
 
     public void downvote()
     {
-        // TODO listener.eventOccurred(new EventObject(downvoteButton));
+        listener.eventOccurred(downvoteButton, tweet);
     }
 
     public void retweet()
     {
-        // TODO listener.eventOccurred(new EventObject(retweetButton));
+        listener.eventOccurred(retweetButton, tweet);
     }
 
     public void save()
     {
-        // TODO listener.eventOccurred(new EventObject(saveButton));
+        listener.eventOccurred(saveButton, tweet);
     }
 
     public void send()
     {
-        // TODO listener.eventOccurred(new EventObject(sendButton));
+        listener.eventOccurred(sendButton, tweet);
     }
 
     public void report()
     {
-        // TODO listener.eventOccurred(new EventObject(reportButton));
+        listener.eventOccurred(reportButton, tweet);
     }
 
     public void viewTweet()
     {
-        // TODO listener.eventOccurred(new EventObject(viewTweetButton));
+        listener.eventOccurred(viewTweetButton, tweet);
     }
 
     public void comment()
     {
-        // TODO listener.eventOccurred(new EventObject(commentButton));
+        listener.eventOccurred(commentButton, tweet);
     }
 
     public void viewUser()
     {
-        // TODO listener.eventOccurred(new EventObject(viewUserButton));
+        listener.eventOccurred(viewUserButton, tweet);
     }
 
     public void viewUpperTweet()
     {
-        // TODO listener.eventOccurred(new EventObject(viewUpperTweetButton));
+        listener.eventOccurred(viewUpperTweetButton, tweet);
     }
 }
