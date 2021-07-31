@@ -66,13 +66,14 @@ public class GraphicalAgent
 
     public void initialize()
     {
-        Platform.runLater(
-            () -> {
+        Platform.runLater(() ->
+            {
                 stage.setTitle(new Config(Constants.CONFIG).getProperty(String.class, "name"));
                 stage.setScene(new FirstPage().getScene());
                 stage.setResizable(false);
                 stage.show();
-                stage.setOnHidden(e -> {
+                stage.setOnHidden(e ->
+                {
                     Platform.exit();
                     Long userId = ConnectionStatus.getStatus().getUser().getId();
                     String authToken = ConnectionStatus.getStatus().getAuthToken();
@@ -95,216 +96,268 @@ public class GraphicalAgent
 
     public void showFirstPage()
     {
-        FirstPage firstPage = new FirstPage();
-        stage.setScene(firstPage.getScene());
+        Platform.runLater(() ->
+        {
+            FirstPage firstPage = new FirstPage();
+            stage.setScene(firstPage.getScene());
+        });
     }
 
     // Login page
 
     public void showLoginPage()
     {
-        LoginPage loginPage = new LoginPage();
-        loginPage.getFXML().refresh();
-        stage.setScene(loginPage.getScene());
+        Platform.runLater(() ->
+        {
+            LoginPage loginPage = new LoginPage();
+            loginPage.getFXML().refresh();
+            stage.setScene(loginPage.getScene());
+        });
     }
 
     public void setLoginPageError(String err)
     {
-        LoginPage loginPage = new LoginPage();
-        loginPage.getFXML().setMessageText(err);
-        stage.setScene(loginPage.getScene());
+        Platform.runLater(() ->
+        {
+            LoginPage loginPage = new LoginPage();
+            loginPage.getFXML().setMessageText(err);
+            stage.setScene(loginPage.getScene());
+        });
     }
 
     // SignUp page
 
     public void showSignUpPage()
     {
-        SignUpPage signUpPage = new SignUpPage();
-        signUpPage.getFXML().refresh();
-        stage.setScene(signUpPage.getScene());
+        Platform.runLater(() ->
+        {
+            SignUpPage signUpPage = new SignUpPage();
+            signUpPage.getFXML().refresh();
+            stage.setScene(signUpPage.getScene());
+        });
     }
 
     public void setSignUpPageError(String err)
     {
-        SignUpPage signUpPage = new SignUpPage();
-        signUpPage.getFXML().setMessageText(err);
-        stage.setScene(signUpPage.getScene());
+        Platform.runLater(() ->
+        {
+            SignUpPage signUpPage = new SignUpPage();
+            signUpPage.getFXML().setMessageText(err);
+            stage.setScene(signUpPage.getScene());
+        });
     }
 
     // Main page
 
     public void showMainPage(User user)
     {
-        ConnectionStatus.getStatus().setUser(user);
-        MainPage mainPage = MainPage.getMainPage();
-        if (ConnectionStatus.getStatus().isOnline())
+        Platform.runLater(() ->
         {
-            eventListener.listen(new ViewProfileEvent(ConnectionStatus.getStatus().getUser().getId()));
-        }
-        else
-        {
-            showSettingsPage();
-        }
-        mainPage.getFXML().refresh();
-        stage.setScene(mainPage.getScene());
+            ConnectionStatus.getStatus().setUser(user);
+            MainPage mainPage = MainPage.getMainPage();
+            if (ConnectionStatus.getStatus().isOnline())
+            {
+                eventListener.listen(new ViewProfileEvent(ConnectionStatus.getStatus().getUser().getId()));
+            }
+            else
+            {
+                showSettingsPage();
+            }
+            mainPage.getFXML().refresh();
+            stage.setScene(mainPage.getScene());
+        });
     }
 
     // Settings page
 
     public void showSettingsPage()
     {
-        MainPage mainPage = MainPage.getMainPage();
-        settingsPage = new SettingsPage();
-        mainPage.getFXML().setMainPane(settingsPage.getPane());
+        Platform.runLater(() ->
+        {
+            MainPage mainPage = MainPage.getMainPage();
+            settingsPage = new SettingsPage();
+            mainPage.getFXML().setMainPane(settingsPage.getPane());
+        });
     }
 
     public void setSettingsPageError(String err, boolean ok)
     {
-        settingsPage.getFXML().setMessageText(err, ok);
+        Platform.runLater(() -> settingsPage.getFXML().setMessageText(err, ok));
     }
 
     // Profile page
 
     public void showProfilePage(User user, List<List<Long[]>> tweets, int page)
     {
-        MainPage mainPage = MainPage.getMainPage();
-        profilePage = new ProfilePage();
-        profilePage.getFXML().setUser(user);
-        profilePage.getFXML().setTweets(tweets);
-        profilePage.getFXML().setPage(page);
-        profilePage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(profilePage.getPane());
-
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, () ->
+        Platform.runLater(() ->
         {
-            Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventListener.listen(new RefreshProfileEvent(userId));
+            MainPage mainPage = MainPage.getMainPage();
+            profilePage = new ProfilePage();
+            profilePage.getFXML().setUser(user);
+            profilePage.getFXML().setTweets(tweets);
+            profilePage.getFXML().setPage(page);
+            profilePage.getFXML().refresh();
+            mainPage.getFXML().setMainPane(profilePage.getPane());
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshProfileEvent(userId));
+            });
+            loop.start();
         });
-        loop.start();
     }
 
     public void refreshProfilePage(User user, List<List<Long[]>> tweets)
     {
-        profilePage.getFXML().setUser(user);
-        profilePage.getFXML().setTweets(tweets);
-        profilePage.getFXML().autoRefresh();
+        Platform.runLater(() ->
+        {
+            profilePage.getFXML().setUser(user);
+            profilePage.getFXML().setTweets(tweets);
+            profilePage.getFXML().autoRefresh();
+        });
     }
 
     // Timeline/Bookmarks page
 
     public void showTimelinePage(String pageKind, List<List<Long[]>> tweets, int page)
     {
-        MainPage mainPage = MainPage.getMainPage();
-        timelinePage = new TimelinePage(pageKind);
-        timelinePage.getFXML().setTweets(tweets);
-        timelinePage.getFXML().setPage(page);
-        timelinePage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(timelinePage.getPane());
-
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, () ->
+        Platform.runLater(() ->
         {
-            Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventListener.listen(new RefreshTimelineEvent(userId));
+            MainPage mainPage = MainPage.getMainPage();
+            timelinePage = new TimelinePage(pageKind);
+            timelinePage.getFXML().setTweets(tweets);
+            timelinePage.getFXML().setPage(page);
+            timelinePage.getFXML().refresh();
+            mainPage.getFXML().setMainPane(timelinePage.getPane());
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshTimelineEvent(userId));
+            });
+            loop.start();
         });
-        loop.start();
     }
 
     public void refreshTimelinePage(List<List<Long[]>> tweets)
     {
-        timelinePage.getFXML().setTweets(tweets);
-        timelinePage.getFXML().autoRefresh();
+        Platform.runLater(() ->
+        {
+            timelinePage.getFXML().setTweets(tweets);
+            timelinePage.getFXML().autoRefresh();
+        });
     }
 
     // Explore page
 
     public void showExplorePage(List<Long> tweets)
     {
-        explorePage = new ExplorePage();
-        randomTweetsPane = new RandomTweetsPane();
-        randomTweetsPane.getFXML().setTweets(tweets);
-        randomTweetsPane.getFXML().refresh();
-        explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
+        Platform.runLater(() ->
+        {
+            explorePage = new ExplorePage();
+            randomTweetsPane = new RandomTweetsPane();
+            randomTweetsPane.getFXML().setTweets(tweets);
+            randomTweetsPane.getFXML().refresh();
+            explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
 
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, this::refreshRandomTweets);
-        loop.start();
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, this::refreshRandomTweets);
+            loop.start();
+        });
+
     }
 
     public void refreshRandomTweets()
     {
-        randomTweetsPane.getFXML().autoRefresh();
+        Platform.runLater(() -> randomTweetsPane.getFXML().autoRefresh());
     }
 
     public void showSearchResults(List<List<Long>> users, int page)
     {
-        explorePage = new ExplorePage();
-        searchResultsPane = new SearchResultsPane();
-        searchResultsPane.getFXML().setUsers(users);
-        searchResultsPane.getFXML().setPage(page);
-        explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
+        Platform.runLater(() ->
+        {
+            explorePage = new ExplorePage();
+            searchResultsPane = new SearchResultsPane();
+            searchResultsPane.getFXML().setUsers(users);
+            searchResultsPane.getFXML().setPage(page);
+            explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
 
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, this::refreshSearchResults);
-        loop.start();
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, this::refreshSearchResults);
+            loop.start();
+        });
     }
 
     public void refreshSearchResults()
     {
-        searchResultsPane.getFXML().autoRefresh();
+        Platform.runLater(() -> searchResultsPane.getFXML().autoRefresh());
     }
 
     // ViewList page
 
     public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
     {
-        MainPage mainPage = MainPage.getMainPage();
-        viewListPage = new ViewListPage();
-        viewListPage.getFXML().setPageKind(pageKind);
-        viewListPage.getFXML().setItems(items);
-        viewListPage.getFXML().setUser(user);
-        viewListPage.getFXML().setPage(page);
-        viewListPage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(viewListPage.getPane());
-
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, () ->
+        Platform.runLater(() ->
         {
-            Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventListener.listen(new RefreshListEvent(pageKind, userId));
+            MainPage mainPage = MainPage.getMainPage();
+            viewListPage = new ViewListPage();
+            viewListPage.getFXML().setPageKind(pageKind);
+            viewListPage.getFXML().setItems(items);
+            viewListPage.getFXML().setUser(user);
+            viewListPage.getFXML().setPage(page);
+            viewListPage.getFXML().refresh();
+            mainPage.getFXML().setMainPane(viewListPage.getPane());
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshListEvent(pageKind, userId));
+            });
+            loop.start();
         });
-        loop.start();
     }
 
     public void refreshViewListPage(List<List<Long>> items)
     {
-        viewListPage.getFXML().setItems(items);
-        viewListPage.getFXML().autoRefresh();
+        Platform.runLater(() ->
+        {
+            viewListPage.getFXML().setItems(items);
+            viewListPage.getFXML().autoRefresh();
+        });
     }
 
     // ViewTweet page
 
     public void showViewTweetPage(Tweet tweet, List<List<Long>> comments, int page)
     {
-        MainPage mainPage = MainPage.getMainPage();
-        viewTweetPage = new ViewTweetPage();
-        viewTweetPage.getFXML().setComments(comments);
-        viewTweetPage.getFXML().setTweet(tweet);
-        viewTweetPage.getFXML().setPage(page);
-        viewTweetPage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(viewTweetPage.getPane());
+        Platform.runLater(() ->
+        {
+            MainPage mainPage = MainPage.getMainPage();
+            viewTweetPage = new ViewTweetPage();
+            viewTweetPage.getFXML().setComments(comments);
+            viewTweetPage.getFXML().setTweet(tweet);
+            viewTweetPage.getFXML().setPage(page);
+            viewTweetPage.getFXML().refresh();
+            mainPage.getFXML().setMainPane(viewTweetPage.getPane());
 
-        if (loop != null) loop.stop();
-        loop = new Loop(fps, () -> eventListener.listen(new RefreshTweetEvent(tweet.getId())));
-        loop.start();
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () -> eventListener.listen(new RefreshTweetEvent(tweet.getId())));
+            loop.start();
+        });
     }
 
     public void refreshViewTweetPage(Tweet tweet, List<List<Long>> comments)
     {
-        viewTweetPage.getFXML().setComments(comments);
-        viewTweetPage.getFXML().setTweet(tweet);
-        viewTweetPage.getFXML().autoRefresh();
+        Platform.runLater(() ->
+        {
+            viewTweetPage.getFXML().setComments(comments);
+            viewTweetPage.getFXML().setTweet(tweet);
+            viewTweetPage.getFXML().autoRefresh();
+        });
     }
 
     // Getter and Setters
