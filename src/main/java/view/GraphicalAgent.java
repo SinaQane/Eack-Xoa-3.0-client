@@ -36,7 +36,7 @@ public class GraphicalAgent
 {
     static GraphicalAgent graphicalAgent;
 
-    private final Double fps = new Config(Constants.CONFIG).getProperty(Double.class, "firstPage");
+    private final Double fps = new Config(Constants.CONFIG).getProperty(Double.class, "refreshLoop");
 
     private Loop loop;
     private Stage stage;
