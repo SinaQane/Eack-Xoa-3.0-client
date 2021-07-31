@@ -7,6 +7,11 @@ import controller.OnlineController;
 import event.EventListener;
 import event.EventSender;
 import event.events.authentication.LogoutEvent;
+import event.events.general.RefreshListEvent;
+import event.events.general.RefreshTweetEvent;
+import event.events.profile.RefreshProfileEvent;
+import event.events.profile.ViewProfileEvent;
+import event.events.timeline.RefreshTimelineEvent;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.Tweet;
@@ -31,8 +36,10 @@ public class GraphicalAgent
 {
     static GraphicalAgent graphicalAgent;
 
+    private final Double fps = new Config(Constants.CONFIG).getProperty(Double.class, "firstPage");
+
+    private Loop loop;
     private Stage stage;
-    private Loop autoRefresh;
     private EventSender eventSender;
     private EventListener eventListener;
     private OnlineController controller;
@@ -132,11 +139,11 @@ public class GraphicalAgent
         MainPage mainPage = MainPage.getMainPage();
         if (ConnectionStatus.getStatus().isOnline())
         {
-            mainPage.getFXML().profile();
+            eventListener.listen(new ViewProfileEvent(ConnectionStatus.getStatus().getUser().getId()));
         }
         else
         {
-            mainPage.getFXML().settings();
+            showSettingsPage();
         }
         mainPage.getFXML().refresh();
         stage.setScene(mainPage.getScene());
@@ -167,9 +174,16 @@ public class GraphicalAgent
         profilePage.getFXML().setPage(page);
         profilePage.getFXML().refresh();
         mainPage.getFXML().setMainPane(profilePage.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshProfileEvent(userId));
+        });
+        loop.start();
     }
 
-    // should be called by refresh response method
     public void refreshProfilePage(User user, List<List<Long[]>> tweets)
     {
         profilePage.getFXML().setUser(user);
@@ -187,9 +201,16 @@ public class GraphicalAgent
         timelinePage.getFXML().setPage(page);
         timelinePage.getFXML().refresh();
         mainPage.getFXML().setMainPane(timelinePage.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshTimelineEvent(userId));
+        });
+        loop.start();
     }
 
-    // should be called by refresh response method
     public void refreshTimelinePage(List<List<Long[]>> tweets)
     {
         timelinePage.getFXML().setTweets(tweets);
@@ -205,9 +226,12 @@ public class GraphicalAgent
         randomTweetsPane.getFXML().setTweets(tweets);
         randomTweetsPane.getFXML().refresh();
         explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, this::refreshRandomTweets);
+        loop.start();
     }
 
-    // should be called by loop
     public void refreshRandomTweets()
     {
         randomTweetsPane.getFXML().autoRefresh();
@@ -220,9 +244,12 @@ public class GraphicalAgent
         searchResultsPane.getFXML().setUsers(users);
         searchResultsPane.getFXML().setPage(page);
         explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, this::refreshSearchResults);
+        loop.start();
     }
 
-    // should be called by loop
     public void refreshSearchResults()
     {
         searchResultsPane.getFXML().autoRefresh();
@@ -240,9 +267,16 @@ public class GraphicalAgent
         viewListPage.getFXML().setPage(page);
         viewListPage.getFXML().refresh();
         mainPage.getFXML().setMainPane(viewListPage.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshListEvent(pageKind, userId));
+        });
+        loop.start();
     }
 
-    // should be called by refresh response method
     public void refreshViewListPage(List<List<Long>> items)
     {
         viewListPage.getFXML().setItems(items);
@@ -260,9 +294,12 @@ public class GraphicalAgent
         viewTweetPage.getFXML().setPage(page);
         viewTweetPage.getFXML().refresh();
         mainPage.getFXML().setMainPane(viewTweetPage.getPane());
+
+        if (loop != null) loop.stop();
+        loop = new Loop(fps, () -> eventListener.listen(new RefreshTweetEvent(tweet.getId())));
+        loop.start();
     }
 
-    // should be called by refresh response method
     public void refreshViewTweetPage(Tweet tweet, List<List<Long>> comments)
     {
         viewTweetPage.getFXML().setComments(comments);

@@ -38,8 +38,8 @@ public class OnlineController implements ResponseVisitor
 
     public OnlineController(Stage stage)
     {
-        String loopFps = new Config(Constants.CONFIG).getProperty(String.class, "reqLoop");
-        loop = new Loop(Integer.parseInt(loopFps), this::sendEvents);
+        Integer loopFps = new Config(Constants.CONFIG).getProperty(Integer.class, "reqLoop");
+        loop = new Loop(loopFps, this::sendEvents);
 
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
         GraphicalAgent.getGraphicalAgent().setOnlineController(this);

@@ -25,7 +25,7 @@ import java.util.List;
 
 public class ProfilePageFXML
 {
-    private final Long DEFAULT_DATE = Long.getLong(new Config(Constants.CONFIG).getProperty(String.class, "defaultDateTime"));
+    private final Long DEFAULT_DATE = new Config(Constants.CONFIG).getProperty(Long.class, "defaultDateTime");
     private final String DATE_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "tinyDate");
     private final String LIGHT_RED = new Config(Constants.CONFIG).getProperty(String.class, "lightRed");
     private final String DARK_RED = new Config(Constants.CONFIG).getProperty(String.class, "darkRed");
