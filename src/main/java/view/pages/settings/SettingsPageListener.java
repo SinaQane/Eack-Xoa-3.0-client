@@ -31,7 +31,10 @@ public class SettingsPageListener
                 break;
             case "deactivationButton":
             case "deleteAccountButton":
-                GraphicalAgent.getGraphicalAgent().showFirstPage();
+                if (!ConnectionStatus.getStatus().isOnline())
+                {
+                    GraphicalAgent.getGraphicalAgent().showFirstPage();
+                }
                 break;
         }
     }

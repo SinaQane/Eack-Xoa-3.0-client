@@ -119,11 +119,11 @@ public class ViewTweetPageFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showViewTweetPage(comments, tweet, page - 1);
+        GraphicalAgent.getGraphicalAgent().showViewTweetPage(tweet, comments, page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showViewTweetPage(comments, tweet, page + 1);
+        GraphicalAgent.getGraphicalAgent().showViewTweetPage(tweet, comments, page + 1);
     }
 }

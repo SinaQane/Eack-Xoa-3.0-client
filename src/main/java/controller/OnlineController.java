@@ -236,12 +236,18 @@ public class OnlineController implements ResponseVisitor
         {
             graphicalAgent.setLoginPageError(err.getMessage());
         }
+        else
+        {
+            ConnectionStatus.getStatus().setAuthToken(authToken);
+            GraphicalAgent.getGraphicalAgent().showMainPage(user);
+        }
     }
 
     @Override
     public void offlineLogin(User user, String authToken)
     {
-
+        ConnectionStatus.getStatus().setAuthToken(authToken);
+        ConnectionStatus.getStatus().setUser(user);
     }
 
     @Override
@@ -251,131 +257,185 @@ public class OnlineController implements ResponseVisitor
         {
             graphicalAgent.setSignUpPageError(err.getMessage());
         }
+        else
+        {
+            ConnectionStatus.getStatus().setAuthToken(authToken);
+            GraphicalAgent.getGraphicalAgent().showMainPage(user);
+        }
     }
 
     @Override
-    public void logout(LogoutFailed logoutFailed, Unauthenticated unauthenticated) {
-
+    public void logout(LogoutFailed logoutFailed, Unauthenticated unauthenticated)
+    {
+        if (logoutFailed == null && unauthenticated == null)
+        {
+            ConnectionStatus.getStatus().setUser(null);
+            ConnectionStatus.getStatus().setAuthToken("");
+            GraphicalAgent.getGraphicalAgent().showFirstPage();
+        }
     }
 
     // General event responses
 
     @Override
-    public void sendTweet(Unauthenticated unauthenticated) {
+    public void sendTweet(Unauthenticated unauthenticated) {}
 
+    @Override
+    public void viewList(String pageKind, User user, List<List<Long>> items)
+    {
+        GraphicalAgent.getGraphicalAgent().showViewListPage(pageKind, user, items, 0);
     }
 
     @Override
-    public void viewList(String s, User user, List<List<Long>> list) {
-
+    public void refreshList(String pageKind, User user, List<List<Long>> items)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshViewListPage(items);
     }
 
     @Override
-    public void refreshList(String s, User user, List<List<Long>> list) {
-
+    public void viewTweet(Tweet tweet, List<List<Long>> comments)
+    {
+        GraphicalAgent.getGraphicalAgent().showViewTweetPage(tweet, comments, 0);
     }
 
     @Override
-    public void viewTweet(Tweet tweet, List<List<Long>> list) {
-
+    public void refreshTweet(Tweet tweet, List<List<Long>> comments)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshViewTweetPage(tweet, comments);
     }
 
     @Override
-    public void refreshTweet(Tweet tweet, List<List<Long>> list) {
-
+    public void viewUser(User user, List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, 0);
     }
 
     @Override
-    public void viewUser(User user, List<List<Long[]>> list) {
-
+    public void refreshUser(User user, List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshProfilePage(user, tweets);
     }
 
     @Override
-    public void refreshUser(User user, List<List<Long[]>> list) {
-
-    }
-
-    @Override
-    public void requestReaction(Unauthenticated unauthenticated) {
-
-    }
+    public void requestReaction(Unauthenticated unauthenticated) {}
 
     // Settings page event responses
 
     @Override
-    public void settings(boolean b, SettingsFailed settingsFailed, Unauthenticated unauthenticated)
+    public void settings(boolean online, SettingsFailed settingsFailed, Unauthenticated unauthenticated)
     {
-
+        if (online)
+        {
+            if (unauthenticated != null)
+            {
+                GraphicalAgent.getGraphicalAgent().setSettingsPageError(unauthenticated.getMessage(), false);
+            }
+            else if (settingsFailed != null)
+            {
+                GraphicalAgent.getGraphicalAgent().setSettingsPageError(settingsFailed.getMessage(), false);
+            }
+            else
+            {
+                GraphicalAgent.getGraphicalAgent().setSettingsPageError("changes were made successfully", true);
+            }
+        }
     }
 
     @Override
-    public void deleteAccount(boolean b, Unauthenticated unauthenticated)
+    public void deleteAccount(boolean online, Unauthenticated unauthenticated)
     {
-
+        if (online)
+        {
+            if (unauthenticated != null)
+            {
+                GraphicalAgent.getGraphicalAgent().setSettingsPageError(unauthenticated.getMessage(), false);
+            }
+            else
+            {
+                GraphicalAgent.getGraphicalAgent().showFirstPage();
+            }
+        }
     }
 
     @Override
-    public void deactivate(boolean b, Unauthenticated unauthenticated)
+    public void deactivate(boolean online, Unauthenticated unauthenticated)
     {
-
-    }
-
-    @Override
-    public void viewProfile(User user, List<List<Long[]>> list) {
-
-    }
-
-    @Override
-    public void refreshProfile(User user, List<List<Long[]>> list) {
-
+        if (online)
+        {
+            if (unauthenticated != null)
+            {
+                GraphicalAgent.getGraphicalAgent().setSettingsPageError(unauthenticated.getMessage(), false);
+            }
+            else
+            {
+                GraphicalAgent.getGraphicalAgent().showFirstPage();
+            }
+        }
     }
 
     // Profile page event responses
 
     @Override
-    public void userInteraction(Unauthenticated unauthenticated) {
+    public void viewProfile(User user, List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, 0);
 
     }
 
     @Override
-    public void explore(List<Long> list) {
-
+    public void refreshProfile(User user, List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshProfilePage(user, tweets);
     }
 
     @Override
-    public void searchUser(List<List<Long>> list) {
+    public void userInteraction(Unauthenticated unauthenticated) {}
 
+    // Explore page event responses
+
+    @Override
+    public void explore(List<Long> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().showExplorePage(tweets);
     }
 
     @Override
-    public void viewTimeline(List<List<Long[]>> list) {
+    public void searchUser(List<List<Long>> users)
+    {
+        GraphicalAgent.getGraphicalAgent().showSearchResults(users, 0);
+    }
 
+    // Timeline/Bookmark page event responses
+
+    @Override
+    public void viewTimeline(List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().showTimelinePage("timeline", tweets, 0);
     }
 
     @Override
-    public void refreshTimeline(List<List<Long[]>> list) {
-
+    public void refreshTimeline(List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshTimelinePage(tweets);
     }
 
     @Override
-    public void viewBookmarks(List<List<Long[]>> list) {
-
+    public void viewBookmarks(List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().showTimelinePage("bookmarks", tweets, 0);
     }
 
     @Override
-    public void refreshBookmarks(List<List<Long[]>> list) {
-
+    public void refreshBookmarks(List<List<Long[]>> tweets)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshTimelinePage(tweets);
     }
 
     // Tweet event responses
 
     @Override
-    public void tweetInteraction(Unauthenticated unauthenticated) {
-
-    }
+    public void tweetInteraction(Unauthenticated unauthenticated) {}
 
     @Override
-    public void forwardTweet(ForwardFailed forwardFailed, Unauthenticated unauthenticated) {
-
-    }
+    public void forwardTweet(ForwardFailed forwardFailed, Unauthenticated unauthenticated) {}
 }

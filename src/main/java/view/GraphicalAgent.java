@@ -11,6 +11,7 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 import model.Tweet;
 import model.User;
+import util.Loop;
 import view.pages.explore.ExplorePage;
 import view.pages.explore.RandomTweetsPane;
 import view.pages.explore.SearchResultsPane;
@@ -31,6 +32,7 @@ public class GraphicalAgent
     static GraphicalAgent graphicalAgent;
 
     private Stage stage;
+    private Loop autoRefresh;
     private EventSender eventSender;
     private EventListener eventListener;
     private OnlineController controller;
@@ -194,48 +196,6 @@ public class GraphicalAgent
         timelinePage.getFXML().autoRefresh();
     }
 
-    // ViewList page
-
-    public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
-    {
-        MainPage mainPage = MainPage.getMainPage();
-        viewListPage = new ViewListPage();
-        viewListPage.getFXML().setPageKind(pageKind);
-        viewListPage.getFXML().setItems(items);
-        viewListPage.getFXML().setUser(user);
-        viewListPage.getFXML().setPage(page);
-        viewListPage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(viewListPage.getPane());
-    }
-
-    // should be called by refresh response method
-    public void refreshViewListPage(List<List<Long>> items)
-    {
-        viewListPage.getFXML().setItems(items);
-        viewListPage.getFXML().autoRefresh();
-    }
-
-    // ViewTweet page
-
-    public void showViewTweetPage(List<List<Long>> comments, Tweet tweet, int page)
-    {
-        MainPage mainPage = MainPage.getMainPage();
-        viewTweetPage = new ViewTweetPage();
-        viewTweetPage.getFXML().setComments(comments);
-        viewTweetPage.getFXML().setTweet(tweet);
-        viewTweetPage.getFXML().setPage(page);
-        viewTweetPage.getFXML().refresh();
-        mainPage.getFXML().setMainPane(viewTweetPage.getPane());
-    }
-
-    // should be called by refresh response method
-    public void refreshViewTweetPage(List<List<Long>> comments, Tweet tweet)
-    {
-        viewTweetPage.getFXML().setComments(comments);
-        viewTweetPage.getFXML().setTweet(tweet);
-        viewTweetPage.getFXML().autoRefresh();
-    }
-
     // Explore page
 
     public void showExplorePage(List<Long> tweets)
@@ -266,6 +226,48 @@ public class GraphicalAgent
     public void refreshSearchResults()
     {
         searchResultsPane.getFXML().autoRefresh();
+    }
+
+    // ViewList page
+
+    public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
+    {
+        MainPage mainPage = MainPage.getMainPage();
+        viewListPage = new ViewListPage();
+        viewListPage.getFXML().setPageKind(pageKind);
+        viewListPage.getFXML().setItems(items);
+        viewListPage.getFXML().setUser(user);
+        viewListPage.getFXML().setPage(page);
+        viewListPage.getFXML().refresh();
+        mainPage.getFXML().setMainPane(viewListPage.getPane());
+    }
+
+    // should be called by refresh response method
+    public void refreshViewListPage(List<List<Long>> items)
+    {
+        viewListPage.getFXML().setItems(items);
+        viewListPage.getFXML().autoRefresh();
+    }
+
+    // ViewTweet page
+
+    public void showViewTweetPage(Tweet tweet, List<List<Long>> comments, int page)
+    {
+        MainPage mainPage = MainPage.getMainPage();
+        viewTweetPage = new ViewTweetPage();
+        viewTweetPage.getFXML().setComments(comments);
+        viewTweetPage.getFXML().setTweet(tweet);
+        viewTweetPage.getFXML().setPage(page);
+        viewTweetPage.getFXML().refresh();
+        mainPage.getFXML().setMainPane(viewTweetPage.getPane());
+    }
+
+    // should be called by refresh response method
+    public void refreshViewTweetPage(Tweet tweet, List<List<Long>> comments)
+    {
+        viewTweetPage.getFXML().setComments(comments);
+        viewTweetPage.getFXML().setTweet(tweet);
+        viewTweetPage.getFXML().autoRefresh();
     }
 
     // Getter and Setters
