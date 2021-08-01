@@ -22,6 +22,7 @@ import view.components.tweet.TweetPaneFXML;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Objects;
 
 public class ProfilePageFXML
 {
@@ -174,12 +175,22 @@ public class ProfilePageFXML
             }
         }
 
+        bioText.setText(user.getBio());
         nameText.setText(user.getName());
         usernameText.setText("@" + user.getUsername());
-        emailText.setText("Email: " + user.getEmail());
-        bioText.setText(user.getBio());
 
-        if (user.getBirthDate().getTime() == DEFAULT_DATE)
+        boolean isDataShareable = isProfile || Objects.requireNonNull(userProfile).getInfoState();
+
+        if (!isDataShareable)
+        {
+            emailText.setText("Email: N/A");
+        }
+        else
+        {
+            emailText.setText("Email: " + user.getEmail());
+        }
+
+        if (user.getBirthDate().getTime() == DEFAULT_DATE || !isDataShareable)
         {
             birthdateText.setText("Birthdate: N/A");
         }
@@ -189,7 +200,7 @@ public class ProfilePageFXML
             birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()));
         }
 
-        if (user.getPhoneNumber().equals(""))
+        if (user.getPhoneNumber().equals("") || !isDataShareable)
         {
             phoneNumberText.setText("Phone Number: N/A");
         }

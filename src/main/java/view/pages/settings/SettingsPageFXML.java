@@ -135,7 +135,14 @@ public class SettingsPageFXML
         }
         if (pictureCheckBox.isSelected())
         {
-            form.setPicture(ImageUtil.imageToBytes(pictureTextField.getText()));
+            if (pictureTextField.getText().equals(""))
+            {
+                form.setPicture("");
+            }
+            else
+            {
+                form.setPicture(ImageUtil.imageToBytes(pictureTextField.getText()));
+            }
         }
         if (birthdateCheckBox.isSelected() && birthDatePicker.getValue() != null)
         {
