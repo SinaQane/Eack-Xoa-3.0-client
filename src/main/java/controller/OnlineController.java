@@ -431,6 +431,23 @@ public class OnlineController implements ResponseVisitor
         GraphicalAgent.getGraphicalAgent().refreshTimelinePage(tweets);
     }
 
+    // Groups page event responses
+
+    @Override
+    public void viewGroupsPage(List<List<Long>> groups)
+    {
+        GraphicalAgent.getGraphicalAgent().showGroupsPage(groups, 0);
+    }
+
+    @Override
+    public void refreshGroupsPage(List<List<Long>> groups)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshGroupsPage(groups);
+    }
+
+    @Override
+    public void manageGroup(Unauthenticated unauthenticated) {}
+
     // Tweet event responses
 
     @Override

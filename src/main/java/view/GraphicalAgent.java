@@ -9,6 +9,7 @@ import event.EventSender;
 import event.events.authentication.LogoutEvent;
 import event.events.general.RefreshListEvent;
 import event.events.general.RefreshTweetEvent;
+import event.events.groups.RefreshGroupsPageEvent;
 import event.events.profile.RefreshProfileEvent;
 import event.events.profile.ViewProfileEvent;
 import event.events.timeline.RefreshTimelineEvent;
@@ -20,6 +21,7 @@ import util.Loop;
 import view.pages.explore.ExplorePage;
 import view.pages.explore.RandomTweetsPane;
 import view.pages.explore.SearchResultsPane;
+import view.pages.groups.GroupsPage;
 import view.pages.profile.ProfilePage;
 import view.pages.settings.SettingsPage;
 import view.pages.timeline.TimelinePage;
@@ -50,6 +52,7 @@ public class GraphicalAgent
     private ViewListPage viewListPage;
     private ViewTweetPage viewTweetPage;
     private ExplorePage explorePage;
+    private GroupsPage groupsPage;
     private RandomTweetsPane randomTweetsPane;
     private SearchResultsPane searchResultsPane;
 
@@ -283,6 +286,7 @@ public class GraphicalAgent
             searchResultsPane = new SearchResultsPane();
             searchResultsPane.getFXML().setUsers(users);
             searchResultsPane.getFXML().setPage(page);
+            searchResultsPane.getFXML().refresh();
             explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
 
             if (loop != null) loop.stop();
@@ -294,6 +298,36 @@ public class GraphicalAgent
     public void refreshSearchResults()
     {
         Platform.runLater(() -> searchResultsPane.getFXML().autoRefresh());
+    }
+
+    // Groups page
+
+    public void showGroupsPage(List<List<Long>> groups, int page)
+    {
+        Platform.runLater(() ->
+        {
+            groupsPage = new GroupsPage();
+            groupsPage.getFXML().setGroups(groups);
+            groupsPage.getFXML().setPage(page);
+            groupsPage.getFXML().refresh();
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshGroupsPageEvent(userId));
+            });
+            loop.start();
+        });
+    }
+
+    public void refreshGroupsPage(List<List<Long>> groups)
+    {
+        Platform.runLater(() ->
+        {
+            groupsPage.getFXML().setGroups(groups);
+            groupsPage.getFXML().autoRefresh();
+        });
     }
 
     // ViewList page

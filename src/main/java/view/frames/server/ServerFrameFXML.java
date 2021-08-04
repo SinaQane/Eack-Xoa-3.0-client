@@ -33,6 +33,12 @@ public class ServerFrameFXML
 
     public void connect()
     {
+        resultText.setVisible(true);
+        resultText.setText("connecting...");
+        resultText.setFill(Color.WHITE);
+
+        connectButton.setDisable(true);
+
         String host = hostTextField.getText();
         int port = Integer.parseInt(portTextField.getText());
 
@@ -46,9 +52,6 @@ public class ServerFrameFXML
             resultText.setFill(Color.RED);
         }
 
-        resultText.setText("connecting...");
-        resultText.setFill(Color.WHITE);
-
         try
         {
             Thread.sleep(5000);
@@ -56,6 +59,11 @@ public class ServerFrameFXML
 
         resultText.setText(ConnectionStatus.getStatus().isOnline() ? "connected" : "connection failed");
         resultText.setFill(ConnectionStatus.getStatus().isOnline() ? Color.GREEN : Color.RED);
+
+        if (!ConnectionStatus.getStatus().isOnline())
+        {
+            connectButton.setDisable(false);
+        }
 
         if (firstPageFXML != null)
         {
