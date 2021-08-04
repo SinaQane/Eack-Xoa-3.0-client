@@ -33,9 +33,4 @@ public class ManageGroupFrame
         }
         ((ManageGroupFrameFXML) loader.getController()).setGroup(groupId);
     }
-
-    public FXMLLoader getLoader()
-    {
-        return loader;
-    }
 }

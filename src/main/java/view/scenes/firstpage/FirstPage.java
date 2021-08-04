@@ -12,12 +12,11 @@ import java.util.Objects;
 public class FirstPage
 {
     private final Scene scene;
-    private final FXMLLoader loader;
 
     public FirstPage()
     {
         String path = new Config(Constants.CONFIG).getProperty(String.class, "firstPage");
-        loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
         Parent root = null;
         try
         {
@@ -29,11 +28,6 @@ public class FirstPage
         }
         assert root != null;
         scene = new Scene(root);
-    }
-
-    public FirstPageFXML getFXML()
-    {
-        return loader.getController();
     }
 
     public Scene getScene()

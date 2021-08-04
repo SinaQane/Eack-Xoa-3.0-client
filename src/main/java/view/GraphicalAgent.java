@@ -260,11 +260,13 @@ public class GraphicalAgent
     {
         Platform.runLater(() ->
         {
+            MainPage mainPage = MainPage.getMainPage();
             explorePage = new ExplorePage();
             randomTweetsPane = new RandomTweetsPane();
             randomTweetsPane.getFXML().setTweets(tweets);
             randomTweetsPane.getFXML().refresh();
             explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
+            mainPage.getFXML().setMainPane(explorePage.getPane());
 
             if (loop != null) loop.stop();
             loop = new Loop(fps, this::refreshRandomTweets);
@@ -282,12 +284,14 @@ public class GraphicalAgent
     {
         Platform.runLater(() ->
         {
+            MainPage mainPage = MainPage.getMainPage();
             explorePage = new ExplorePage();
             searchResultsPane = new SearchResultsPane();
             searchResultsPane.getFXML().setUsers(users);
             searchResultsPane.getFXML().setPage(page);
             searchResultsPane.getFXML().refresh();
             explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
+            mainPage.getFXML().setMainPane(explorePage.getPane());
 
             if (loop != null) loop.stop();
             loop = new Loop(fps, this::refreshSearchResults);
@@ -306,10 +310,12 @@ public class GraphicalAgent
     {
         Platform.runLater(() ->
         {
+            MainPage mainPage = MainPage.getMainPage();
             groupsPage = new GroupsPage();
             groupsPage.getFXML().setGroups(groups);
             groupsPage.getFXML().setPage(page);
             groupsPage.getFXML().refresh();
+            mainPage.getFXML().setMainPane(groupsPage.getPane());
 
             if (loop != null) loop.stop();
             loop = new Loop(fps, () ->

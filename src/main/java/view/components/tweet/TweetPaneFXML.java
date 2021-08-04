@@ -12,7 +12,6 @@ public class TweetPaneFXML
 {
     private final TweetPaneListener listener = new TweetPaneListener();
 
-    private Long tweetId;
     private Long ownerId;
 
     private Tweet tweet;
@@ -41,7 +40,6 @@ public class TweetPaneFXML
 
         if (tweet != null)
         {
-            tweetId = tweet.getId();
             ownerId = tweet.getOwner();
 
             tweetText.setText(tweet.getText());
@@ -75,6 +73,7 @@ public class TweetPaneFXML
         } catch (InterruptedException | SQLException ignored) {}
     }
 
+    /* refresh function for this pane
     public void refresh()
     {
         try
@@ -84,7 +83,7 @@ public class TweetPaneFXML
             downvoteButton.setText("Downvote (" + tweet.getDownvotes().size() + ")");
             retweetButton.setText("Retweet (" + tweet.getRetweets().size() + ")");
         } catch (InterruptedException | SQLException ignored) {}
-    }
+    }*/
 
     public void viewImage()
     {
