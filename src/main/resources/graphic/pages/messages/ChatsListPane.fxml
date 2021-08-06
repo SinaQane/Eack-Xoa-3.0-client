@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="490.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.messages.ChatsListPaneFXML">
+    <Button fx:id="newChatButton" layoutX="35.0" layoutY="14.0" mnemonicParsing="false" onAction="#newChat" text="New Chat" />
+    <Button fx:id="firstChatButton" layoutY="49.0" mnemonicParsing="false" onAction="#firstChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat1" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="secondChatButton" layoutY="105.0" mnemonicParsing="false" onAction="#secondChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat2" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="thirdChatButton" layoutY="161.0" mnemonicParsing="false" onAction="#thirdChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat3" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="fourthChatButton" layoutY="217.0" mnemonicParsing="false" onAction="#fourthChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat4" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="fifthChatButton" layoutY="273.0" mnemonicParsing="false" onAction="#fifthChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat5" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="sixthChatButton" layoutY="329.0" mnemonicParsing="false" onAction="#sixthChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat6" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="seventhChatButton" layoutY="385.0" mnemonicParsing="false" onAction="#seventhChat" prefHeight="56.0" prefWidth="150.0" style="-fx-background-color: #1E2425;" text="Chat7" textFill="#cceeff">
+        <font>
+          <Font size="14.0" />
+        </font>
+    </Button>
+    <Button fx:id="previousButton" layoutX="15.0" layoutY="455.0" mnemonicParsing="false" onAction="#previous" text="Back" />
+    <Button fx:id="nextButton" layoutX="87.0" layoutY="455.0" mnemonicParsing="false" onAction="#next" text="Next" />
+</Pane>

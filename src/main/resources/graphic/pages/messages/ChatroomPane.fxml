@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+
+<Pane prefHeight="490.0" prefWidth="630.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.messages.ChatroomPaneFXML">
+    <Line endX="480.0" endY="894.0" layoutX="135.0" layoutY="-450.0" startX="-121.0" startY="894.0" stroke="#2b3132" />
+    <Button fx:id="addMemberButton" layoutX="264.0" layoutY="12.0" mnemonicParsing="false" onAction="#addMember" text="Add Member" />
+    <Button fx:id="previousButton" layoutX="19.0" layoutY="12.0" mnemonicParsing="false" onAction="#previous" text="Previous" />
+    <Button fx:id="nextButton" layoutX="538.0" layoutY="12.0" mnemonicParsing="false" onAction="#next" prefHeight="24.0" prefWidth="73.0" text="Next" />
+    <Line endX="480.0" endY="894.0" layoutX="135.0" layoutY="-846.0" startX="-121.0" startY="894.0" stroke="#2b3132" />
+    <Pane fx:id="fifthMessagePane" layoutX="15.0" layoutY="51.0" prefHeight="78.0" prefWidth="600.0" />
+    <Pane fx:id="fourthMessagePane" layoutX="15.0" layoutY="129.0" prefHeight="78.0" prefWidth="600.0" />
+    <Pane fx:id="thirdMessagePane" layoutX="15.0" layoutY="207.0" prefHeight="78.0" prefWidth="600.0" />
+    <Pane fx:id="secondMessagePane" layoutX="15.0" layoutY="285.0" prefHeight="78.0" prefWidth="600.0" />
+    <Pane fx:id="firstMessagePane" layoutX="15.0" layoutY="363.0" prefHeight="78.0" prefWidth="600.0" style="-fx-background-color: #1E2425;" />
+    <TextField fx:id="messageTextField" layoutX="20.0" layoutY="455.0" prefHeight="24.0" prefWidth="276.0" promptText="Type your message here" />
+    <TextField fx:id="picPathTextField" layoutX="307.0" layoutY="455.0" prefHeight="24.0" prefWidth="108.0" promptText="picture's path" />
+    <Button fx:id="sendButton" layoutX="559.0" layoutY="455.0" mnemonicParsing="false" onAction="#send" text="Send" />
+   <TextField fx:id="scheduledTimeText" alignment="CENTER" layoutX="424.0" layoutY="455.0" prefHeight="24.0" prefWidth="128.0" promptText="yyyy-MM-dd HH:mm">
+      <font>
+         <Font size="11.0" />
+      </font>
+   </TextField>
+</Pane>

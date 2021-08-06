@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Line?>
+
+<Pane prefHeight="500.0" prefWidth="800.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.pages.messages.MessagesPageFXML">
+    <Line endX="-121.0" endY="422.0" layoutX="280.0" layoutY="-408.0" startX="-121.0" startY="894.0" stroke="#2b3132"/>
+    <Pane fx:id="chatsListPane" layoutX="4.0" layoutY="5.0" prefHeight="490.0" prefWidth="150.0"
+          style="-fx-background-color: #1E2425;"/>
+    <Pane fx:id="chatroomPane" layoutX="165.0" layoutY="5.0" prefHeight="490.0" prefWidth="630.0"
+          style="-fx-background-color: #1E2425;"/>
+</Pane>
