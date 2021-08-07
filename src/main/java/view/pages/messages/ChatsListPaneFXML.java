@@ -2,7 +2,7 @@ package view.pages.messages;
 
 import controller.ChatroomController;
 import controller.ConnectionStatus;
-import db.Database;
+import db.ModelLoader;
 import javafx.scene.control.Button;
 import model.Chat;
 
@@ -90,7 +90,7 @@ public class ChatsListPaneFXML
             {
                 try
                 {
-                    Chat chat = Database.getDB().loadChat(chatsList.get(page).get(i)[0]);
+                    Chat chat = ModelLoader.getModelLoader().getChat(chatsList.get(page).get(i)[0]);
 
                     if (ConnectionStatus.getStatus().isOnline())
                     {
@@ -101,7 +101,7 @@ public class ChatsListPaneFXML
                         setButton(i, chat.getChatName(), controller.getUnseenCount(chat));
                     }
                 }
-                catch (SQLException ignored)
+                catch (SQLException | InterruptedException ignored)
                 {
                     getButton(i).setVisible(false);
                 }

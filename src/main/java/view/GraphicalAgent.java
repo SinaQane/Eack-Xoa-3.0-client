@@ -2,6 +2,7 @@ package view;
 
 import config.Config;
 import constants.Constants;
+import controller.ChatroomController;
 import controller.ConnectionStatus;
 import controller.OnlineController;
 import event.EventListener;
@@ -10,6 +11,8 @@ import event.events.authentication.LogoutEvent;
 import event.events.general.RefreshListEvent;
 import event.events.general.RefreshTweetEvent;
 import event.events.groups.RefreshGroupsPageEvent;
+import event.events.messages.RefreshChatroomEvent;
+import event.events.messages.RefreshMessagesPageEvent;
 import event.events.profile.RefreshProfileEvent;
 import event.events.profile.ViewProfileEvent;
 import event.events.timeline.RefreshTimelineEvent;
@@ -18,10 +21,14 @@ import javafx.stage.Stage;
 import model.Tweet;
 import model.User;
 import util.Loop;
+import view.pages.empty.EmptyChatroomPane;
 import view.pages.explore.ExplorePage;
 import view.pages.explore.RandomTweetsPane;
 import view.pages.explore.SearchResultsPane;
 import view.pages.groups.GroupsPage;
+import view.pages.messages.ChatroomPane;
+import view.pages.messages.ChatsListPane;
+import view.pages.messages.MessagesPage;
 import view.pages.profile.ProfilePage;
 import view.pages.settings.SettingsPage;
 import view.pages.timeline.TimelinePage;
@@ -51,8 +58,11 @@ public class GraphicalAgent
     private TimelinePage timelinePage;
     private ViewListPage viewListPage;
     private ViewTweetPage viewTweetPage;
-    private ExplorePage explorePage;
     private GroupsPage groupsPage;
+    private MessagesPage messagesPage;
+    private ChatsListPane chatsListPane;
+    private ChatroomPane chatroomPane;
+    private ExplorePage explorePage;
     private RandomTweetsPane randomTweetsPane;
     private SearchResultsPane searchResultsPane;
 
@@ -333,6 +343,86 @@ public class GraphicalAgent
         {
             groupsPage.getFXML().setGroups(groups);
             groupsPage.getFXML().autoRefresh();
+        });
+    }
+
+    // Messages page
+
+    public void showMessagesPage(List<List<Long[]>> chatsList)
+    {
+        Platform.runLater(() ->
+        {
+            MainPage mainPage = MainPage.getMainPage();
+            messagesPage = new MessagesPage();
+            chatsListPane = new ChatsListPane();
+            chatsListPane.getFXML().setChatsList(chatsList);
+            chatsListPane.getFXML().setPage(0);
+            chatsListPane.getFXML().refresh();
+            messagesPage.getFXML().setChatsListPane(chatsListPane.getPane());
+            messagesPage.getFXML().setChatroomPane(new EmptyChatroomPane().getPane());
+            mainPage.getFXML().setMainPane(messagesPage.getPane());
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                if (ConnectionStatus.getStatus().isOnline())
+                {
+                    Long userId = ConnectionStatus.getStatus().getUser().getId();
+                    eventListener.listen(new RefreshMessagesPageEvent(userId));
+                }
+                else
+                {
+                    ChatroomController controller = new ChatroomController();
+                    controller.refreshChatsList();
+                }
+            });
+            loop.start();
+        });
+    }
+
+    public void showChatroom(List<List<Long>> messages, Long chatId)
+    {
+        Platform.runLater(() ->
+        {
+            chatroomPane = new ChatroomPane();
+            chatroomPane.getFXML().setMessages(messages);
+            chatroomPane.getFXML().setChatId(chatId);
+            chatroomPane.getFXML().setPage(0);
+            chatroomPane.getFXML().refresh();
+            messagesPage.getFXML().setChatroomPane(chatroomPane.getPane());
+
+            if (loop != null) loop.stop();
+            loop = new Loop(fps, () ->
+            {
+                if (ConnectionStatus.getStatus().isOnline())
+                {
+                    eventListener.listen(new RefreshChatroomEvent(chatId));
+                }
+                else
+                {
+                    ChatroomController controller = new ChatroomController();
+                    controller.refreshChatroom(chatId);
+                }
+            });
+            loop.start();
+        });
+    }
+
+    public void refreshChatroom(List<List<Long>> messages)
+    {
+        Platform.runLater(() ->
+        {
+            chatroomPane.getFXML().setMessages(messages);
+            chatroomPane.getFXML().refresh();
+        });
+    }
+
+    public void refreshChatsList(List<List<Long[]>> chatsList)
+    {
+        Platform.runLater(() ->
+        {
+            chatsListPane.getFXML().setChatsList(chatsList);
+            chatsListPane.getFXML().refresh();
         });
     }
 

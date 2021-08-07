@@ -1,7 +1,7 @@
 package view.components.message;
 
 import controller.ConnectionStatus;
-import db.Database;
+import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import model.Message;
@@ -32,8 +32,8 @@ public class MessagePaneFXML
         Message message = null;
         try
         {
-            message = Database.getDB().loadMessage(messageId);
-            User messageOwner = Database.getDB().loadUser(message.getOwnerId());
+            message = ModelLoader.getModelLoader().getMessage(messageId);
+            User messageOwner = ModelLoader.getModelLoader().getUser(message.getOwnerId());
 
             ownerText.setText("@" + messageOwner.getUsername());
             messageText.setText(message.getText());
@@ -66,15 +66,15 @@ public class MessagePaneFXML
                 editButton.setVisible(false);
                 deleteButton.setVisible(false);
             }
-        } catch (SQLException ignored) {}
+        } catch (SQLException | InterruptedException ignored) {}
 
         try
         {
             assert message != null;
             if (message.getTweetId() != -1L)
             {
-                Tweet tweet = Database.getDB().loadTweet(message.getTweetId());
-                User tweetOwner = Database.getDB().loadUser(tweet.getOwner());
+                Tweet tweet = ModelLoader.getModelLoader().getTweet(message.getTweetId());
+                User tweetOwner = ModelLoader.getModelLoader().getUser(tweet.getOwner());
                 this.tweetText.setText("A tweet from " + tweetOwner.getUsername());
                 tweetText.setVisible(true);
                 viewTweetButton.setVisible(true);
@@ -84,7 +84,7 @@ public class MessagePaneFXML
                 tweetText.setVisible(false);
                 viewTweetButton.setVisible(false);
             }
-        } catch (SQLException ignored) {}
+        } catch (SQLException | InterruptedException ignored) {}
     }
 
     public void viewImage()

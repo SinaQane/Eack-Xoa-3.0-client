@@ -6,6 +6,8 @@ import model.*;
 
 import java.sql.*;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Database
 {
@@ -297,6 +299,26 @@ public class Database
         statement.executeQuery();
     }
 
+    public Long getLastMessageTime(long id)
+    {
+        long maxTime = -1L;
+        PreparedStatement statement;
+
+        try
+        {
+            statement = connection.prepareStatement("SELECT MAX(`message_date_unix`) AS `max_time` FROM `messages` WHERE `chat_id` = ? AND `message_date_unix` < ?");
+            statement.setLong(1, id);
+            statement.setLong(2, new java.util.Date().getTime());
+            ResultSet res = statement.executeQuery();
+            if (res.next())
+            {
+                maxTime = res.getLong("max_time");
+            }
+        } catch (SQLException ignored) {}
+
+        return maxTime;
+    }
+
     public Message loadMessage(long id) throws SQLException
     {
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `messages` WHERE `id` = ?");
@@ -340,6 +362,51 @@ public class Database
         statement.setBoolean(11, message.isReceived());
         statement.setBoolean(12, message.isSeen());
         statement.executeQuery();
+    }
+
+    public void deleteMessage(Long id) throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("DELETE FROM `messages` WHERE `id` = ?");
+        statement.setLong(1, id);
+        statement.executeQuery();
+    }
+
+    public Long minimumMessageId() throws SQLException
+    {
+        PreparedStatement statement = connection.prepareStatement("SELECT MIN(`id`) AS `min_id` FROM `messages`");
+        ResultSet res = statement.executeQuery();
+        long minId = -1L;
+        if (res.next()) {
+            minId = Math.min(minId, res.getLong("min_id"));
+        }
+        return minId;
+    }
+
+    public List<Long> loadOfflineMessages(long chatId) throws SQLException
+    {
+        List<Long> messages = new LinkedList<>();
+
+        PreparedStatement statement = connection.prepareStatement("SELECT `id` FROM `messages` WHERE `chat_id` = ? AND `message_date_unix` < ?");
+        statement.setLong(1, chatId);
+        statement.setLong(2, new java.util.Date().getTime());
+        ResultSet res = statement.executeQuery();
+        while (res.next())
+        {
+            messages.add(res.getLong("id"));
+        }
+        return messages;
+    }
+
+    public List<Message> getAllOfflineMessages() throws SQLException
+    {
+        List<Message> messages = new LinkedList<>();
+        while (minimumMessageId() < -1)
+        {
+            Message message = loadMessage(minimumMessageId());
+            deleteMessage(minimumMessageId());
+            messages.add(message);
+        }
+        return messages;
     }
 
     public Notification loadNotification(long id) throws SQLException

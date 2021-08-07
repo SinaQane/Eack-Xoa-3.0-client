@@ -18,14 +18,4 @@ public class MessagesPageFXML
         this.chatroomPane.getChildren().clear();
         this.chatroomPane.getChildren().add(chatroomPane);
     }
-
-    /* TODO write these in graphical agent
-    public void refresh()
-    {
-        ChatsListPane chatsListPane = new ChatsListPane();
-        chatsListPane.refresh(0);
-
-        setChatsListPane(chatsListPane.getPane());
-        setChatroomPane(new EmptyChatroomPane().getPane());
-    }*/
 }

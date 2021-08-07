@@ -1,6 +1,7 @@
 package view.components.group;
 
 import db.Database;
+import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
 import model.Group;
@@ -27,18 +28,18 @@ public class GroupPaneFXML
     {
         try
         {
-            Group group = Database.getDB().loadGroup(groupId);
+            Group group = ModelLoader.getModelLoader().getGroup(groupId);
 
             groupNameText.setText(group.getTitle());
 
             StringBuilder members = new StringBuilder();
             for (Long id : group.getMembers())
             {
-                User user = Database.getDB().loadUser(id);
+                User user = ModelLoader.getModelLoader().getUser(id);
                 members.append(user.getUsername()).append(" ");
             }
             membersText.setText(members.toString());
-        } catch (SQLException ignored) {}
+        } catch (SQLException | InterruptedException ignored) {}
     }
 
     public void editGroup()

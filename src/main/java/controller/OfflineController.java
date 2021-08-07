@@ -4,8 +4,10 @@ import db.Database;
 import event.Event;
 import event.events.authentication.LoginForm;
 import event.events.authentication.OfflineLoginEvent;
+import event.events.messages.SendCachedMessagesEvent;
 import event.events.settings.SettingsEvent;
 import event.events.settings.SettingsForm;
+import model.Message;
 import model.User;
 import view.GraphicalAgent;
 
@@ -49,7 +51,16 @@ public class OfflineController
             events.clear();
         }
 
-        // TODO reload db
+        if (ConnectionStatus.getStatus().getUser() != null)
+        {
+            try
+            {
+                List<Message> messages = Database.getDB().getAllOfflineMessages();
+                String authToken = ConnectionStatus.getStatus().getAuthToken();
+                SendCachedMessagesEvent event = new SendCachedMessagesEvent(messages, authToken);
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(event);
+            } catch (SQLException ignored) {}
+        }
     }
 
     public User loginEvent(LoginForm form)

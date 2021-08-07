@@ -1,10 +1,11 @@
 package view.pages.messages;
 
-import db.Database;
+import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Chat;
+import model.Message;
 import view.components.empty.EmptyMessagePane;
 import view.components.message.MessagePane;
 
@@ -115,9 +116,9 @@ public class ChatroomPaneFXML
 
         try
         {
-            Chat chat = Database.getDB().loadChat(chatId);
+            Chat chat = ModelLoader.getModelLoader().getChat(chatId);
             addMemberButton.setVisible(chat.isGroup());
-        } catch (SQLException ignored) {}
+        } catch (SQLException | InterruptedException ignored) {}
     }
 
     public void addMember()

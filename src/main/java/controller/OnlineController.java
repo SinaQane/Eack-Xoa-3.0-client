@@ -8,6 +8,7 @@ import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
 import event.events.Ping;
+import event.events.messages.ReceivedAllMessagesEvent;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
 import exceptions.authentication.LoginFailed;
@@ -97,8 +98,7 @@ public class OnlineController implements ResponseVisitor
         }
     }
 
-    /* TODO log db event errors (probably with a log event)
-    Database event responses */
+    // Database event responses
 
     @Override
     public void getChat(Chat chat, DatabaseError err)
@@ -240,6 +240,7 @@ public class OnlineController implements ResponseVisitor
         {
             ConnectionStatus.getStatus().setAuthToken(authToken);
             GraphicalAgent.getGraphicalAgent().showMainPage(user);
+            addEvent(new ReceivedAllMessagesEvent(user.getId(), authToken));
         }
     }
 
@@ -248,6 +249,7 @@ public class OnlineController implements ResponseVisitor
     {
         ConnectionStatus.getStatus().setAuthToken(authToken);
         ConnectionStatus.getStatus().setUser(user);
+        addEvent(new ReceivedAllMessagesEvent(user.getId(), authToken));
     }
 
     @Override
@@ -261,6 +263,7 @@ public class OnlineController implements ResponseVisitor
         {
             ConnectionStatus.getStatus().setAuthToken(authToken);
             GraphicalAgent.getGraphicalAgent().showMainPage(user);
+            addEvent(new ReceivedAllMessagesEvent(user.getId(), authToken));
         }
     }
 
@@ -447,6 +450,49 @@ public class OnlineController implements ResponseVisitor
 
     @Override
     public void manageGroup(Unauthenticated unauthenticated) {}
+
+    // Messages page event responses
+
+    @Override
+    public void receivedAllMessages(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void viewChatroom(List<Long> messages, Long chatId)
+    {
+        ChatroomController controller = new ChatroomController();
+        GraphicalAgent.getGraphicalAgent().showChatroom(controller.getOrganizedMessages(messages), chatId);
+    }
+
+    @Override
+    public void refreshChatroom(List<Long> messages, Long chatId)
+    {
+        ChatroomController controller = new ChatroomController();
+        GraphicalAgent.getGraphicalAgent().refreshChatroom(controller.getOrganizedMessages(messages));
+    }
+
+    @Override
+    public void viewMessagesPage(List<List<Long[]>> chatsList)
+    {
+        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList);
+    }
+
+    @Override
+    public void refreshMessagesPage(List<List<Long[]>> chatsList)
+    {
+        GraphicalAgent.getGraphicalAgent().refreshChatsList(chatsList);
+    }
+
+    @Override
+    public void sendMessage(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void editMessage(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void deleteMessage(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void sendCachedMessages(Unauthenticated unauthenticated) {}
 
     // Tweet event responses
 
