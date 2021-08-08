@@ -3,8 +3,11 @@ package view.pages.messages;
 import controller.ChatroomController;
 import controller.ConnectionStatus;
 import db.ModelLoader;
+import event.events.messages.ViewChatroomEvent;
 import javafx.scene.control.Button;
 import model.Chat;
+import view.GraphicalAgent;
+import view.frames.newchat.NewChatFrame;
 
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -12,7 +15,6 @@ import java.util.List;
 
 public class ChatsListPaneFXML
 {
-    // TODO private final ChatsListListener listener = new ChatsListListener();
     private final ChatroomController controller = new ChatroomController();
 
     private List<List<Long[]>> chatsList;
@@ -80,6 +82,8 @@ public class ChatsListPaneFXML
 
     public void refresh()
     {
+        newChatButton.setDisable(!ConnectionStatus.getStatus().isOnline());
+
         for (int i = 0; i < 7; i++)
         {
             if (chatsList.get(page).get(i)[0] == -1L)
@@ -114,51 +118,58 @@ public class ChatsListPaneFXML
 
     public void newChat()
     {
-        // listener.eventOccurred(new EventObject(newChatButton), new Chat(), 0);
+        new NewChatFrame();
     }
 
     public void firstChat()
     {
-        // listener.eventOccurred(new EventObject(firstChatButton), firstChat, page);
+        Long id = chatsList.get(page).get(0)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void secondChat()
     {
-        // listener.eventOccurred(new EventObject(secondChatButton), secondChat, page);
+        Long id = chatsList.get(page).get(1)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void thirdChat()
     {
-        // listener.eventOccurred(new EventObject(thirdChatButton), thirdChat, page);
+        Long id = chatsList.get(page).get(2)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void fourthChat()
     {
-        // listener.eventOccurred(new EventObject(fourthChatButton), fourthChat, page);
+        Long id = chatsList.get(page).get(3)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void fifthChat()
     {
-        // listener.eventOccurred(new EventObject(fifthChatButton), fifthChat, page);
+        Long id = chatsList.get(page).get(4)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void sixthChat()
     {
-        // listener.eventOccurred(new EventObject(sixthChatButton), sixthChat, page);
+        Long id = chatsList.get(page).get(5)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void seventhChat()
     {
-        // listener.eventOccurred(new EventObject(seventhChatButton), seventhChat, page);
+        Long id = chatsList.get(page).get(6)[0];
+        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
     }
 
     public void previous()
     {
-        // listener.eventOccurred(new EventObject(previousButton), new Chat(), page);
+        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, page - 1);
     }
 
     public void next()
     {
-        // listener.eventOccurred(new EventObject(nextButton), new Chat(), page);
+        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, page + 1);
     }
 }

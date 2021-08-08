@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="380.0" prefWidth="600.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.frames.newchat.NewChatFrameFXML">
+   <TextField fx:id="groupTextField" alignment="TOP_LEFT" layoutX="192.0" layoutY="211.0" prefHeight="24.0" prefWidth="214.0" promptText="Pick a name for your group" />
+   <TextField fx:id="usernameTextField" layoutX="192.0" layoutY="113.0" prefHeight="24.0" prefWidth="214.0" promptText="Enter other user's username" />
+   <Button fx:id="doneButton" layoutX="252.0" layoutY="290.0" mnemonicParsing="false" onAction="#done" prefHeight="24.0" prefWidth="96.0" text="Done" />
+   <Text fill="WHITE" layoutX="168.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In case you want to create a new group:" />
+   <Text fill="WHITE" layoutX="141.0" layoutY="98.0" strokeType="OUTSIDE" strokeWidth="0.0" text="In case you want to start chat with another user:" />
+</Pane>

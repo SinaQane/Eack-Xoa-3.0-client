@@ -1,20 +1,22 @@
 package view.pages.messages;
 
+import controller.ConnectionStatus;
 import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Chat;
-import model.Message;
+import view.GraphicalAgent;
 import view.components.empty.EmptyMessagePane;
 import view.components.message.MessagePane;
+import view.frames.addmember.AddMemberFrame;
 
 import java.sql.SQLException;
 import java.util.List;
 
 public class ChatroomPaneFXML
 {
-    // TODO private final ChatroomListener listener = new ChatroomListener();
+    private final ChatroomPaneListener listener = new ChatroomPaneListener();
 
     private int page;
     private long chatId;
@@ -97,6 +99,8 @@ public class ChatroomPaneFXML
 
     public void refresh()
     {
+        addMemberButton.setDisable(!ConnectionStatus.getStatus().isOnline());
+
         for (int i = 0; i < 5; i++)
         {
             if (messages.get(page).get(i) == -1L)
@@ -123,21 +127,21 @@ public class ChatroomPaneFXML
 
     public void addMember()
     {
-        // listener.eventOccurred(new EventObject(addMemberButton), chat, page, "", "");
+        new AddMemberFrame(chatId);
     }
 
     public void previous()
     {
-        // listener.eventOccurred(new EventObject(previousButton), chat, page, "", "");
+        GraphicalAgent.getGraphicalAgent().showChatroom(messages, chatId, page - 1);
     }
 
     public void next()
     {
-        // listener.eventOccurred(new EventObject(nextButton), chat, page, "", "");
+        GraphicalAgent.getGraphicalAgent().showChatroom(messages, chatId, page + 1);
     }
 
     public void send()
     {
-        // listener.eventOccurred(new EventObject(sendButton), chat, page, messageTextField.getText(), picPathTextField.getText());
+        listener.eventOccurred(sendButton, chatId, messageTextField.getText(), picPathTextField.getText(), scheduledTimeText.getText());
     }
 }

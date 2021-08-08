@@ -14,6 +14,7 @@ import exceptions.Unauthenticated;
 import exceptions.authentication.LoginFailed;
 import exceptions.authentication.LogoutFailed;
 import exceptions.authentication.SignUpFailed;
+import exceptions.messages.ChatCreationFailed;
 import exceptions.settings.SettingsFailed;
 import exceptions.tweet.ForwardFailed;
 import javafx.stage.Stage;
@@ -460,7 +461,7 @@ public class OnlineController implements ResponseVisitor
     public void viewChatroom(List<Long> messages, Long chatId)
     {
         ChatroomController controller = new ChatroomController();
-        GraphicalAgent.getGraphicalAgent().showChatroom(controller.getOrganizedMessages(messages), chatId);
+        GraphicalAgent.getGraphicalAgent().showChatroom(controller.getOrganizedMessages(messages), chatId, 0);
     }
 
     @Override
@@ -473,7 +474,7 @@ public class OnlineController implements ResponseVisitor
     @Override
     public void viewMessagesPage(List<List<Long[]>> chatsList)
     {
-        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList);
+        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, 0);
     }
 
     @Override
@@ -493,6 +494,15 @@ public class OnlineController implements ResponseVisitor
 
     @Override
     public void sendCachedMessages(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void newChat(Unauthenticated unauthenticated, ChatCreationFailed chatCreationFailed) {}
+
+    @Override
+    public void addMember(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void leaveGroup(Unauthenticated unauthenticated) {}
 
     // Tweet event responses
 

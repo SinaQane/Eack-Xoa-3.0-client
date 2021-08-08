@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
+
+<Pane prefHeight="380.0" prefWidth="600.0" style="-fx-background-color: #1E2425;" xmlns="http://javafx.com/javafx/16"
+      xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.frames.addmember.AddMemberFrameFXML">
+    <TextField fx:id="usernameTextField" layoutX="192.0" layoutY="166.0" prefHeight="24.0" prefWidth="214.0"
+               promptText="Enter other user's username"/>
+    <Button fx:id="addButton" layoutX="252.0" layoutY="290.0" mnemonicParsing="false" onAction="#add" prefHeight="24.0"
+            prefWidth="96.0" text="Done"/>
+    <Text fill="WHITE" layoutX="180.0" layoutY="151.0" strokeType="OUTSIDE" strokeWidth="0.0"
+          text="This user will be added to the group:"/>
+</Pane>

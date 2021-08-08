@@ -12,7 +12,7 @@ import java.sql.SQLException;
 
 public class MessagePaneFXML
 {
-    // TODO private final MessagePaneListener listener = new MessagePaneListener();
+    private final MessagePaneListener listener = new MessagePaneListener();
 
     private Long messageId;
 
@@ -27,8 +27,10 @@ public class MessagePaneFXML
 
     public void setData(Long id)
     {
-        messageId = id;
+        editButton.setDisable(!ConnectionStatus.getStatus().isOnline());
+        deleteButton.setDisable(!ConnectionStatus.getStatus().isOnline());
 
+        messageId = id;
         Message message = null;
         try
         {
@@ -89,21 +91,21 @@ public class MessagePaneFXML
 
     public void viewImage()
     {
-        // listener.eventOccurred(new EventObject(viewImageButton), message);
+        listener.eventOccurred(viewImageButton, messageId);
     }
 
     public void viewTweet()
     {
-        // listener.eventOccurred(new EventObject(viewTweetButton), message);
+        listener.eventOccurred(viewTweetButton, messageId);
     }
 
     public void delete()
     {
-        // listener.eventOccurred(new EventObject(deleteButton), message);
+        listener.eventOccurred(deleteButton, messageId);
     }
 
     public void edit()
     {
-        // listener.eventOccurred(new EventObject(editButton), message);
+        listener.eventOccurred(editButton, messageId);
     }
 }

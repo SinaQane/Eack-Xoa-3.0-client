@@ -348,7 +348,7 @@ public class GraphicalAgent
 
     // Messages page
 
-    public void showMessagesPage(List<List<Long[]>> chatsList)
+    public void showMessagesPage(List<List<Long[]>> chatsList, int page)
     {
         Platform.runLater(() ->
         {
@@ -356,7 +356,7 @@ public class GraphicalAgent
             messagesPage = new MessagesPage();
             chatsListPane = new ChatsListPane();
             chatsListPane.getFXML().setChatsList(chatsList);
-            chatsListPane.getFXML().setPage(0);
+            chatsListPane.getFXML().setPage(page);
             chatsListPane.getFXML().refresh();
             messagesPage.getFXML().setChatsListPane(chatsListPane.getPane());
             messagesPage.getFXML().setChatroomPane(new EmptyChatroomPane().getPane());
@@ -380,14 +380,14 @@ public class GraphicalAgent
         });
     }
 
-    public void showChatroom(List<List<Long>> messages, Long chatId)
+    public void showChatroom(List<List<Long>> messages, Long chatId, int page)
     {
         Platform.runLater(() ->
         {
             chatroomPane = new ChatroomPane();
             chatroomPane.getFXML().setMessages(messages);
             chatroomPane.getFXML().setChatId(chatId);
-            chatroomPane.getFXML().setPage(0);
+            chatroomPane.getFXML().setPage(page);
             chatroomPane.getFXML().refresh();
             messagesPage.getFXML().setChatroomPane(chatroomPane.getPane());
 
@@ -396,12 +396,15 @@ public class GraphicalAgent
             {
                 if (ConnectionStatus.getStatus().isOnline())
                 {
+                    Long userId = ConnectionStatus.getStatus().getUser().getId();
+                    eventListener.listen(new RefreshMessagesPageEvent(userId));
                     eventListener.listen(new RefreshChatroomEvent(chatId));
                 }
                 else
                 {
                     ChatroomController controller = new ChatroomController();
                     controller.refreshChatroom(chatId);
+                    controller.refreshChatsList();
                 }
             });
             loop.start();
