@@ -2,7 +2,6 @@ package view.pages.messages;
 
 import controller.ConnectionStatus;
 import db.ModelLoader;
-import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;

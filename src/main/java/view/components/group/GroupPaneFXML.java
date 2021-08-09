@@ -1,6 +1,5 @@
 package view.components.group;
 
-import db.Database;
 import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;

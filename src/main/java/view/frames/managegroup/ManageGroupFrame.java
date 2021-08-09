@@ -12,13 +12,10 @@ import java.util.Objects;
 
 public class ManageGroupFrame
 {
-
-    private final FXMLLoader loader;
-
     public ManageGroupFrame(Long groupId)
     {
         String path = new Config(Constants.CONFIG).getProperty(String.class, "manageGroupFrame");
-        loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource(path)));
+        FXMLLoader loader = new FXMLLoader(Objects.requireNonNull(getClass().getClassLoader().getResource(path)));
         try
         {
             Parent root = loader.load();
