@@ -4,6 +4,7 @@ import controller.ConnectionStatus;
 import db.ModelLoader;
 import javafx.scene.control.Button;
 import javafx.scene.text.Text;
+import model.Chat;
 import model.Message;
 import model.Tweet;
 import model.User;
@@ -35,12 +36,13 @@ public class MessagePaneFXML
         try
         {
             message = ModelLoader.getModelLoader().getMessage(messageId);
+            Chat chat = ModelLoader.getModelLoader().getChat(message.getChatId());
             User messageOwner = ModelLoader.getModelLoader().getUser(message.getOwnerId());
 
             ownerText.setText("@" + messageOwner.getUsername());
             messageText.setText(message.getText());
 
-            if (message.getOwnerId().equals(ConnectionStatus.getStatus().getUser().getId()))
+            if (!chat.isGroup() && message.getOwnerId().equals(ConnectionStatus.getStatus().getUser().getId()))
             {
                 if (message.isSeen())
                 {

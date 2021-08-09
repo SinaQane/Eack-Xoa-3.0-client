@@ -2,6 +2,7 @@ package view.pages.messages;
 
 import controller.ConnectionStatus;
 import db.ModelLoader;
+import javafx.event.ActionEvent;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -26,6 +27,7 @@ public class ChatroomPaneFXML
     public TextField messageTextField;
     public TextField picPathTextField;
     public Button addMemberButton;
+    public Button leaveGroupButton;
     public Button previousButton;
     public Button nextButton;
     public Button sendButton;
@@ -99,8 +101,6 @@ public class ChatroomPaneFXML
 
     public void refresh()
     {
-        addMemberButton.setDisable(!ConnectionStatus.getStatus().isOnline());
-
         for (int i = 0; i < 5; i++)
         {
             if (messages.get(page).get(i) == -1L)
@@ -122,6 +122,9 @@ public class ChatroomPaneFXML
         {
             Chat chat = ModelLoader.getModelLoader().getChat(chatId);
             addMemberButton.setVisible(chat.isGroup());
+            leaveGroupButton.setVisible(chat.isGroup());
+            addMemberButton.setDisable(!ConnectionStatus.getStatus().isOnline());
+            leaveGroupButton.setDisable(!ConnectionStatus.getStatus().isOnline());
         } catch (SQLException | InterruptedException ignored) {}
     }
 
@@ -143,5 +146,10 @@ public class ChatroomPaneFXML
     public void send()
     {
         listener.eventOccurred(sendButton, chatId, messageTextField.getText(), picPathTextField.getText(), scheduledTimeText.getText());
+    }
+
+    public void leaveGroup()
+    {
+        listener.eventOccurred(leaveGroupButton, chatId, "", "", "");
     }
 }

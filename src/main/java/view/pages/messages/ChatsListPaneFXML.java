@@ -124,43 +124,56 @@ public class ChatsListPaneFXML
     public void firstChat()
     {
         Long id = chatsList.get(page).get(0)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void secondChat()
     {
         Long id = chatsList.get(page).get(1)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void thirdChat()
     {
         Long id = chatsList.get(page).get(2)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void fourthChat()
     {
         Long id = chatsList.get(page).get(3)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void fifthChat()
     {
         Long id = chatsList.get(page).get(4)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void sixthChat()
     {
         Long id = chatsList.get(page).get(5)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
     }
 
     public void seventhChat()
     {
         Long id = chatsList.get(page).get(6)[0];
-        GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        viewChat(id);
+    }
+
+    public void viewChat(long id)
+    {
+        if (ConnectionStatus.getStatus().isOnline())
+        {
+            GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewChatroomEvent(id));
+        }
+        else
+        {
+            ChatroomController controller = new ChatroomController();
+            controller.showChatroom(id);
+        }
     }
 
     public void previous()

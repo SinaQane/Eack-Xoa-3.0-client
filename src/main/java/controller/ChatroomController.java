@@ -11,6 +11,18 @@ import java.util.*;
 
 public class ChatroomController
 {
+    public void showMessagesPage()
+    {
+        Long userId = ConnectionStatus.getStatus().getUser().getId();
+        List<Long> chatsListId = new LinkedList<>();
+        try
+        {
+            chatsListId.addAll(ModelLoader.getModelLoader().getProfile(userId).getChats());
+        } catch (InterruptedException | SQLException ignored) {}
+        List<List<Long[]>> chatsList = getOrganizedChatsList(chatsListId);
+        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, 0);
+    }
+
     public void refreshChatsList()
     {
         Long userId = ConnectionStatus.getStatus().getUser().getId();
@@ -21,6 +33,15 @@ public class ChatroomController
         } catch (InterruptedException | SQLException ignored) {}
         List<List<Long[]>> chatsList = getOrganizedChatsList(chatsListId);
         GraphicalAgent.getGraphicalAgent().refreshChatsList(chatsList);
+    }
+
+    public void showChatroom(Long chatId)
+    {
+        try
+        {
+            List<Long> offlineMessages = Database.getDB().loadOfflineMessages(chatId);
+            GraphicalAgent.getGraphicalAgent().showChatroom(getOrganizedMessages(offlineMessages), chatId, 0);
+        } catch (SQLException ignored) {}
     }
 
     public void refreshChatroom(Long chatId)

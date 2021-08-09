@@ -1,9 +1,12 @@
 package view.scenes.mainpage;
 
+import controller.ChatroomController;
 import controller.ConnectionStatus;
 import event.events.authentication.LogoutEvent;
 import event.events.explore.ExplorePageEvent;
 import event.events.general.ViewListEvent;
+import event.events.groups.ViewGroupsPageEvent;
+import event.events.messages.ViewMessagesPageEvent;
 import event.events.profile.ViewProfileEvent;
 import event.events.timeline.ViewBookmarksEvent;
 import event.events.timeline.ViewTimelineEvent;
@@ -50,14 +53,18 @@ public class MainPageListener
                 // TODO back button
                 break;
             case "groupsButton":
-                /*  TODO write code
-                fxmlController.setMainPane(PanesController.getPanesController().getGroupsPane(0).getPane());*/
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewGroupsPageEvent(userId));
                 break;
             case "messagesButton":
-                /* TODO write code
-                fxmlController.setMainPane(PanesController.getPanesController().getMessagesPane().getPane());
-                BackButtonHandler.getBackButtonHandler().clear();
-                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));*/
+                if (ConnectionStatus.getStatus().isOnline())
+                {
+                    GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewMessagesPageEvent(userId));
+                }
+                else
+                {
+                    ChatroomController controller = new ChatroomController();
+                    controller.showMessagesPage();
+                }
                 break;
             case "onlineStatusButton":
                 new ServerFrame(null, MainPage.getMainPage().getFXML());
