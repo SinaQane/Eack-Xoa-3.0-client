@@ -2,6 +2,8 @@ package view.scenes.mainpage;
 
 import controller.ChatroomController;
 import controller.ConnectionStatus;
+import controller.back.BackButtonHandler;
+import controller.back.BackButtonMemory;
 import event.events.authentication.LogoutEvent;
 import event.events.explore.ExplorePageEvent;
 import event.events.general.ViewListEvent;
@@ -24,33 +26,39 @@ public class MainPageListener
         switch (((Button) source).getId())
         {
             case "backButton":
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().back();
                 break;
             case "logoutButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new LogoutEvent(userId, authToken));
+                BackButtonHandler.getBackButtonHandler().clear();
                 break;
             case "profileButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewProfileEvent(userId));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile"));
                 break;
             case "settingsButton":
                 GraphicalAgent.getGraphicalAgent().showSettingsPage();
                 break;
             case "homeButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTimelineEvent(userId));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("timeline"));
                 break;
             case "bookmarksButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewBookmarksEvent(userId));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("bookmarks"));
                 break;
             case "notificationsButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("notifications", userId));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("notifications"));
                 break;
             case "exploreButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ExplorePageEvent(userId));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("explore"));
                 break;
             case "groupsButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewGroupsPageEvent(userId));
@@ -65,6 +73,8 @@ public class MainPageListener
                     ChatroomController controller = new ChatroomController();
                     controller.showMessagesPage();
                 }
+                BackButtonHandler.getBackButtonHandler().clear();
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));
                 break;
             case "onlineStatusButton":
                 new ServerFrame(null, MainPage.getMainPage().getFXML());

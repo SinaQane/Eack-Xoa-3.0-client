@@ -1,7 +1,15 @@
 package controller.back;
 
-import view.scenes.mainpage.MainPage;
-import view.scenes.mainpage.MainPageFXML;
+import controller.ConnectionStatus;
+import event.events.explore.ExplorePageEvent;
+import event.events.general.ViewListEvent;
+import event.events.general.ViewTweetEvent;
+import event.events.general.ViewUserEvent;
+import event.events.messages.ViewMessagesPageEvent;
+import event.events.profile.ViewProfileEvent;
+import event.events.timeline.ViewBookmarksEvent;
+import event.events.timeline.ViewTimelineEvent;
+import view.GraphicalAgent;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -32,50 +40,50 @@ public class BackButtonHandler
 
         stack.remove(stack.size() - 1);
         BackButtonMemory memory = stack.get(stack.size() - 1);
-        MainPageFXML fxmlController = MainPage.getMainPage().getFXML();
 
-        // Move to the page in the stack memory
+        Long userId = ConnectionStatus.getStatus().getUser().getId();
+
         switch (memory.getPage())
         {
             case "messages":
-                // fxmlController.setMainPane(PanesController.getPanesController().getMessagesPane().getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewMessagesPageEvent(userId));
                 break;
             case "explore":
-                // fxmlController.setMainPane(PanesController.getPanesController().getExplorePane().getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ExplorePageEvent(userId));
                 break;
             case "tweet":
-                // fxmlController.setMainPane(PanesController.getPanesController().getTweetsListPane(memory.getTweetId(), 0).getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTweetEvent(memory.getTweetId()));
                 break;
             case "profile":
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewProfileEvent(userId));
+                break;
             case "user":
-                // fxmlController.setMainPane(PanesController.getPanesController().getProfilePane(memory.getUserId(), 0).getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewUserEvent(memory.getUserId()));
                 break;
             case "timeline":
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTimelineEvent(userId));
+                break;
             case "bookmarks":
-                // fxmlController.setMainPane(PanesController.getPanesController().getTimelinePane(memory.getPage(), 0).getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewBookmarksEvent(userId));
                 break;
             case "notifications":
             case "followers":
             case "followings":
             case "blacklist":
-                // fxmlController.setMainPane(PanesController.getPanesController().getUserslistPane(memory.getPage(), memory.getUserId(), 0).getPane());
+                GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent(memory.getPage(), userId));
                 break;
         }
 
-        // Add the same page to the stack to be removed
+        // Add the same page for main pages to the stack to be removed
         switch (memory.getPage())
         {
             case "profile":
-                // BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("profile", MainPageController.getMainPageController().getUser().getId()));
-                break;
             case "notifications":
-                // BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("notifications", MainPageController.getMainPageController().getUser().getId()));
-                break;
             case "explore":
             case "timeline":
             case "bookmarks":
             case "messages":
-                // BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory(memory.getPage()));
+                add(new BackButtonMemory(memory.getPage()));
                 break;
         }
         stack.remove(stack.size() - 1);

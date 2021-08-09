@@ -35,6 +35,7 @@ public class MainPageFXML
         boolean online = ConnectionStatus.getStatus().isOnline();
         serverButton.setText(online ? "Online" : "Offline");
         serverButton.setDisable(online);
+        backButton.setDisable(!online);
         homeButton.setDisable(!online);
         exploreButton.setDisable(!online);
         notificationsButton.setDisable(!online);

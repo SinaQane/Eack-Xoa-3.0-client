@@ -229,7 +229,7 @@ public class ProfilePageFXML
         }
         else if (loggedInProfile != null)
         {
-            // TODO set last seen
+            // TODO should i set the last seen date?
 
             if (loggedInProfile.getFollowings().contains(user.getId()))
             {

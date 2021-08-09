@@ -1,6 +1,8 @@
 package view.pages.profile;
 
 import controller.ConnectionStatus;
+import controller.back.BackButtonHandler;
+import controller.back.BackButtonMemory;
 import db.ModelLoader;
 import event.events.general.ViewListEvent;
 import event.events.profile.UserInteractionEvent;
@@ -45,15 +47,15 @@ public class ProfilePageListener
                 break;
             case "viewFollowersButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("followers", otherUser.getId()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("followers", otherUser.getId(), -1L));
                 break;
             case "viewFollowingsButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("followings", otherUser.getId()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("followings", otherUser.getId(), -1L));
                 break;
             case "viewBlacklistButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewListEvent("blacklist", otherUser.getId()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("blacklist", otherUser.getId(), -1L));
                 break;
         }
     }

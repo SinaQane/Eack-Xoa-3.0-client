@@ -1,6 +1,8 @@
 package view.components.tweet;
 
 import controller.ConnectionStatus;
+import controller.back.BackButtonHandler;
+import controller.back.BackButtonMemory;
 import event.events.general.ViewTweetEvent;
 import event.events.general.ViewUserEvent;
 import event.events.tweet.TweetInteractionEvent;
@@ -41,7 +43,7 @@ public class TweetPaneListener
                 break;
             case "viewUserButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewUserEvent(tweet.getOwner()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("user", tweet.getOwner(), -1L));
                 break;
             case "viewImageButton":
                 byte[] imageByte = ImageUtil.decodeFromBase64(tweet.getPicture());
@@ -49,11 +51,11 @@ public class TweetPaneListener
                 break;
             case "viewTweetButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTweetEvent(tweet.getId()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("tweet", -1L, tweet.getId()));
                 break;
             case "viewUpperTweetButton":
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTweetEvent(tweet.getUpperTweet()));
-                // TODO back button
+                BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("tweet", -1L, tweet.getUpperTweet()));
                 break;
             case "commentButton":
                 new NewTweetFrame(tweet.getId());

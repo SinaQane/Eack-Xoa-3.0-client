@@ -1,6 +1,8 @@
 package view.components.message;
 
 import controller.ConnectionStatus;
+import controller.back.BackButtonHandler;
+import controller.back.BackButtonMemory;
 import db.ModelLoader;
 import event.events.general.ViewTweetEvent;
 import event.events.messages.DeleteMessageEvent;
@@ -38,7 +40,7 @@ public class MessagePaneListener
                 if (message != null)
                 {
                     GraphicalAgent.getGraphicalAgent().getEventListener().listen(new ViewTweetEvent(message.getTweetId()));
-                    // TODO back button
+                    BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("tweet", -1L, message.getTweetId()));
                 }
                 break;
             case "deleteButton":
