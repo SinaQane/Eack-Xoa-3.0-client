@@ -8,6 +8,7 @@ import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
 import event.events.Ping;
+import event.events.general.RefreshLastSeenEvent;
 import event.events.messages.ReceivedAllMessagesEvent;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
@@ -73,6 +74,11 @@ public class OnlineController implements ResponseVisitor
             {
                 response.visit(this);
             }
+        }
+        if (ConnectionStatus.getStatus().getUser() != null)
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventSender.sendEvent(new RefreshLastSeenEvent(userId));
         }
     }
 
@@ -322,6 +328,9 @@ public class OnlineController implements ResponseVisitor
 
     @Override
     public void requestReaction(Unauthenticated unauthenticated) {}
+
+    @Override
+    public void refreshLastSeen() {}
 
     // Settings page event responses
 

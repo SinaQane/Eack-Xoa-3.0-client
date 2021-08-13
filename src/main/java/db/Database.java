@@ -86,7 +86,7 @@ public class Database
             user.setBio(res.getString("bio"));
             user.setName(res.getString("name"));
             user.setEmail(res.getString("email"));
-            user.setBirthDate(res.getDate("birth_date"));
+            user.setBirthDate(new java.util.Date(res.getLong("birth_date")));
             user.setPhoneNumber(res.getString("phone_number"));
             user.setActive(res.getBoolean("is_active"));
             user.setDeleted(res.getBoolean("is_deleted"));
@@ -127,10 +127,10 @@ public class Database
         statement.setString(5, user.getEmail());
         statement.setString(6, user.getPhoneNumber());
         statement.setString(7, user.getBio());
-        statement.setDate(8, (Date) user.getBirthDate());
+        statement.setLong(8, user.getBirthDate().getTime());
         statement.setBoolean(9, user.isActive());
         statement.setBoolean(10, user.isDeleted());
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Profile loadProfile(long id) throws SQLException
@@ -143,7 +143,7 @@ public class Database
         {
             profile.setId(id);
             profile.setPicture(res.getString("picture"));
-            profile.setLastSeen(res.getDate("last_seen"));
+            profile.setLastSeen(new java.util.Date(res.getLong("last_seen")));
             profile.setFollowers(Arrays.asList(gson.fromJson(res.getString("followers"), Long[].class)));
             profile.setFollowings(Arrays.asList(gson.fromJson(res.getString("followings"), Long[].class)));
             profile.setBlocked(Arrays.asList(gson.fromJson(res.getString("blocked"), Long[].class)));
@@ -174,7 +174,7 @@ public class Database
                 "REPLACE INTO `profiles` (`id`, `picture`, `last_seen`, `followers`, `followings`, `blocked`, `muted`, `requests`, `pending`, `user_tweets`, `retweeted_tweets`, `upvoted_tweets`, `downvoted_tweets`, `reported_tweets`, `saved_tweets`, `notifications`, `groups`, `chats`, `private_state`, `info_state`, `last_seen_state`) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
         statement.setLong(1, profile.getId());
         statement.setString(2, profile.getPicture());
-        statement.setDate(3, (Date) profile.getLastSeen());
+        statement.setLong(3, profile.getLastSeen().getTime());
         statement.setString(4, new Gson().toJson(profile.getFollowers()));
         statement.setString(5, new Gson().toJson(profile.getFollowings()));
         statement.setString(6, new Gson().toJson(profile.getBlocked()));
@@ -193,7 +193,7 @@ public class Database
         statement.setBoolean(19, profile.isPrivate());
         statement.setBoolean(20, profile.getInfoState());
         statement.setInt(21, profile.getLastSeenState());
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Tweet loadTweet(long id) throws SQLException
@@ -210,7 +210,7 @@ public class Database
             tweet.setPicture(res.getString("picture"));
             tweet.setVisible(res.getBoolean("visible"));
             tweet.setText(res.getString("text"));
-            tweet.setTweetDate(res.getDate("tweet_date"));
+            tweet.setTweetDate(new java.util.Date(res.getLong("tweet_date")));
             tweet.setComments(Arrays.asList(gson.fromJson(res.getString("comments"), Long[].class)));
             tweet.setUpvotes(Arrays.asList(gson.fromJson(res.getString("upvotes"), Long[].class)));
             tweet.setDownvotes(Arrays.asList(gson.fromJson(res.getString("downvotes"), Long[].class)));
@@ -232,13 +232,13 @@ public class Database
         statement.setString(4, tweet.getPicture());
         statement.setBoolean(5, tweet.isVisible());
         statement.setString(6, tweet.getText());
-        statement.setDate(7, (Date) tweet.getTweetDate());
+        statement.setLong(7, tweet.getTweetDate().getTime());
         statement.setString(8, new Gson().toJson(tweet.getComments()));
         statement.setString(9, new Gson().toJson(tweet.getUpvotes()));
         statement.setString(10, new Gson().toJson(tweet.getDownvotes()));
         statement.setString(11, new Gson().toJson(tweet.getRetweets()));
         statement.setInt(12, tweet.getReports());
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Group loadGroup(long id) throws SQLException
@@ -265,7 +265,7 @@ public class Database
         statement.setLong(1, group.getId());
         statement.setString(2, group.getTitle());
         statement.setString(3, new Gson().toJson(group.getMembers()));
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Chat loadChat(long id) throws SQLException
@@ -296,7 +296,7 @@ public class Database
         statement.setBoolean(3, chat.isGroup());
         statement.setString(4, new Gson().toJson(chat.getUsers()));
         statement.setString(5, new Gson().toJson(chat.getMessages()));
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Long getLastMessageTime(long id)
@@ -361,14 +361,14 @@ public class Database
         statement.setBoolean(10, message.isSent());
         statement.setBoolean(11, message.isReceived());
         statement.setBoolean(12, message.isSeen());
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public void deleteMessage(Long id) throws SQLException
     {
         PreparedStatement statement = connection.prepareStatement("DELETE FROM `messages` WHERE `id` = ?");
         statement.setLong(1, id);
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 
     public Long minimumMessageId() throws SQLException
@@ -435,6 +435,6 @@ public class Database
         statement.setLong(2, notification.getOwner());
         statement.setLong(3, notification.getRequestFrom());
         statement.setString(4, notification.getText());
-        statement.executeQuery();
+        statement.executeUpdate();
     }
 }

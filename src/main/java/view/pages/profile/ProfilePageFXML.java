@@ -21,6 +21,7 @@ import view.components.tweet.TweetPaneFXML;
 
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -190,14 +191,20 @@ public class ProfilePageFXML
             emailText.setText("Email: " + user.getEmail());
         }
 
-        if (user.getBirthDate().getTime() == DEFAULT_DATE || !isDataShareable)
+        SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        Date lastSeen = userProfile == null ? new Date() : userProfile.getLastSeen();
+
+        if (!isDataShareable)
         {
-            birthdateText.setText("Birthdate: N/A");
+            birthdateText.setText("Birthdate: N/A - Last Seen: N/A");
+        }
+        else if (user.getBirthDate().getTime() == DEFAULT_DATE)
+        {
+            birthdateText.setText("Birthdate: N/A - Last Seen: " + dateFormat.format(lastSeen));
         }
         else
         {
-            SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()));
+            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()) + " - Last Seen: " + dateFormat.format(lastSeen));
         }
 
         if (user.getPhoneNumber().equals("") || !isDataShareable)
@@ -229,8 +236,6 @@ public class ProfilePageFXML
         }
         else if (loggedInProfile != null)
         {
-            // TODO should i set the last seen date?
-
             if (loggedInProfile.getFollowings().contains(user.getId()))
             {
                 statButton.setText("Following");

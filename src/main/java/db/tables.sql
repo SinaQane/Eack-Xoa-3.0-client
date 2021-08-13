@@ -11,7 +11,7 @@ CREATE TABLE `eack_xoa_client`.`users`
     `email`        VARCHAR(64)  NOT NULL,
     `phone_number` VARCHAR(16)  NOT NULL,
     `bio`          VARCHAR(256) NOT NULL,
-    `birth_date`   DATETIME     NOT NULL DEFAULT '1000-01-01 00:00:00',
+    `birth_date`   BIGINT       NOT NULL,
     `is_active`    BOOL         NOT NULL,
     `is_deleted`   BOOL         NOT NULL,
     PRIMARY KEY (`id`)
@@ -21,7 +21,7 @@ CREATE TABLE `eack_xoa_client`.`profiles`
 (
     `id`               BIGINT   NOT NULL,
     `picture`          LONGTEXT NOT NULL,
-    `last_seen`        DATETIME NOT NULL DEFAULT '1000-01-01 00:00:00',
+    `last_seen`        BIGINT   NOT NULL,
     `followers`        JSON     NOT NULL,
     `followings`       JSON     NOT NULL,
     `blocked`          JSON     NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE `eack_xoa_client`.`tweets`
     `picture`     LONGTEXT     NOT NULL,
     `visible`     BOOL         NOT NULL,
     `text`        VARCHAR(256) NOT NULL,
-    `tweet_date`  DATETIME     NOT NULL DEFAULT '1000-01-01 00:00:00',
+    `tweet_date`  BIGINT       NOT NULL,
     `comments`    JSON         NOT NULL,
     `upvotes`     JSON         NOT NULL,
     `downvotes`   JSON         NOT NULL,
