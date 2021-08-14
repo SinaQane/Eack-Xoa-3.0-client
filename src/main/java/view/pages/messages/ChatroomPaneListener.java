@@ -28,7 +28,7 @@ public class ChatroomPaneListener
         {
             case "sendButton":
 
-                String picture = picPath.equals("") ? "" : ImageUtil.imageToBytes(picPath);
+                String picture = picPath.equals("") ? "" : ImageUtil.imageToString(picPath);
 
                 long time = -1L;
                 if (!messageTime.equals(""))

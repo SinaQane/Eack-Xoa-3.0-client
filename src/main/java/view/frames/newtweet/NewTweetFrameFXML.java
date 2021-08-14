@@ -27,7 +27,7 @@ public class NewTweetFrameFXML
     public void tweet(ActionEvent actionEvent)
     {
         String tweet = tweetTextField.getText();
-        String picture = ImageUtil.imageToBytes(picPathTextField.getText());
+        String picture = ImageUtil.imageToString(picPathTextField.getText());
         String authToken = ConnectionStatus.getStatus().getAuthToken();
 
         listener.eventOccurred(new SendTweetForm(sendTweetButton, userId, upperTweet, tweet, picture, authToken));

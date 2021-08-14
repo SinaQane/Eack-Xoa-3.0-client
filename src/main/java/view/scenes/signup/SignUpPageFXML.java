@@ -59,7 +59,7 @@ public class SignUpPageFXML
         String email = emailTextField.getText();
         String phoneNumber = phoneNumberTextField.getText();
         String bio = bioTextField.getText();
-        String picture = ImageUtil.imageToBytes(pictureField.getText());
+        String picture = ImageUtil.imageToString(pictureField.getText());
 
         Date birthDate = null;
         try
