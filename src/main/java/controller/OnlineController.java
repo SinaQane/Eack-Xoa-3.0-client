@@ -8,6 +8,7 @@ import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
 import event.events.Ping;
+import event.events.general.RefreshLastSeenEvent;
 import event.events.messages.ReceivedAllMessagesEvent;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
@@ -22,6 +23,7 @@ import model.*;
 import response.Response;
 import response.ResponseVisitor;
 import util.Loop;
+import util.TimeTask;
 import view.GraphicalAgent;
 
 import java.io.IOException;
@@ -42,6 +44,10 @@ public class OnlineController implements ResponseVisitor
     {
         Integer requestFps = new Config(Constants.CONFIG).getProperty(Integer.class, "requestLoop");
         loop = new Loop(requestFps, this::sendEvents);
+
+        Integer lastSeenFps = new Config(Constants.CONFIG).getProperty(Integer.class, "lastSeenLoop");
+        TimeTask timeTask = new TimeTask(lastSeenFps, this::refreshLastSeen);
+        timeTask.start();
 
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
         GraphicalAgent.getGraphicalAgent().setOnlineController(this);
@@ -76,7 +82,6 @@ public class OnlineController implements ResponseVisitor
         }
     }
 
-    /* TODO update last seen
     public void updateLastSeen()
     {
         if (ConnectionStatus.getStatus().getUser() != null)
@@ -85,7 +90,6 @@ public class OnlineController implements ResponseVisitor
             addEvent(new RefreshLastSeenEvent(userId));
         }
     }
-    */
 
     public void connectToServer(String host, int port) throws IOException
     {
