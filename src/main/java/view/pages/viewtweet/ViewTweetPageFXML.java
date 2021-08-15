@@ -62,6 +62,10 @@ public class ViewTweetPageFXML
         {
             return false;
         }
+        if (comments.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != comments.size() - 1;
     }
 

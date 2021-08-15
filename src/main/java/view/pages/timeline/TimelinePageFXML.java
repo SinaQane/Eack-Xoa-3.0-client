@@ -94,6 +94,10 @@ public class TimelinePageFXML
         {
             return false;
         }
+        if (tweets.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != getNumberOfPages() - 1;
     }
 

@@ -85,6 +85,10 @@ public class ViewListPageFXML
         {
             return false;
         }
+        if (items.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != items.size() - 1;
     }
 

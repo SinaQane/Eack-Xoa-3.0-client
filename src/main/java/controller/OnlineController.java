@@ -8,7 +8,6 @@ import event.Event;
 import event.EventSender;
 import event.SocketEventSender;
 import event.events.Ping;
-import event.events.general.RefreshLastSeenEvent;
 import event.events.messages.ReceivedAllMessagesEvent;
 import exceptions.DatabaseError;
 import exceptions.Unauthenticated;
@@ -41,8 +40,8 @@ public class OnlineController implements ResponseVisitor
 
     public OnlineController(Stage stage)
     {
-        Integer loopFps = new Config(Constants.CONFIG).getProperty(Integer.class, "reqLoop");
-        loop = new Loop(loopFps, this::sendEvents);
+        Integer requestFps = new Config(Constants.CONFIG).getProperty(Integer.class, "requestLoop");
+        loop = new Loop(requestFps, this::sendEvents);
 
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);
         GraphicalAgent.getGraphicalAgent().setOnlineController(this);
@@ -75,19 +74,25 @@ public class OnlineController implements ResponseVisitor
                 response.visit(this);
             }
         }
+    }
+
+    /* TODO update last seen
+    public void updateLastSeen()
+    {
         if (ConnectionStatus.getStatus().getUser() != null)
         {
             Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventSender.sendEvent(new RefreshLastSeenEvent(userId));
+            addEvent(new RefreshLastSeenEvent(userId));
         }
     }
+    */
 
     public void connectToServer(String host, int port) throws IOException
     {
         Socket socket = new Socket(host, port);
         eventSender = new SocketEventSender(socket);
         graphicalAgent.setEventSender(eventSender);
-        ModelLoader.getModelLoader().setEventSender(eventSender);
+        ModelLoader.getModelLoader().setEventListener(this::addEvent);
         addEvent(new Ping());
         sendEvents();
     }
@@ -268,9 +273,7 @@ public class OnlineController implements ResponseVisitor
         }
         else
         {
-            ConnectionStatus.getStatus().setAuthToken(authToken);
-            GraphicalAgent.getGraphicalAgent().showMainPage(user);
-            addEvent(new ReceivedAllMessagesEvent(user.getId(), authToken));
+            GraphicalAgent.getGraphicalAgent().showFirstPage();
         }
     }
 

@@ -66,6 +66,8 @@ public class GraphicalAgent
     private RandomTweetsPane randomTweetsPane;
     private SearchResultsPane searchResultsPane;
 
+    private boolean isLoaded = false;
+
     private GraphicalAgent() {}
 
     public static GraphicalAgent getGraphicalAgent()
@@ -88,9 +90,12 @@ public class GraphicalAgent
                 stage.setOnHidden(e ->
                 {
                     Platform.exit();
-                    Long userId = ConnectionStatus.getStatus().getUser().getId();
-                    String authToken = ConnectionStatus.getStatus().getAuthToken();
-                    eventListener.listen(new LogoutEvent(userId, authToken));
+                    if (ConnectionStatus.getStatus().getUser() != null)
+                    {
+                        Long userId = ConnectionStatus.getStatus().getUser().getId();
+                        String authToken = ConnectionStatus.getStatus().getAuthToken();
+                        eventListener.listen(new LogoutEvent(userId, authToken));
+                    }
                     try
                     {
                         Thread.sleep(1000);
@@ -185,6 +190,8 @@ public class GraphicalAgent
 
     public void showSettingsPage()
     {
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -202,6 +209,9 @@ public class GraphicalAgent
 
     public void showProfilePage(User user, List<List<Long[]>> tweets, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -211,24 +221,27 @@ public class GraphicalAgent
             profilePage.getFXML().setPage(page);
             profilePage.getFXML().refresh();
             mainPage.getFXML().setMainPane(profilePage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                Long userId = ConnectionStatus.getStatus().getUser().getId();
-                eventListener.listen(new RefreshProfileEvent(userId));
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshProfileEvent(userId));
+        });
+        loop.start();
     }
 
     public void refreshProfilePage(User user, List<List<Long[]>> tweets)
     {
         Platform.runLater(() ->
         {
-            profilePage.getFXML().setUser(user);
-            profilePage.getFXML().setTweets(tweets);
-            profilePage.getFXML().autoRefresh();
+            if (isLoaded)
+            {
+                profilePage.getFXML().setUser(user);
+                profilePage.getFXML().setTweets(tweets);
+                profilePage.getFXML().autoRefresh();
+            }
         });
     }
 
@@ -236,6 +249,9 @@ public class GraphicalAgent
 
     public void showTimelinePage(String pageKind, List<List<Long[]>> tweets, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -244,23 +260,26 @@ public class GraphicalAgent
             timelinePage.getFXML().setPage(page);
             timelinePage.getFXML().refresh();
             mainPage.getFXML().setMainPane(timelinePage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                Long userId = ConnectionStatus.getStatus().getUser().getId();
-                eventListener.listen(new RefreshTimelineEvent(userId));
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshTimelineEvent(userId));
+        });
+        loop.start();
     }
 
     public void refreshTimelinePage(List<List<Long[]>> tweets)
     {
         Platform.runLater(() ->
         {
-            timelinePage.getFXML().setTweets(tweets);
-            timelinePage.getFXML().autoRefresh();
+            if (isLoaded)
+            {
+                timelinePage.getFXML().setTweets(tweets);
+                timelinePage.getFXML().autoRefresh();
+            }
         });
     }
 
@@ -268,6 +287,9 @@ public class GraphicalAgent
 
     public void showExplorePage(List<Long> tweets)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -277,21 +299,23 @@ public class GraphicalAgent
             randomTweetsPane.getFXML().refresh();
             explorePage.getFXML().setExplorePane(randomTweetsPane.getPane());
             mainPage.getFXML().setMainPane(explorePage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, this::refreshRandomTweets);
-            loop.start();
+            isLoaded = true;
         });
 
+        loop = new Loop(fps, this::refreshRandomTweets);
+        loop.start();
     }
 
     public void refreshRandomTweets()
     {
-        Platform.runLater(() -> randomTweetsPane.getFXML().autoRefresh());
+        Platform.runLater(() -> {if (isLoaded) randomTweetsPane.getFXML().autoRefresh();});
     }
 
     public void showSearchResults(List<List<Long>> users, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -302,22 +326,25 @@ public class GraphicalAgent
             searchResultsPane.getFXML().refresh();
             explorePage.getFXML().setExplorePane(searchResultsPane.getPane());
             mainPage.getFXML().setMainPane(explorePage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, this::refreshSearchResults);
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, this::refreshSearchResults);
+        loop.start();
     }
 
     public void refreshSearchResults()
     {
-        Platform.runLater(() -> searchResultsPane.getFXML().autoRefresh());
+        Platform.runLater(() -> {if (isLoaded) searchResultsPane.getFXML().autoRefresh();});
     }
 
     // Groups page
 
     public void showGroupsPage(List<List<Long>> groups, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -326,23 +353,26 @@ public class GraphicalAgent
             groupsPage.getFXML().setPage(page);
             groupsPage.getFXML().refresh();
             mainPage.getFXML().setMainPane(groupsPage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                Long userId = ConnectionStatus.getStatus().getUser().getId();
-                eventListener.listen(new RefreshGroupsPageEvent(userId));
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshGroupsPageEvent(userId));
+        });
+        loop.start();
     }
 
     public void refreshGroupsPage(List<List<Long>> groups)
     {
         Platform.runLater(() ->
         {
-            groupsPage.getFXML().setGroups(groups);
-            groupsPage.getFXML().autoRefresh();
+            if (isLoaded)
+            {
+                groupsPage.getFXML().setGroups(groups);
+                groupsPage.getFXML().autoRefresh();
+            }
         });
     }
 
@@ -350,6 +380,9 @@ public class GraphicalAgent
 
     public void showMessagesPage(List<List<Long[]>> chatsList, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -361,27 +394,30 @@ public class GraphicalAgent
             messagesPage.getFXML().setChatsListPane(chatsListPane.getPane());
             messagesPage.getFXML().setChatroomPane(new EmptyChatroomPane().getPane());
             mainPage.getFXML().setMainPane(messagesPage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                if (ConnectionStatus.getStatus().isOnline())
-                {
-                    Long userId = ConnectionStatus.getStatus().getUser().getId();
-                    eventListener.listen(new RefreshMessagesPageEvent(userId));
-                }
-                else
-                {
-                    ChatroomController controller = new ChatroomController();
-                    controller.refreshChatsList();
-                }
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            if (ConnectionStatus.getStatus().isOnline())
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshMessagesPageEvent(userId));
+            }
+            else
+            {
+                ChatroomController controller = new ChatroomController();
+                controller.refreshChatsList();
+            }
+        });
+        loop.start();
     }
 
     public void showChatroom(List<List<Long>> messages, Long chatId, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             chatroomPane = new ChatroomPane();
@@ -390,33 +426,36 @@ public class GraphicalAgent
             chatroomPane.getFXML().setPage(page);
             chatroomPane.getFXML().refresh();
             messagesPage.getFXML().setChatroomPane(chatroomPane.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                if (ConnectionStatus.getStatus().isOnline())
-                {
-                    Long userId = ConnectionStatus.getStatus().getUser().getId();
-                    eventListener.listen(new RefreshMessagesPageEvent(userId));
-                    eventListener.listen(new RefreshChatroomEvent(chatId));
-                }
-                else
-                {
-                    ChatroomController controller = new ChatroomController();
-                    controller.refreshChatroom(chatId);
-                    controller.refreshChatsList();
-                }
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            if (ConnectionStatus.getStatus().isOnline())
+            {
+                Long userId = ConnectionStatus.getStatus().getUser().getId();
+                eventListener.listen(new RefreshMessagesPageEvent(userId));
+                eventListener.listen(new RefreshChatroomEvent(chatId));
+            }
+            else
+            {
+                ChatroomController controller = new ChatroomController();
+                controller.refreshChatroom(chatId);
+                controller.refreshChatsList();
+            }
+        });
+        loop.start();
     }
 
     public void refreshChatroom(List<List<Long>> messages)
     {
         Platform.runLater(() ->
         {
-            chatroomPane.getFXML().setMessages(messages);
-            chatroomPane.getFXML().refresh();
+            if (isLoaded)
+            {
+                chatroomPane.getFXML().setMessages(messages);
+                chatroomPane.getFXML().refresh();
+            }
         });
     }
 
@@ -424,8 +463,11 @@ public class GraphicalAgent
     {
         Platform.runLater(() ->
         {
-            chatsListPane.getFXML().setChatsList(chatsList);
-            chatsListPane.getFXML().refresh();
+            if (isLoaded)
+            {
+                chatsListPane.getFXML().setChatsList(chatsList);
+                chatsListPane.getFXML().refresh();
+            }
         });
     }
 
@@ -433,6 +475,9 @@ public class GraphicalAgent
 
     public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -443,23 +488,26 @@ public class GraphicalAgent
             viewListPage.getFXML().setPage(page);
             viewListPage.getFXML().refresh();
             mainPage.getFXML().setMainPane(viewListPage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () ->
-            {
-                Long userId = ConnectionStatus.getStatus().getUser().getId();
-                eventListener.listen(new RefreshListEvent(pageKind, userId));
-            });
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () ->
+        {
+            Long userId = ConnectionStatus.getStatus().getUser().getId();
+            eventListener.listen(new RefreshListEvent(pageKind, userId));
+        });
+        loop.start();
     }
 
     public void refreshViewListPage(List<List<Long>> items)
     {
         Platform.runLater(() ->
         {
-            viewListPage.getFXML().setItems(items);
-            viewListPage.getFXML().autoRefresh();
+            if (isLoaded)
+            {
+                viewListPage.getFXML().setItems(items);
+                viewListPage.getFXML().autoRefresh();
+            }
         });
     }
 
@@ -467,6 +515,9 @@ public class GraphicalAgent
 
     public void showViewTweetPage(Tweet tweet, List<List<Long>> comments, int page)
     {
+        isLoaded = false;
+        if (loop != null) loop.stop();
+
         Platform.runLater(() ->
         {
             MainPage mainPage = MainPage.getMainPage();
@@ -476,20 +527,23 @@ public class GraphicalAgent
             viewTweetPage.getFXML().setPage(page);
             viewTweetPage.getFXML().refresh();
             mainPage.getFXML().setMainPane(viewTweetPage.getPane());
-
-            if (loop != null) loop.stop();
-            loop = new Loop(fps, () -> eventListener.listen(new RefreshTweetEvent(tweet.getId())));
-            loop.start();
+            isLoaded = true;
         });
+
+        loop = new Loop(fps, () -> eventListener.listen(new RefreshTweetEvent(tweet.getId())));
+        loop.start();
     }
 
     public void refreshViewTweetPage(Tweet tweet, List<List<Long>> comments)
     {
         Platform.runLater(() ->
         {
-            viewTweetPage.getFXML().setComments(comments);
-            viewTweetPage.getFXML().setTweet(tweet);
-            viewTweetPage.getFXML().autoRefresh();
+            if (isLoaded)
+            {
+                viewTweetPage.getFXML().setComments(comments);
+                viewTweetPage.getFXML().setTweet(tweet);
+                viewTweetPage.getFXML().autoRefresh();
+            }
         });
     }
 

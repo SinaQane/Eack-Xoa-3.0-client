@@ -69,6 +69,10 @@ public class GroupsPageFXML
         {
             return false;
         }
+        if (groups.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != groups.size() - 1;
     }
 

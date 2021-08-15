@@ -29,6 +29,7 @@ public class ProfilePageFXML
 {
     private final Long DEFAULT_DATE = new Config(Constants.CONFIG).getProperty(Long.class, "defaultDateTime");
     private final String DATE_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "datePattern");
+    private final String TIME_PATTERN = new Config(Constants.CONFIG).getProperty(String.class, "timePattern");
     private final String LIGHT_RED = new Config(Constants.CONFIG).getProperty(String.class, "lightRed");
     private final String DARK_RED = new Config(Constants.CONFIG).getProperty(String.class, "darkRed");
     private final String YELLOW = new Config(Constants.CONFIG).getProperty(String.class, "yellow");
@@ -87,6 +88,10 @@ public class ProfilePageFXML
     public boolean hasNextPage(int page)
     {
         if (tweets == null)
+        {
+            return false;
+        }
+        if (tweets.size() == 0 && page == 0)
         {
             return false;
         }
@@ -192,6 +197,7 @@ public class ProfilePageFXML
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
+        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN);
         Date lastSeen = userProfile == null ? new Date() : userProfile.getLastSeen();
 
         if (!isDataShareable)
@@ -200,11 +206,11 @@ public class ProfilePageFXML
         }
         else if (user.getBirthDate().getTime() == DEFAULT_DATE)
         {
-            birthdateText.setText("Birthdate: N/A - Last Seen: " + dateFormat.format(lastSeen));
+            birthdateText.setText("Birthdate: N/A - Last Seen: " + timeFormat.format(lastSeen));
         }
         else
         {
-            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()) + " - Last Seen: " + dateFormat.format(lastSeen));
+            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()) + " - Last Seen: " + timeFormat.format(lastSeen));
         }
 
         if (user.getPhoneNumber().equals("") || !isDataShareable)

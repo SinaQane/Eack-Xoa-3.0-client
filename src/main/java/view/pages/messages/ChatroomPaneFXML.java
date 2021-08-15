@@ -86,6 +86,10 @@ public class ChatroomPaneFXML
         {
             return false;
         }
+        if (messages.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != messages.size() - 1;
     }
 

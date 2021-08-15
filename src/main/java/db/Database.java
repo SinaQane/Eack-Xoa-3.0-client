@@ -44,6 +44,11 @@ public class Database
     // Find out if there exists a row with given id in a table
     public boolean rowIsMissing(String table, long id) throws SQLException
     {
+        if (id == -1)
+        {
+            return true;
+        }
+
         String query = "";
         switch (table)
         {
@@ -72,7 +77,10 @@ public class Database
         PreparedStatement statement = connection.prepareStatement(query);
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
-        return !res.next();
+        boolean ans = !res.next();
+        statement.close();
+        res.close();
+        return ans;
     }
 
     public User extractUser(ResultSet res) throws SQLException
@@ -96,12 +104,17 @@ public class Database
 
     public User loadUser(long id) throws SQLException
     {
+        if (id == -1)
+        {
+            return null;
+        }
+
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `users` WHERE `id` = ?");
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
         User user = extractUser(res);
-        res.close();
         statement.close();
+        res.close();
         return user;
     }
 
@@ -111,8 +124,8 @@ public class Database
         statement.setString(1, username);
         ResultSet res = statement.executeQuery();
         User user = extractUser(res);
-        res.close();
         statement.close();
+        res.close();
         return user;
     }
 
@@ -131,6 +144,7 @@ public class Database
         statement.setBoolean(9, user.isActive());
         statement.setBoolean(10, user.isDeleted());
         statement.executeUpdate();
+        statement.close();
     }
 
     public Profile loadProfile(long id) throws SQLException
@@ -163,8 +177,8 @@ public class Database
             profile.setInfoState(res.getBoolean("info_state"));
             profile.setLastSeenState(res.getInt("last_seen_state"));
         }
-        res.close();
         statement.close();
+        res.close();
         return profile;
     }
 
@@ -194,10 +208,16 @@ public class Database
         statement.setBoolean(20, profile.getInfoState());
         statement.setInt(21, profile.getLastSeenState());
         statement.executeUpdate();
+        statement.close();
     }
 
     public Tweet loadTweet(long id) throws SQLException
     {
+        if (id == -1)
+        {
+            return null;
+        }
+
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `tweets` WHERE `id` = ?");
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
@@ -217,8 +237,8 @@ public class Database
             tweet.setRetweets(Arrays.asList(gson.fromJson(res.getString("retweets"), Long[].class)));
             tweet.setReports(res.getInt("reports"));
         }
-        res.close();
         statement.close();
+        res.close();
         return tweet;
     }
 
@@ -239,6 +259,7 @@ public class Database
         statement.setString(11, new Gson().toJson(tweet.getRetweets()));
         statement.setInt(12, tweet.getReports());
         statement.executeUpdate();
+        statement.close();
     }
 
     public Group loadGroup(long id) throws SQLException
@@ -246,6 +267,7 @@ public class Database
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `groups` WHERE `id` = ?");
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
+        statement.close();
         Group group = new Group();
         while (res.next())
         {
@@ -253,8 +275,8 @@ public class Database
             group.setTitle(res.getString("title"));
             group.setMembers(Arrays.asList(gson.fromJson(res.getString("members"), Long[].class)));
         }
-        res.close();
         statement.close();
+        res.close();
         return group;
     }
 
@@ -266,10 +288,16 @@ public class Database
         statement.setString(2, group.getTitle());
         statement.setString(3, new Gson().toJson(group.getMembers()));
         statement.executeUpdate();
+        statement.close();
     }
 
     public Chat loadChat(long id) throws SQLException
     {
+        if (id == -1)
+        {
+            return null;
+        }
+
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `chats` WHERE `id` = ?");
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
@@ -282,8 +310,8 @@ public class Database
             chat.setUsers(Arrays.asList(gson.fromJson(res.getString("users"), Long[].class)));
             chat.setMessages(Arrays.asList(gson.fromJson(res.getString("messages"), Long[].class)));
         }
-        res.close();
         statement.close();
+        res.close();
         return chat;
     }
 
@@ -297,16 +325,16 @@ public class Database
         statement.setString(4, new Gson().toJson(chat.getUsers()));
         statement.setString(5, new Gson().toJson(chat.getMessages()));
         statement.executeUpdate();
+        statement.close();
     }
 
     public Long getLastMessageTime(long id)
     {
         long maxTime = -1L;
-        PreparedStatement statement;
 
         try
         {
-            statement = connection.prepareStatement("SELECT MAX(`message_date_unix`) AS `max_time` FROM `messages` WHERE `chat_id` = ? AND `message_date_unix` < ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT MAX(`message_date_unix`) AS `max_time` FROM `messages` WHERE `chat_id` = ? AND `message_date_unix` < ?");
             statement.setLong(1, id);
             statement.setLong(2, new java.util.Date().getTime());
             ResultSet res = statement.executeQuery();
@@ -314,6 +342,8 @@ public class Database
             {
                 maxTime = res.getLong("max_time");
             }
+            statement.close();
+            res.close();
         } catch (SQLException ignored) {}
 
         return maxTime;
@@ -340,8 +370,8 @@ public class Database
             message.setReceived(res.getBoolean("received"));
             message.setSeen(res.getBoolean("seen"));
         }
-        res.close();
         statement.close();
+        res.close();
         return message;
     }
 
@@ -362,6 +392,7 @@ public class Database
         statement.setBoolean(11, message.isReceived());
         statement.setBoolean(12, message.isSeen());
         statement.executeUpdate();
+        statement.close();
     }
 
     public void deleteMessage(Long id) throws SQLException
@@ -369,6 +400,7 @@ public class Database
         PreparedStatement statement = connection.prepareStatement("DELETE FROM `messages` WHERE `id` = ?");
         statement.setLong(1, id);
         statement.executeUpdate();
+        statement.close();
     }
 
     public Long minimumMessageId() throws SQLException
@@ -379,6 +411,8 @@ public class Database
         if (res.next()) {
             minId = Math.min(minId, res.getLong("min_id"));
         }
+        statement.close();
+        res.close();
         return minId;
     }
 
@@ -394,6 +428,8 @@ public class Database
         {
             messages.add(res.getLong("id"));
         }
+        statement.close();
+        res.close();
         return messages;
     }
 
@@ -422,8 +458,8 @@ public class Database
             notification.setRequestFrom(res.getLong("request_from"));
             notification.setText(res.getString("text"));
         }
-        res.close();
         statement.close();
+        res.close();
         return notification;
     }
 
@@ -436,5 +472,6 @@ public class Database
         statement.setLong(3, notification.getRequestFrom());
         statement.setString(4, notification.getText());
         statement.executeUpdate();
+        statement.close();
     }
 }

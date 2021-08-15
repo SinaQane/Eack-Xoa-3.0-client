@@ -62,6 +62,10 @@ public class SearchResultsPaneFXML
         {
             return false;
         }
+        if (users.size() == 0 && page == 0)
+        {
+            return false;
+        }
         return page != users.size() - 1;
     }
 

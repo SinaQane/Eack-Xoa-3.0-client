@@ -54,7 +54,7 @@ public class ServerFrameFXML
 
         try
         {
-            Thread.sleep(5000);
+            Thread.sleep(2000);
         } catch (InterruptedException ignored) {}
 
         resultText.setText(ConnectionStatus.getStatus().isOnline() ? "connected" : "connection failed");

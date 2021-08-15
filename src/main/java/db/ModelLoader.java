@@ -1,6 +1,7 @@
 package db;
 
 import controller.ConnectionStatus;
+import event.EventListener;
 import event.EventSender;
 import event.events.database.*;
 import model.*;
@@ -9,7 +10,7 @@ import java.sql.SQLException;
 
 public class ModelLoader
 {
-    private EventSender eventSender;
+    private EventListener eventListener;
 
     static ModelLoader modelLoader;
 
@@ -24,16 +25,16 @@ public class ModelLoader
         return modelLoader;
     }
 
-    public void setEventSender(EventSender eventSender)
+    public void setEventListener(EventListener eventListener)
     {
-        this.eventSender = eventSender;
+        this.eventListener = eventListener;
     }
 
     public User getUser(long id) throws InterruptedException, SQLException
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetUserEvent(id));
+            eventListener.listen(new GetUserEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("users", id))
@@ -49,7 +50,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetUserEvent(id));
+            eventListener.listen(new GetUserEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("profiles", id))
@@ -65,7 +66,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetTweetEvent(id));
+            eventListener.listen(new GetTweetEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("tweets", id))
@@ -81,7 +82,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetGroupEvent(id));
+            eventListener.listen(new GetGroupEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("groups", id))
@@ -97,7 +98,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetChatEvent(id));
+            eventListener.listen(new GetChatEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("chats", id))
@@ -113,7 +114,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetMessageEvent(id));
+            eventListener.listen(new GetMessageEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("messages", id))
@@ -129,7 +130,7 @@ public class ModelLoader
     {
         if (ConnectionStatus.getStatus().isOnline())
         {
-            eventSender.sendEvent(new GetNotificationEvent(id));
+            eventListener.listen(new GetNotificationEvent(id));
             synchronized (Database.getDB())
             {
                 while (Database.db.rowIsMissing("notifications", id))
