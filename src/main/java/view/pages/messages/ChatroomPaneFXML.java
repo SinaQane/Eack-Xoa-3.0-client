@@ -1,5 +1,6 @@
 package view.pages.messages;
 
+import controller.ChatroomController;
 import controller.ConnectionStatus;
 import db.ModelLoader;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import view.components.message.MessagePane;
 import view.frames.addmember.AddMemberFrame;
 
 import java.sql.SQLException;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ChatroomPaneFXML
@@ -20,7 +22,7 @@ public class ChatroomPaneFXML
 
     private int page;
     private long chatId;
-    private List<List<Long>> messages;
+    private List<Long> msg;
 
     public TextField scheduledTimeText;
     public TextField messageTextField;
@@ -46,9 +48,9 @@ public class ChatroomPaneFXML
         chatId = id;
     }
 
-    public void setMessages(List<List<Long>> messages)
+    public void setMessages(List<Long> msg)
     {
-        this.messages = messages;
+        this.msg = msg;
     }
 
     public void setMessagePane(int i, Pane pane)
@@ -80,7 +82,7 @@ public class ChatroomPaneFXML
         }
     }
 
-    public boolean hasNextPage()
+    public boolean hasNextPage(List<List<Long>> messages)
     {
         if (messages == null)
         {
@@ -93,7 +95,7 @@ public class ChatroomPaneFXML
         return page != messages.size() - 1;
     }
 
-    public boolean hasPreviousPage()
+    public boolean hasPreviousPage(List<List<Long>> messages)
     {
         if (messages == null)
         {
@@ -104,9 +106,24 @@ public class ChatroomPaneFXML
 
     public void refresh()
     {
+        ChatroomController controller = new ChatroomController();
+        List<List<Long>> messages = controller.getOrganizedMessages(msg);
+
         for (int i = 0; i < 5; i++)
         {
-            if (messages.get(page).get(i) == -1L)
+            if (messages == null)
+            {
+                setMessagePane(i, new EmptyMessagePane().getPane());
+            }
+            else if (messages.size() <= page)
+            {
+                setMessagePane(i, new EmptyMessagePane().getPane());
+            }
+            else if (messages.get(page).size() <= i)
+            {
+                setMessagePane(i, new EmptyMessagePane().getPane());
+            }
+            else if (messages.get(page).get(i) == -1L)
             {
                 setMessagePane(i, new EmptyMessagePane().getPane());
             }
@@ -118,8 +135,8 @@ public class ChatroomPaneFXML
             }
         }
 
-        nextButton.setDisable(!hasNextPage());
-        previousButton.setDisable(!hasPreviousPage());
+        nextButton.setDisable(!hasNextPage(messages));
+        previousButton.setDisable(!hasPreviousPage(messages));
 
         try
         {
@@ -138,12 +155,12 @@ public class ChatroomPaneFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showChatroom(messages, chatId, page - 1);
+        GraphicalAgent.getGraphicalAgent().showChatroom(msg, chatId, page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showChatroom(messages, chatId, page + 1);
+        GraphicalAgent.getGraphicalAgent().showChatroom(msg, chatId, page + 1);
     }
 
     public void send()

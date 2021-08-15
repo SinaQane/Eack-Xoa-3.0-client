@@ -409,7 +409,7 @@ public class GraphicalAgent
         loop.start();
     }
 
-    public void showChatroom(List<List<Long>> messages, Long chatId, int page)
+    public void showChatroom(List<Long> messages, Long chatId, int page)
     {
         isLoaded = false;
         if (loop != null) loop.stop();
@@ -443,7 +443,7 @@ public class GraphicalAgent
         loop.start();
     }
 
-    public void refreshChatroom(List<List<Long>> messages)
+    public void refreshChatroom(List<Long> messages)
     {
         Platform.runLater(() ->
         {

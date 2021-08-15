@@ -65,7 +65,11 @@ public class TimelinePageFXML
     public int numberOfTweets()
     {
         int cnt = 0;
-        if (tweets.get(page) == null)
+        if (tweets == null)
+        {
+            return 0;
+        }
+        else if (tweets.size() <= page)
         {
             return 0;
         }

@@ -40,7 +40,7 @@ public class ChatroomController
         try
         {
             List<Long> offlineMessages = Database.getDB().loadOfflineMessages(chatId);
-            GraphicalAgent.getGraphicalAgent().showChatroom(getOrganizedMessages(offlineMessages), chatId, 0);
+            GraphicalAgent.getGraphicalAgent().showChatroom(offlineMessages, chatId, 0);
         } catch (SQLException ignored) {}
     }
 
@@ -49,7 +49,7 @@ public class ChatroomController
         try
         {
             List<Long> offlineMessages = Database.getDB().loadOfflineMessages(chatId);
-            GraphicalAgent.getGraphicalAgent().refreshChatroom(getOrganizedMessages(offlineMessages));
+            GraphicalAgent.getGraphicalAgent().refreshChatroom(offlineMessages);
         } catch (SQLException ignored) {}
     }
 
@@ -105,7 +105,10 @@ public class ChatroomController
             {
                 messages.add(ModelLoader.getModelLoader().getMessage(id));
             }
-        } catch (SQLException | InterruptedException ignored) {}
+        } catch (SQLException | InterruptedException throwable)
+        {
+            throwable.printStackTrace();
+        }
 
         messages.sort(Comparator.comparing(Message::getMessageDate));
 
@@ -140,13 +143,13 @@ public class ChatroomController
         {
             try
             {
-                Message message = Database.getDB().loadMessage(messageId);
+                Message message = ModelLoader.getModelLoader().getMessage(messageId);
                 if (!message.getSeenList().contains(id))
                 {
                     cnt++;
                 }
             }
-            catch (SQLException throwable)
+            catch (SQLException | InterruptedException throwable)
             {
                 throwable.printStackTrace();
             }

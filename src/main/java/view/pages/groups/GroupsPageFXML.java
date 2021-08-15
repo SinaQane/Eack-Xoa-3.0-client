@@ -89,7 +89,19 @@ public class GroupsPageFXML
     {
         for (int i = 0; i < 5; i++)
         {
-            if (groups.get(page).get(i) == -1L)
+            if (groups == null)
+            {
+                setGroupPane(i, new EmptyItemPane().getPane());
+            }
+            else if (groups.size() <= page)
+            {
+                setGroupPane(i, new EmptyItemPane().getPane());
+            }
+            else if (groups.get(page).size() <= i)
+            {
+                setGroupPane(i, new EmptyItemPane().getPane());
+            }
+            else if (groups.get(page).get(i) == -1L)
             {
                 setGroupPane(i, new EmptyItemPane().getPane());
             }

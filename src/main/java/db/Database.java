@@ -340,7 +340,11 @@ public class Database
             }
             statement.close();
             res.close();
-        } catch (SQLException ignored) {}
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
 
         return maxTime;
     }
@@ -359,7 +363,7 @@ public class Database
             message.setTweetId(res.getLong("tweet_id"));
             message.setIndex(res.getInt("index"));
             message.setText(res.getString("text"));
-            message.setText(res.getString("picture"));
+            message.setPicture(res.getString("picture"));
             message.setMessageDate(res.getLong("message_date_unix"));
             message.setSeenList(ListUtil.JsonToList(res.getString("seen_list")));
             message.setSent(res.getBoolean("sent"));

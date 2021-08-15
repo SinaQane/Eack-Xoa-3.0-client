@@ -86,7 +86,19 @@ public class ViewTweetPageFXML
         mainTweetFXML.setTweetPane(mainTweet);
         setTweetPane(mainTweetPane.getPane());
 
-        if (comments.get(page).get(0).equals(-1L))
+        if (comments == null)
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.size() <= page)
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.get(page).size() <= 1)
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.get(page).get(0).equals(-1L))
         {
             setCommentPane1(new EmptyTweetPane().getPane());
         }
@@ -99,9 +111,21 @@ public class ViewTweetPageFXML
             setCommentPane1(firstCommentPane.getPane());
         }
 
-        if (comments.get(page).get(1).equals(-1L))
+        if (comments == null)
         {
-            setCommentPane2(new EmptyTweetPane().getPane());
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.size() <= page)
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.get(page).size() <= 2)
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
+        }
+        else if (comments.get(page).get(1).equals(-1L))
+        {
+            setCommentPane1(new EmptyTweetPane().getPane());
         }
         else
         {

@@ -105,7 +105,19 @@ public class ViewListPageFXML
     {
         for (int i = 0; i < 5; i++)
         {
-            if (items.get(page).get(i).equals(-1L))
+            if (items == null)
+            {
+                setPane(i, new EmptyItemPane().getPane());
+            }
+            else if (items.size() <= page)
+            {
+                setPane(i, new EmptyItemPane().getPane());
+            }
+            else if (items.get(page).size() <= i)
+            {
+                setPane(i, new EmptyItemPane().getPane());
+            }
+            else if (items.get(page).get(i).equals(-1L))
             {
                 setPane(i, new EmptyItemPane().getPane());
             }

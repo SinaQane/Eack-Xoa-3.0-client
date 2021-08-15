@@ -41,6 +41,7 @@ public class MessagePaneFXML
 
             ownerText.setText("@" + messageOwner.getUsername());
             messageText.setText(message.getText());
+            messageText.setVisible(true);
 
             if (!chat.isGroup() && message.getOwnerId().equals(ConnectionStatus.getStatus().getUser().getId()))
             {

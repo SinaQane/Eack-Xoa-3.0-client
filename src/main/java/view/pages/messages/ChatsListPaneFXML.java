@@ -90,9 +90,21 @@ public class ChatsListPaneFXML
 
         for (int i = 0; i < 7; i++)
         {
-            if (chatsList == null || chatsList.get(page) == null || chatsList.get(page).get(i) == null || chatsList.get(page).get(i)[0] == -1L)
+            if (chatsList == null)
             {
-                getButton(i).setDisable(false);
+                getButton(i).setVisible(false);
+            }
+            else if (chatsList.size() <= page)
+            {
+                getButton(i).setVisible(false);
+            }
+            else if (chatsList.get(page).size() <= i)
+            {
+                getButton(i).setVisible(false);
+            }
+            else if (chatsList.get(page).get(i)[0] == -1L)
+            {
+                getButton(i).setVisible(false);
             }
             else
             {

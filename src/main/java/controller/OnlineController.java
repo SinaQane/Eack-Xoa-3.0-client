@@ -476,15 +476,13 @@ public class OnlineController implements ResponseVisitor
     @Override
     public void viewChatroom(List<Long> messages, Long chatId)
     {
-        ChatroomController controller = new ChatroomController();
-        GraphicalAgent.getGraphicalAgent().showChatroom(controller.getOrganizedMessages(messages), chatId, 0);
+        GraphicalAgent.getGraphicalAgent().showChatroom(messages, chatId, 0);
     }
 
     @Override
     public void refreshChatroom(List<Long> messages, Long chatId)
     {
-        ChatroomController controller = new ChatroomController();
-        GraphicalAgent.getGraphicalAgent().refreshChatroom(controller.getOrganizedMessages(messages));
+        GraphicalAgent.getGraphicalAgent().refreshChatroom(messages);
     }
 
     @Override
