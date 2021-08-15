@@ -46,7 +46,7 @@ public class OnlineController implements ResponseVisitor
         loop = new Loop(requestFps, this::sendEvents);
 
         Integer lastSeenFps = new Config(Constants.CONFIG).getProperty(Integer.class, "lastSeenLoop");
-        TimeTask timeTask = new TimeTask(lastSeenFps, this::refreshLastSeen);
+        TimeTask timeTask = new TimeTask(lastSeenFps, this::updateLastSeen);
         timeTask.start();
 
         GraphicalAgent.getGraphicalAgent().setEventListener(this::addEvent);

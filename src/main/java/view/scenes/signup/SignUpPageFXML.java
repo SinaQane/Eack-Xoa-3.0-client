@@ -73,7 +73,14 @@ public class SignUpPageFXML
 
         if (birthDatePicker.getValue() != null)
         {
-            birthDate = java.sql.Date.valueOf(birthDatePicker.getValue());
+            try
+            {
+                birthDate = new SimpleDateFormat(DATE_PATTERN).parse(String.valueOf(birthDatePicker.getValue()));
+            }
+            catch (ParseException e)
+            {
+                e.printStackTrace();
+            }
         }
 
         listener.eventOccurred(new SignUpForm(signUpButton, username, password, name, email, phoneNumber, bio, birthDate, picture));
