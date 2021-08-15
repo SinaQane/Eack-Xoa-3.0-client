@@ -224,11 +224,7 @@ public class GraphicalAgent
             isLoaded = true;
         });
 
-        loop = new Loop(fps, () ->
-        {
-            Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventListener.listen(new RefreshProfileEvent(userId));
-        });
+        loop = new Loop(fps, () -> eventListener.listen(new RefreshProfileEvent(user.getId())));
         loop.start();
     }
 

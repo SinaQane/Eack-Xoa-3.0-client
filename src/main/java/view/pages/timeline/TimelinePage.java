@@ -17,7 +17,6 @@ public class TimelinePage
     {
         String path = new Config(Constants.CONFIG).getProperty(String.class, "timelinePage");
         loader = new FXMLLoader(Objects.requireNonNull(getClass().getResource(path)));
-        getFXML().setPageKind(pageKind);
         try
         {
             pane = loader.load();
@@ -26,6 +25,7 @@ public class TimelinePage
         {
             e.printStackTrace();
         }
+        getFXML().setPageKind(pageKind);
     }
 
     public Pane getPane()

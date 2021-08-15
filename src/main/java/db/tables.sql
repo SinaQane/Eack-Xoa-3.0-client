@@ -52,14 +52,12 @@ CREATE TABLE `eack_xoa_client`.`tweets`
     `visible`     BOOL         NOT NULL,
     `text`        VARCHAR(256) NOT NULL,
     `tweet_date`  BIGINT       NOT NULL,
-    `comments`    JSON,
-    `upvotes`     JSON,
-    `downvotes`   JSON,
-    `retweets`    JSON,
+    `comments`    JSON         NOT NULL,
+    `upvotes`     JSON         NOT NULL,
+    `downvotes`   JSON         NOT NULL,
+    `retweets`    JSON         NOT NULL,
     `reports`     INT          NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`owner`) REFERENCES users (`id`),
-    FOREIGN KEY (`upper_tweet`) REFERENCES tweets (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `eack_xoa_client`.`groups`
@@ -75,8 +73,8 @@ CREATE TABLE `eack_xoa_client`.`chats`
     `id`        BIGINT      NOT NULL,
     `chat_name` VARCHAR(64) NOT NULL,
     `group`     BOOL        NOT NULL,
-    `users`     JSON,
-    `messages`  JSON,
+    `users`     JSON        NOT NULL,
+    `messages`  JSON        NOT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
@@ -94,10 +92,7 @@ CREATE TABLE `eack_xoa_client`.`messages`
     `sent`              BOOL         NOT NULL,
     `received`          BOOL         NOT NULL,
     `seen`              BOOL         NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`chat_id`) REFERENCES chats (`id`),
-    FOREIGN KEY (`owner_id`) REFERENCES users (`id`),
-    FOREIGN KEY (`tweet_id`) REFERENCES tweets (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB;
 
 CREATE TABLE `eack_xoa_client`.`notifications`
@@ -106,17 +101,5 @@ CREATE TABLE `eack_xoa_client`.`notifications`
     `owner`        BIGINT       NOT NULL,
     `request_from` BIGINT       NOT NULL,
     `text`         VARCHAR(256) NOT NULL,
-    PRIMARY KEY (`id`),
-    FOREIGN KEY (`owner`) REFERENCES users (`id`),
-    FOREIGN KEY (`request_from`) REFERENCES users (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE InnoDB;
-
-INSERT INTO `eack_xoa_client`.`users`
-(`id`, `username`, `password`, `name`, `email`, `phone_number`, `bio`, `birth_date`, `is_active`, `is_deleted`)
-VALUES (-1, '', '', '', '', '', '', -1, false, true);
-
-INSERT INTO `eack_xoa_client`.`tweets`
-(`id`, `owner`, `upper_tweet`, `picture`, `visible`, `text`, `tweet_date`, `comments`, `upvotes`, `downvotes`, `retweets`, `reports`)
-VALUES (-1, -1, -1, '', false, '', -1, null, null, null, null, -1);
-
-INSERT INTO `eack_xoa_client`.`chats` (`id`, `chat_name`, `group`, `users`, `messages`) VALUES (-1, '', false, null, null);
