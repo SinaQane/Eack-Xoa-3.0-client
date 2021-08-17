@@ -15,6 +15,7 @@ import event.events.messages.RefreshChatroomEvent;
 import event.events.messages.RefreshMessagesPageEvent;
 import event.events.profile.RefreshProfileEvent;
 import event.events.profile.ViewProfileEvent;
+import event.events.timeline.RefreshBookmarksEvent;
 import event.events.timeline.RefreshTimelineEvent;
 import javafx.application.Platform;
 import javafx.stage.Stage;
@@ -262,7 +263,14 @@ public class GraphicalAgent
         loop = new Loop(fps, () ->
         {
             Long userId = ConnectionStatus.getStatus().getUser().getId();
-            eventListener.listen(new RefreshTimelineEvent(userId));
+            if (pageKind.equals("timeline"))
+            {
+                eventListener.listen(new RefreshTimelineEvent(userId));
+            }
+            else
+            {
+                eventListener.listen(new RefreshBookmarksEvent(userId));
+            }
         });
         loop.start();
     }

@@ -263,7 +263,6 @@ public class Database
         PreparedStatement statement = connection.prepareStatement("SELECT * FROM `groups` WHERE `id` = ?");
         statement.setLong(1, id);
         ResultSet res = statement.executeQuery();
-        statement.close();
         Group group = new Group();
         while (res.next())
         {
