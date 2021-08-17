@@ -1,5 +1,6 @@
 package view.scenes.login;
 
+import controller.ConnectionStatus;
 import event.events.authentication.LoginForm;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -24,6 +25,7 @@ public class LoginPageFXML
     public void refresh()
     {
         messageText.setVisible(false);
+        signUpButton.setDisable(!ConnectionStatus.getStatus().isOnline());
     }
 
     public void enter()

@@ -137,16 +137,19 @@ public class ChatroomController
     public Long getUnseenCount(Chat chat)
     {
         long cnt = 0;
-        long id = ConnectionStatus.getStatus().getUser().getId();
+        long userId = ConnectionStatus.getStatus().getUser().getId();
 
         for (Long messageId : chat.getMessages())
         {
             try
             {
                 Message message = ModelLoader.getModelLoader().getMessage(messageId);
-                if (!message.getSeenList().contains(id))
+                if (!message.getSeenList().contains(userId) && !message.getOwnerId().equals(userId))
                 {
-                    cnt++;
+                    if (message.getMessageDate() < new Date().getTime())
+                    {
+                        cnt++;
+                    }
                 }
             }
             catch (SQLException | InterruptedException throwable)
