@@ -87,7 +87,10 @@ public class OnlineController implements ResponseVisitor
         if (ConnectionStatus.getStatus().getUser() != null)
         {
             Long userId = ConnectionStatus.getStatus().getUser().getId();
+            String authToken = ConnectionStatus.getStatus().getAuthToken();
+
             addEvent(new RefreshLastSeenEvent(userId));
+            addEvent(new ReceivedAllMessagesEvent(userId, authToken));
         }
     }
 
