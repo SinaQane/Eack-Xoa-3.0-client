@@ -1,5 +1,6 @@
 package view.pages.settings;
 
+import controller.ConnectionStatus;
 import event.events.settings.SettingsForm;
 import javafx.scene.control.*;
 import javafx.scene.paint.Color;
@@ -103,6 +104,13 @@ public class SettingsPageFXML
     public void lastSeenCheckBox()
     {
         lastSeenChoiceBox.setDisable(!lastSeenCheckBox.isSelected());
+    }
+
+    public void refresh()
+    {
+        boolean online = ConnectionStatus.getStatus().isOnline();
+        deactivationButton.setDisable(!online);
+        deleteAccountButton.setDisable(!online);
     }
 
     public void edit()

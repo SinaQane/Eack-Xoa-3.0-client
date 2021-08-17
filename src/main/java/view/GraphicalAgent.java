@@ -197,6 +197,7 @@ public class GraphicalAgent
         {
             MainPage mainPage = MainPage.getMainPage();
             settingsPage = new SettingsPage();
+            settingsPage.getFXML().refresh();
             mainPage.getFXML().setMainPane(settingsPage.getPane());
         });
     }
