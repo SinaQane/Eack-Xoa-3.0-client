@@ -76,7 +76,7 @@ public class MainPageListener
                 BackButtonHandler.getBackButtonHandler().clear();
                 BackButtonHandler.getBackButtonHandler().add(new BackButtonMemory("messages"));
                 break;
-            case "onlineStatusButton":
+            case "serverButton":
                 new ServerFrame(null, MainPage.getMainPage().getFXML());
                 break;
         }

@@ -16,6 +16,7 @@ import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
 
 public class ChatroomPaneListener
@@ -32,10 +33,13 @@ public class ChatroomPaneListener
 
                 long time = -1L;
                 if (!messageTime.equals(""))
-                try {
-                    DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
-                    time = format.parse(messageTime).getTime();
-                } catch (ParseException ignored) {}
+                {
+                    try
+                    {
+                        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.ENGLISH);
+                        time = format.parse(messageTime).getTime();
+                    } catch (ParseException ignored) {}
+                }
 
                 if (ConnectionStatus.getStatus().isOnline())
                 {
@@ -54,7 +58,7 @@ public class ChatroomPaneListener
                         Long id = Database.getDB().minimumMessageId() - 1;
                         Chat chat = Database.getDB().loadChat(chatId);
                         Message message = new Message(chat, ConnectionStatus.getStatus().getUser(), text, picture);
-                        message.setMessageDate(time);
+                        message.setMessageDate(time == -1L ? new Date().getTime() : time);
                         message.setId(id);
                         Database.getDB().saveMessage(message);
                     } catch (SQLException ignored) {}

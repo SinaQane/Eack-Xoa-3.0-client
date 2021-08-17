@@ -439,6 +439,7 @@ public class Database
         {
             Message message = loadMessage(minimumMessageId());
             deleteMessage(minimumMessageId());
+            message.setMessageDate(-1L);
             messages.add(message);
         }
         return messages;
