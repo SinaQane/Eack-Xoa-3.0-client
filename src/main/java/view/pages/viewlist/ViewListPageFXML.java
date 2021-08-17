@@ -155,11 +155,11 @@ public class ViewListPageFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showViewListPage(pageKind, user, items, page - 1);
+        GraphicalAgent.getGraphicalAgent().getViewListPage().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showViewListPage(pageKind, user, items, page + 1);
+        GraphicalAgent.getGraphicalAgent().getViewListPage().getFXML().setPage(page + 1);
     }
 }

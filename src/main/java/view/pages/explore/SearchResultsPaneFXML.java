@@ -106,11 +106,11 @@ public class SearchResultsPaneFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showSearchResults(users, page - 1);
+        GraphicalAgent.getGraphicalAgent().getSearchResultsPane().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showSearchResults(users, page + 1);
+        GraphicalAgent.getGraphicalAgent().getSearchResultsPane().getFXML().setPage(page + 1);
     }
 }

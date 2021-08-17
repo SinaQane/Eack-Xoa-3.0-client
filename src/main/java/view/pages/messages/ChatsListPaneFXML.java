@@ -194,11 +194,11 @@ public class ChatsListPaneFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, page - 1);
+        GraphicalAgent.getGraphicalAgent().getChatsListPane().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showMessagesPage(chatsList, page + 1);
+        GraphicalAgent.getGraphicalAgent().getChatsListPane().getFXML().setPage(page + 1);
     }
 }

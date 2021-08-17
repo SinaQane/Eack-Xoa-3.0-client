@@ -75,12 +75,12 @@ public class TweetsPaneFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, page - 1);
+        GraphicalAgent.getGraphicalAgent().getProfilePage().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showProfilePage(user, tweets, page + 1);
+        GraphicalAgent.getGraphicalAgent().getProfilePage().getFXML().setPage(page + 1);
     }
 
     public void tweet()

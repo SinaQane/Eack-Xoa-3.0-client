@@ -583,4 +583,44 @@ public class GraphicalAgent
     {
         return controller;
     }
+
+    public ProfilePage getProfilePage()
+    {
+        return profilePage;
+    }
+
+    public TimelinePage getTimelinePage()
+    {
+        return timelinePage;
+    }
+
+    public ViewListPage getViewListPage()
+    {
+        return viewListPage;
+    }
+
+    public ViewTweetPage getViewTweetPage()
+    {
+        return viewTweetPage;
+    }
+
+    public GroupsPage getGroupsPage()
+    {
+        return groupsPage;
+    }
+
+    public ChatsListPane getChatsListPane()
+    {
+        return chatsListPane;
+    }
+
+    public ChatroomPane getChatroomPane()
+    {
+        return chatroomPane;
+    }
+
+    public SearchResultsPane getSearchResultsPane()
+    {
+        return searchResultsPane;
+    }
 }

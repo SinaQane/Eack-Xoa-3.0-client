@@ -155,12 +155,12 @@ public class ChatroomPaneFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showChatroom(msg, chatId, page - 1);
+        GraphicalAgent.getGraphicalAgent().getChatroomPane().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showChatroom(msg, chatId, page + 1);
+        GraphicalAgent.getGraphicalAgent().getChatroomPane().getFXML().setPage(page + 1);
     }
 
     public void send()

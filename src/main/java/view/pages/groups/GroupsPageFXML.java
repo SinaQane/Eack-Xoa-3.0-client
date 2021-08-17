@@ -129,11 +129,11 @@ public class GroupsPageFXML
 
     public void previous()
     {
-        GraphicalAgent.getGraphicalAgent().showGroupsPage(groups, page - 1);
+        GraphicalAgent.getGraphicalAgent().getGroupsPage().getFXML().setPage(page - 1);
     }
 
     public void next()
     {
-        GraphicalAgent.getGraphicalAgent().showGroupsPage(groups, page + 1);
+        GraphicalAgent.getGraphicalAgent().getGroupsPage().getFXML().setPage(page + 1);
     }
 }
