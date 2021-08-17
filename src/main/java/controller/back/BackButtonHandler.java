@@ -33,6 +33,11 @@ public class BackButtonHandler
 
     public void back()
     {
+        if (stack.size() == 0)
+        {
+            return;
+        }
+
         stack.remove(stack.size() - 1);
 
         if (stack.size() == 0)

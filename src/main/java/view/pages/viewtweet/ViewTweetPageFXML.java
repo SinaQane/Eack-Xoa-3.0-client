@@ -6,7 +6,6 @@ import model.Tweet;
 import view.GraphicalAgent;
 import view.components.empty.EmptyTweetPane;
 import view.components.tweet.TweetPane;
-import view.components.tweet.TweetPaneFXML;
 
 import java.util.List;
 
@@ -82,8 +81,7 @@ public class ViewTweetPageFXML
     {
         Long[] mainTweet = new Long[]{tweet.getId(), -1L};
         TweetPane mainTweetPane = new TweetPane();
-        TweetPaneFXML mainTweetFXML = mainTweetPane.getFXML();
-        mainTweetFXML.setTweetPane(mainTweet);
+        mainTweetPane.getFXML().setTweetPane(mainTweet);
         setTweetPane(mainTweetPane.getPane());
 
         if (comments == null)
@@ -106,33 +104,31 @@ public class ViewTweetPageFXML
         {
             Long[] firstComment = new Long[]{comments.get(page).get(0), -1L};
             TweetPane firstCommentPane = new TweetPane();
-            TweetPaneFXML firstCommentFXML = firstCommentPane.getFXML();
-            firstCommentFXML.setTweetPane(firstComment);
+            firstCommentPane.getFXML().setTweetPane(firstComment);
             setCommentPane1(firstCommentPane.getPane());
         }
 
         if (comments == null)
         {
-            setCommentPane1(new EmptyTweetPane().getPane());
+            setCommentPane2(new EmptyTweetPane().getPane());
         }
         else if (comments.size() <= page)
         {
-            setCommentPane1(new EmptyTweetPane().getPane());
+            setCommentPane2(new EmptyTweetPane().getPane());
         }
         else if (comments.get(page).size() <= 2)
         {
-            setCommentPane1(new EmptyTweetPane().getPane());
+            setCommentPane2(new EmptyTweetPane().getPane());
         }
         else if (comments.get(page).get(1).equals(-1L))
         {
-            setCommentPane1(new EmptyTweetPane().getPane());
+            setCommentPane2(new EmptyTweetPane().getPane());
         }
         else
         {
             Long[] secondComment = new Long[]{comments.get(page).get(1), -1L};
             TweetPane secondCommentPane = new TweetPane();
-            TweetPaneFXML secondCommentFXML = secondCommentPane.getFXML();
-            secondCommentFXML.setTweetPane(secondComment);
+            secondCommentPane.getFXML().setTweetPane(secondComment);
             setCommentPane2(secondCommentPane.getPane());
         }
 
