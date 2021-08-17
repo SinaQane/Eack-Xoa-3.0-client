@@ -33,12 +33,13 @@ public class BackButtonHandler
 
     public void back()
     {
+        stack.remove(stack.size() - 1);
+
         if (stack.size() == 0)
         {
             return;
         }
 
-        stack.remove(stack.size() - 1);
         BackButtonMemory memory = stack.get(stack.size() - 1);
 
         Long userId = ConnectionStatus.getStatus().getUser().getId();
