@@ -4,16 +4,11 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
-import model.User;
 import view.GraphicalAgent;
 import view.frames.newtweet.NewTweetFrame;
 
-import java.util.List;
-
 public class TweetsPaneFXML
 {
-    private List<List<Long[]>> tweets;
-    private User user;
     private int page;
 
     public Pane tweetsPane;
@@ -25,16 +20,6 @@ public class TweetsPaneFXML
 
     public Text noTweetsText;
     public Line midLine;
-
-    public void setTweets(List<List<Long[]>> tweets)
-    {
-        this.tweets = tweets;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
-    }
 
     public void setPage(int page)
     {

@@ -17,7 +17,6 @@ import java.util.List;
 public class ViewListPageFXML
 {
     private int page;
-    private User user;
     private String pageKind;
     private List<List<Long>> items;
 
@@ -33,11 +32,6 @@ public class ViewListPageFXML
     public void setPage(int page)
     {
         this.page = page;
-    }
-
-    public void setUser(User user)
-    {
-        this.user = user;
     }
 
     public void setPageKind(String pageKind)

@@ -4,6 +4,7 @@ import db.Database;
 import db.ModelLoader;
 import model.Chat;
 import model.Message;
+import model.User;
 import view.GraphicalAgent;
 
 import java.sql.SQLException;
@@ -60,7 +61,24 @@ public class ChatroomController
 
         for (Long id : chatsListId)
         {
-            chatsMap.put(- Database.getDB().getLastMessageTime(id), id);
+            try
+            {
+                Chat chat = ModelLoader.getModelLoader().getChat(id);
+                if (!chat.isGroup())
+                {
+                    User user1 = ModelLoader.getModelLoader().getUser(chat.getUsers().get(0));
+                    User user2 = ModelLoader.getModelLoader().getUser(chat.getUsers().get(1));
+
+                    if (!(user1.isDeleted() || user1.isDeactivated() || user2.isDeleted() || user2.isDeactivated()))
+                    {
+                        chatsMap.put(- Database.getDB().getLastMessageTime(id), id);
+                    }
+                }
+            }
+            catch (InterruptedException | SQLException ignored)
+            {
+                chatsMap.put(- Database.getDB().getLastMessageTime(id), id);
+            }
         }
 
         TreeMap<Long, Long> sortedChatsMap = new TreeMap<>(chatsMap);

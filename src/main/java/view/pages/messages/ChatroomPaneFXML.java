@@ -7,13 +7,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import model.Chat;
+import model.Profile;
 import view.GraphicalAgent;
 import view.components.empty.EmptyMessagePane;
 import view.components.message.MessagePane;
 import view.frames.addmember.AddMemberFrame;
 
 import java.sql.SQLException;
-import java.util.LinkedList;
 import java.util.List;
 
 public class ChatroomPaneFXML
@@ -141,6 +141,18 @@ public class ChatroomPaneFXML
         try
         {
             Chat chat = ModelLoader.getModelLoader().getChat(chatId);
+
+            if (!chat.isGroup())
+            {
+                Profile user1 = ModelLoader.getModelLoader().getProfile(chat.getUsers().get(0));
+                Profile user2 = ModelLoader.getModelLoader().getProfile(chat.getUsers().get(1));
+
+                if (user1.getBlocked().contains(user2.getId()) || user2.getBlocked().contains(user1.getId()) || (!user1.getFollowings().contains(user2.getId()) && !user1.getFollowers().contains(user2.getId())))
+                {
+                    sendButton.setDisable(true);
+                }
+            }
+
             addMemberButton.setVisible(chat.isGroup());
             leaveGroupButton.setVisible(chat.isGroup());
             addMemberButton.setDisable(!ConnectionStatus.getStatus().isOnline());

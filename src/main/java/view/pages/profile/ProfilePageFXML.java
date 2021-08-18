@@ -129,8 +129,6 @@ public class ProfilePageFXML
         TweetsPane tweetsPane = new TweetsPane();
         TweetsPaneFXML tweetsPaneFXML = tweetsPane.getFXML();
 
-        tweetsPaneFXML.setTweets(tweets);
-        tweetsPaneFXML.setUser(user);
         tweetsPaneFXML.setPage(page);
 
         tweetsPaneFXML.getPreviousButton().setDisable(!hasPreviousPage(page));
@@ -142,7 +140,7 @@ public class ProfilePageFXML
             {
                 setTweetsPane(new BlockedPane().getPane());
             }
-            else if (userProfile.isPrivate() && !userProfile.getFollowers().contains(viewer.getId()))
+            else if (userProfile.isPrivate() && (!userProfile.getFollowers().contains(viewer.getId()) && !userProfile.getId().equals(viewer.getId())))
             {
                 setTweetsPane(new PrivatePane().getPane());
             }

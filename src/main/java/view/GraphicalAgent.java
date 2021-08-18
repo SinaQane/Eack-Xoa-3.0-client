@@ -489,7 +489,6 @@ public class GraphicalAgent
             viewListPage = new ViewListPage();
             viewListPage.getFXML().setPageKind(pageKind);
             viewListPage.getFXML().setItems(items);
-            viewListPage.getFXML().setUser(user);
             viewListPage.getFXML().setPage(page);
             viewListPage.getFXML().refresh();
             mainPage.getFXML().setMainPane(viewListPage.getPane());
