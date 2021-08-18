@@ -76,4 +76,9 @@
     <ImageView fx:id="profilePicture" fitHeight="115.0" fitWidth="115.0" layoutX="18.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
     <Line endX="-188.6666717529297" endY="511.0" layoutX="200.0" layoutY="-367.0" startX="587.0" startY="511.0" stroke="#2b3132" />
     <Pane fx:id="tweetsPane" layoutX="11.0" layoutY="144.0" prefHeight="355.0" prefWidth="777.0" style="-fx-background-color: #1E2425;" />
+   <Text fx:id="lastSeenText" fill="WHITE" layoutX="312.0" layoutY="122.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Last Seen: N/A" wrappingWidth="412.0">
+      <font>
+         <Font size="12.0" />
+      </font>
+   </Text>
 </Pane>

@@ -49,6 +49,7 @@ public class ProfilePageFXML
     public Text bioText;
     public Text emailText;
     public Text birthdateText;
+    public Text lastSeenText;
     public Text phoneNumberText;
 
     public Pane tweetsPane;
@@ -195,20 +196,44 @@ public class ProfilePageFXML
         }
 
         SimpleDateFormat dateFormat = new SimpleDateFormat(DATE_PATTERN);
-        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN);
-        Date lastSeen = userProfile == null ? new Date() : userProfile.getLastSeen();
 
-        if (!isDataShareable)
+        if (!isDataShareable || user.getBirthDate().getTime() == DEFAULT_DATE)
         {
-            birthdateText.setText("Birthdate: N/A - Last Seen: N/A");
-        }
-        else if (user.getBirthDate().getTime() == DEFAULT_DATE)
-        {
-            birthdateText.setText("Birthdate: N/A - Last Seen: " + timeFormat.format(lastSeen));
+            birthdateText.setText("Birthdate: N/A");
         }
         else
         {
-            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()) + " - Last Seen: " + timeFormat.format(lastSeen));
+            birthdateText.setText("Birthdate: " + dateFormat.format(user.getBirthDate()));
+        }
+
+        SimpleDateFormat timeFormat = new SimpleDateFormat(TIME_PATTERN);
+        Date lastSeen = userProfile == null ? new Date() : userProfile.getLastSeen();
+
+        if (isProfile)
+        {
+            lastSeenText.setText("Last Seen: " + timeFormat.format(lastSeen));
+        }
+        else
+        {
+            switch (Objects.requireNonNull(userProfile).getLastSeenState())
+            {
+                case 0:
+                    lastSeenText.setText("Last Seen: N/A");
+                    break;
+                case 1:
+                    if (userProfile.getFollowings().contains(ConnectionStatus.getStatus().getUser().getId()))
+                    {
+                        lastSeenText.setText("Last Seen: " + timeFormat.format(lastSeen));
+                    }
+                    else
+                    {
+                        lastSeenText.setText("Last Seen: N/A");
+                    }
+                    break;
+                case 2:
+                    lastSeenText.setText("Last Seen: " + timeFormat.format(lastSeen));
+                    break;
+            }
         }
 
         if (user.getPhoneNumber().equals("") || !isDataShareable)
