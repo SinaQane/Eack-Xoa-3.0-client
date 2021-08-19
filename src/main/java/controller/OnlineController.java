@@ -303,7 +303,7 @@ public class OnlineController implements ResponseVisitor
     @Override
     public void viewList(String pageKind, User user, List<List<Long>> items)
     {
-        GraphicalAgent.getGraphicalAgent().showViewListPage(pageKind, user, items, 0);
+        GraphicalAgent.getGraphicalAgent().showViewListPage(pageKind, items, 0);
     }
 
     @Override

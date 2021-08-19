@@ -111,6 +111,11 @@ public class GraphicalAgent
         );
     }
 
+    public void closeLoop()
+    {
+        if (loop != null) loop.stop();
+    }
+
     // First page
 
     public void showFirstPage()
@@ -478,7 +483,7 @@ public class GraphicalAgent
 
     // ViewList page
 
-    public void showViewListPage(String pageKind, User user, List<List<Long>> items, int page)
+    public void showViewListPage(String pageKind, List<List<Long>> items, int page)
     {
         isLoaded = false;
         if (loop != null) loop.stop();

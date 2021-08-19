@@ -29,6 +29,7 @@ public class MainPageListener
                 BackButtonHandler.getBackButtonHandler().back();
                 break;
             case "logoutButton":
+                GraphicalAgent.getGraphicalAgent().closeLoop();
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new LogoutEvent(userId, authToken));
                 BackButtonHandler.getBackButtonHandler().clear();
                 break;
