@@ -31,11 +31,11 @@ public class SettingsPageListener
                 }
                 break;
             case "deactivationButton":
-                GraphicalAgent.getGraphicalAgent().closeLoop();
+                GraphicalAgent.getGraphicalAgent().stopActiveLoop();
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new DeactivationEvent(userId, authToken));
                 break;
             case "deleteAccountButton":
-                GraphicalAgent.getGraphicalAgent().closeLoop();
+                GraphicalAgent.getGraphicalAgent().stopActiveLoop();
                 GraphicalAgent.getGraphicalAgent().getEventListener().listen(new DeleteAccountEvent(userId, authToken));
                 break;
         }

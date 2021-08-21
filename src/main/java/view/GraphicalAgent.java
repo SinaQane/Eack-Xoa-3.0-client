@@ -91,6 +91,7 @@ public class GraphicalAgent
                 stage.setOnHidden(e ->
                 {
                     Platform.exit();
+                    stopActiveLoop();
                     if (ConnectionStatus.getStatus().getUser() != null)
                     {
                         Long userId = ConnectionStatus.getStatus().getUser().getId();
@@ -111,7 +112,7 @@ public class GraphicalAgent
         );
     }
 
-    public void closeLoop()
+    public void stopActiveLoop()
     {
         if (loop != null) loop.stop();
     }
